@@ -1,9 +1,17 @@
 {
   "name": "zeiterfassung-web",
   "version": "1.0.0",
-  "description": "A Vue.js project",
-  "author": "JonasSchade <Jonas.Schade@stud.fh-rosenheim.de>",
+  "description": "Webserver of Zeiterfassung",
+  "contributors": [
+    "Alexander Zeug",
+    "Timm Werner",
+    "JonasSchade <Jonas.Schade@stud.fh-rosenheim.de>"
+  ],
   "private": true,
+  "repository" : {
+    "type" : "git",
+    "url" : "https://github.com/JonasSchade/zeiterfassung-web.git"
+  },
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
