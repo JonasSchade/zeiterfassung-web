@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "Webserver of Zeiterfassung",
   "contributors": [
-    "Alexander Zeug",
-    "Timm Werner",
+    "Alexander Zeug <Alexander.Zeug@stud.fh-rosenheim.de>",
+    "Timm Werner <Timm.Werner@stud.fh-rosenheim.de>",
     "JonasSchade <Jonas.Schade@stud.fh-rosenheim.de>"
   ],
   "private": true,
