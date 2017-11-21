@@ -32,11 +32,11 @@
             </router-link>
           </li>
           <li class="dropdown">
-            <router-link to="/" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+            <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
               <i class="fa fa-user" aria-hidden="true"></i>{{user}} <span class="caret"></span>
-            </router-link>
+            </a>
             <ul class="dropdown-menu">
-              <li><router-link to="/">
+              <li><router-link to="*">
                 <i class="fa fa-sign-out" aria-hidden="true"></i>Logout
               </router-link></li>
             </ul>
