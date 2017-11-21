@@ -1,6 +1,6 @@
 <template>
   <div class="pagefooter">
-    <a  target="_blank" href="http://www.github.com/JonasSchade/zeiterfassung"><i class="fa fa-github"></i> GitHub</a>
+    <a  target="_blank" href="http://www.github.com/JonasSchade/zeiterfassung-web"><i class="fa fa-github"></i> GitHub</a>
   </div>
 </template>
 
