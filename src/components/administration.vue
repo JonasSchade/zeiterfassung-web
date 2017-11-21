@@ -1,37 +1,37 @@
 <template>
   <div class="administration">
 
-    <div class="wrapper">
-<div class="box vertrag">
-  <div class="header">
-    <i class="fa fa-address-card-o" aria-hidden="true" title="Vertrag"></i>
-  <h4>Vertragsdaten verwalten</h4>
-</div>
-  <ul>
-  <li><a href="default.asp">Arbeitspläne</a></li>
-  <li><a href="news.asp">Feiertage</a></li>
-</ul>
-</div>
-<div class="box organisation">
-  <div class="header">
-    <i class="fa fa-sitemap " aria-hidden="true" title="Organisation"></i>
-  <h4>Organisationsdaten verwalten</h4>
-</div>
-  <ul>
-  <li><a href="default.asp">Länder</a></li>
-  <li><a href="news.asp">Standorte</a></li>
-</ul>
-  </div>
-  <div class="box personal">
-    <div class="header">
-      <i class="fa fa-address-book-o" aria-hidden="true" title="Personal"></i>
-    <h4>Personaldaten verwalten</h4>
-  </div>
-    <ul>
-  <li><a href="default.asp">Abteilungen</a></li>
-  <li><a href="news.asp">Projekte</a></li>
-  <li><a href="contact.asp">Benutzer</a></li>
-</ul>
+  <div class="wrapper">
+    <div class="box vertrag">
+      <div class="header">
+        <i class="fa fa-address-card-o" aria-hidden="true" title="Vertrag"></i>
+        <h4>Vertragsdaten verwalten</h4>
+      </div>
+      <ul>
+        <li><a href="default.asp">Arbeitspläne</a></li>
+        <li><a href="news.asp">Feiertage</a></li>
+      </ul>
+    </div>
+    <div class="box organisation">
+      <div class="header">
+        <i class="fa fa-sitemap " aria-hidden="true" title="Organisation"></i>
+        <h4>Organisationsdaten verwalten</h4>
+      </div>
+      <ul>
+        <li><a href="default.asp">Länder</a></li>
+        <li><a href="news.asp">Standorte</a></li>
+      </ul>
+    </div>
+    <div class="box personal">
+      <div class="header">
+        <i class="fa fa-address-book-o" aria-hidden="true" title="Personal"></i>
+        <h4>Personaldaten verwalten</h4>
+      </div>
+      <ul>
+        <li><a href="default.asp">Abteilungen</a></li>
+        <li><a href="news.asp">Projekte</a></li>
+        <li><a href="contact.asp">Benutzer</a></li>
+      </ul>
     </div>
   </div>
   </div>
@@ -44,26 +44,27 @@ export default {
 </script>
 
 <style scoped>
-  .administration {
-    height: 700px;
-    text-align: center;
-  }
+.administration {
+  height: 700px;
+  text-align: center;
+}
 .header{
   background-color:  #cdd2d8;
 }
 
 .fa {
-padding-top: 10px;
-font-size: 40px;
+  padding-top: 10px;
+  font-size: 40px;
 }
-  h4 {
-    display: block;
-    background-color: #cdd2d8;
-    padding: 10px;
-    margin: 0px;
-  }
 
-  .wrapper {
+h4 {
+  display: block;
+  background-color: #cdd2d8;
+  padding: 10px;
+  margin: 0px;
+}
+
+.wrapper {
   display: grid; /* display: inline-grid;*/
   grid-template-columns: 1fr 1fr 1fr; /* 3 x 1 fraction */
 }
@@ -103,6 +104,6 @@ ul a{
 }
 
 ul a:hover {
-    color: grey;
+  color: grey;
 }
 </style>
