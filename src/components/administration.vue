@@ -1,6 +1,39 @@
 <template>
   <div class="administration">
-    <h1>Administration</h1>
+
+    <div class="wrapper">
+<div class="box vertrag">
+  <div class="header">
+    <i class="fa fa-address-card-o" aria-hidden="true" title="Vertrag"></i>
+  <h4>Vertragsdaten verwalten</h4>
+</div>
+  <ul>
+  <li><a href="default.asp">Arbeitspläne</a></li>
+  <li><a href="news.asp">Feiertage</a></li>
+</ul>
+</div>
+<div class="box organisation">
+  <div class="header">
+    <i class="fa fa-sitemap " aria-hidden="true" title="Organisation"></i>
+  <h4>Organisationsdaten verwalten</h4>
+</div>
+  <ul>
+  <li><a href="default.asp">Länder</a></li>
+  <li><a href="news.asp">Standorte</a></li>
+</ul>
+  </div>
+  <div class="box personal">
+    <div class="header">
+      <i class="fa fa-address-book-o" aria-hidden="true" title="Personal"></i>
+    <h4>Personaldaten verwalten</h4>
+  </div>
+    <ul>
+  <li><a href="default.asp">Abteilungen</a></li>
+  <li><a href="news.asp">Projekte</a></li>
+  <li><a href="contact.asp">Benutzer</a></li>
+</ul>
+    </div>
+  </div>
   </div>
 </template>
 
@@ -15,9 +48,61 @@ export default {
     height: 700px;
     text-align: center;
   }
+.header{
+  background-color:  #cdd2d8;
+}
 
-  h1 {
+.fa {
+padding-top: 10px;
+font-size: 40px;
+}
+  h4 {
     display: block;
-    line-height: 700px;
+    background-color: #cdd2d8;
+    padding: 10px;
+    margin: 0px;
   }
+
+  .wrapper {
+  display: grid; /* display: inline-grid;*/
+  grid-template-columns: 1fr 1fr 1fr; /* 3 x 1 fraction */
+}
+
+.vertrag {
+  grid-column-start: 1;  /* Spalte*/
+  grid-column-end: 2;
+  grid-row-start: 1;
+  grid-row-end: 1;
+}
+.organisation {
+  grid-column-start: 2; /* Spalte*/
+  grid-column-end: 3;
+  grid-row-start: 1;
+  grid-row-end: 1;
+}
+.personal {
+  grid-column-start: 3; /* Spalte*/
+  grid-column-end: 4;
+  grid-row-start: 1;
+  grid-row-end: 1;
+}
+.box{
+  box-shadow: 0 3px 5px -1px rgba(0,0,0,.2), 0 6px 10px 0 rgba(0,0,0,.14), 0 1px 18px 0 rgba(0,0,0,.12);
+  margin: 20px;
+}
+ul {
+  list-style-type: none;
+  margin: 0 auto;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  padding-left: 0;
+}
+ul a{
+  color: black;
+  text-decoration: none;
+}
+
+ul a:hover {
+    color: grey;
+}
 </style>
