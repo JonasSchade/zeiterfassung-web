@@ -1,6 +1,10 @@
 # zeiterfassung-web
 
-> A Vue.js project
+This is webserver of a project for school.
+It's basically a node.js runtime with vue.js as a advanced toolkit.  
+
+The corresponding database server can be found here:  
+https://github.com/JonasSchade/zeiterfassung-db  
 
 ## Build Setup
 
