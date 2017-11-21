@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard">
-    <h1>Dashboard</h1>
+    <div id='calendar'></div>
   </div>
 </template>
 
@@ -8,16 +8,20 @@
 export default {
   name: 'dashboard',
 }
+
+//init calendar
+$(document).ready(function() {
+    // page is now ready, initialize the calendar...
+    $('#calendar').fullCalendar({
+      locale: 'de',
+    })
+
+});
 </script>
 
 <style scoped>
-  .dashboard {
-    height: 700px;
-    text-align: center;
+  #calendar {
+    margin: 30px;
   }
 
-  h1 {
-    display: block;
-    line-height: 700px;
-  }
 </style>
