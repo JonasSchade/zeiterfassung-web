@@ -1,0 +1,142 @@
+<template>
+  <nav class="pagenavbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+          <i class="fa fa-bars" aria-hidden="true"></i>
+        </button>
+        <span class="navbar-brand">Zeiterfassung</span>
+      </div>
+
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav navbar-right">
+          <li v-bind:class="{active: activePage == 'dashboard'}">
+            <router-link to="dashboard">
+              <i class="fa fa-calendar" aria-hidden="true" title="Dashboard"></i>Dashboard
+            </router-link>
+          </li>
+          <li v-bind:class="{active: activePage == 'mitarbeiter'}">
+            <router-link to="mitarbeiter">
+              <i class="fa fa-users" aria-hidden="true" title="Mitarbeiter"></i>Mitarbeiter
+            </router-link>
+          </li>
+          <li v-bind:class="{active: activePage == 'projekte'}">
+            <router-link to="projekte">
+              <i class="fa fa-list-ul" aria-hidden="true" title="Projekte"></i>Projekte
+            </router-link>
+          </li>
+          <li v-bind:class="{active: activePage == 'administration'}">
+            <router-link to="administration">
+              <i class="fa fa-server" aria-hidden="true" title="Administration"></i>Administration
+            </router-link>
+          </li>
+          <li class="dropdown">
+            <router-link to="/" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+              <i class="fa fa-user" aria-hidden="true"></i>{{user}} <span class="caret"></span>
+            </router-link>
+            <ul class="dropdown-menu">
+              <li><router-link to="/">
+                <i class="fa fa-sign-out" aria-hidden="true"></i>Logout
+              </router-link></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</template>
+
+<script>
+export default {
+  name: 'pagenavbar',
+  data: function () {
+    return {
+      activePage: 'dashboard',
+      user: 'Dominik',
+    };
+  },
+  watch: {
+    '$route' (to, from) {
+      this.activePage= to.name;
+    }
+  }
+}
+</script>
+
+<style scoped>
+  .pagenavbar {
+    margin-bottom: 10px;
+    box-shadow: 0 3px 5px -1px rgba(0,0,0,.2), 0 6px 10px 0 rgba(0,0,0,.14), 0 1px 18px 0 rgba(0,0,0,.12);
+    border: 0px;
+  }
+
+  i {
+    padding-right: 7px;
+  }
+
+  .navbar-brand {
+    color: white !important;
+  }
+
+  .navbar-header .navbar-toggle {
+    color:white;
+    text-align: center;
+  }
+
+  .navbar-header .navbar-toggle i {
+    padding-left: 7px;
+  }
+
+  .navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
+    color: white;  /*Sets the text hover color on navbar*/
+  }
+
+  .navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active >
+  a:hover, .navbar-default .navbar-nav > .active > a:focus {
+    color: white; /*BACKGROUND color for active*/
+    background-color:  #ba2720;
+  }
+
+  .navbar-default {
+    background-color: #003452;
+    border-color: #003452;
+  }
+
+  .navbar-default .navbar-nav>.open>a {
+    background-color: #003452;
+  }
+
+  .dropdown-menu > li , .dropdown-menu {
+    color: white ;
+    border-color: #003452;
+    background-color: #003452;  /*change color of links in drop down here*/
+    padding-top: 0px;
+  }
+
+  .dropdown-menu a {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  .dropdown-menu a i {
+    background-color: hsla(350,50%,50%,0);
+  }
+
+  .dropdown-menu > li > a:hover,
+  .dropdown-menu > li > a:focus {
+    color: white;
+    text-decoration: none;
+    background-color: #0062a7;  /*change color of links in drop down here*/
+  }
+
+  .nav > li > a:hover,
+  .nav > li > a:focus {
+    text-decoration: none;
+    background-color: #0062a7; /*Change rollover cell color here*/
+  }
+
+  .navbar-default .navbar-nav > li > a {
+    color: white; /*Change active text color here*/
+  }
+</style>
