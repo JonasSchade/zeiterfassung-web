@@ -184,6 +184,8 @@ export default {
   .dashboard>.container>.row {
     margin-top: 5px;
     margin-bottom: 5px;
+    margin-left: 0px;
+    margin-right: 0px;
   }
 
   .card {
