@@ -120,7 +120,7 @@ export default {
         document.getElementById('calendar-select-year').add(option,i);
       }
 
-      //reset calendar controls; basically to update calendarCurrentMonth
+      //reset calendar controls; basically to update the calender controls
       $("#calendar-btn-today").click();
 
       /*
@@ -133,7 +133,6 @@ export default {
     return {
       monthTime: [160,128.7],
       flexTime: [1000,700],
-      calendarCurrentMonth: {month: 0, year:1990},
     };
   },
   methods: {
