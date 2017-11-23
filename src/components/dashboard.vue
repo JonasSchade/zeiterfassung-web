@@ -68,10 +68,26 @@
         </div>
         <div class="col-sm-4">
           <div id="calendar-controls">
-            <button v-on:click="calendarButtonPress('prev')"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
+            <button id="calendar-btn-prev" v-on:click="calendarButtonPress('prev')"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
             <button id="calendar-btn-today" v-on:click="calendarButtonPress('today')">Heute</button>
-            <button v-on:click="calendarButtonPress('next')"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
-            <h3>{{calendarCurrentMonth}}</h3>
+            <button id="calendar-btn-next" v-on:click="calendarButtonPress('next')"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
+            <br/>
+              <select id="calendar-select-month" v-on:change="calendarSelectChanged()">
+                <option>Januar</option>
+                <option>Februar</option>
+                <option>März</option>
+                <option>April</option>
+                <option>Mai</option>
+                <option>Juni</option>
+                <option>Juli</option>
+                <option>August</option>
+                <option>September</option>
+                <option>Oktober</option>
+                <option>November</option>
+                <option>Dezember</option>
+              </select>
+              <select id="calendar-select-year" v-on:change="calendarSelectChanged()">
+              </select>
           </div>
         </div>
       </div>
@@ -92,32 +108,65 @@ export default {
     $(document).ready(function() {
       $('#calendar').fullCalendar({
         locale: 'de',
-        header: false,
+        header: false
       });
+
+      //add options to year select
+      var curYear = new Date().getFullYear();
+      for (var i = curYear - 1; i < curYear + 2; i++) {
+        var option = document.createElement("option");
+        option.text = i.toString();
+        option.data = i;
+        document.getElementById('calendar-select-year').add(option,i);
+      }
+
+      //reset calendar controls; basically to update calendarCurrentMonth
       $("#calendar-btn-today").click();
 
+      /*
       var col = $('#calendar-controls').parent();
       col.css('margin-top', col.parent().height() - (col.height() + parseInt(col.css('padding-top')) + parseInt(col.css('padding-bottom'))));
+      */
     });
   },
   data: function () {
     return {
       monthTime: [160,128.7],
       flexTime: [1000,700],
-      calendarCurrentMonth: 'error_init',
+      calendarCurrentMonth: {month: 0, year:1990},
     };
   },
   methods: {
+    //performs given action of calendar button
     calendarButtonPress: function(action) {
       $('#calendar').fullCalendar(action);
-      this.updateCurrentMonth();
+      this.calendarUpdateControls();
     },
-    updateCurrentMonth: function() {
-      if (typeof $("#calendar").fullCalendar("getDate").startOf !== 'undefined') {
-        this.calendarCurrentMonth = $("#calendar").fullCalendar("getDate").startOf("month").format('MMMM YYYY');
-      } else {
-        this.calendarCurrentMonth = "error";
-      }
+    //changes Date of calendar based on selected values
+    calendarSelectChanged: function() {
+      var dateString = $("#calendar-select-year")[0].value;
+      dateString = dateString.concat("-");
+      dateString = dateString.concat(("0" + ($("#calendar-select-month")[0].selectedIndex+1)).slice(-2));
+      dateString = dateString.concat("-01");
+
+      $('#calendar').fullCalendar('gotoDate', dateString);
+
+      this.calendarUpdateControls();
+    },
+    //updates buttons (disable/enable) and selects based on current date of calendar
+    calendarUpdateControls: function() {
+      var month = $("#calendar").fullCalendar("getDate")._d.getMonth();
+      var year = $("#calendar").fullCalendar("getDate")._d.getFullYear();
+
+      //update selects
+      $("#calendar-select-month")[0].selectedIndex = month;
+      $("#calendar-select-year")[0].value = year;
+
+      //disable buttons if nedded
+      $("#calendar-btn-prev")[0].disabled = ($("#calendar-select-month")[0].selectedIndex == 0 && $("#calendar-select-year")[0].selectedIndex == 0);
+      $("#calendar-btn-next")[0].disabled = ($("#calendar-select-month")[0].selectedIndex == $("#calendar-select-month")[0].length -1 && $("#calendar-select-year")[0].selectedIndex == $("#calendar-select-year")[0].length -1);
+      $("#calendar-btn-today")[0].disabled = $('#calendar').find('td.fc-today').length !== 0;
+
     }
   },
 }
@@ -212,6 +261,13 @@ export default {
     background-color: rgb(245,245,245);
   }
 
+  #calendar-controls>button:disabled {
+    box-shadow: none;
+    border: 1px solid #dcdcdc;
+    background-color: #dcdcdc;
+    color: #a4a4a4;
+  }
+
   .col-sm-12 {
     padding: 5px;
   }
@@ -221,5 +277,14 @@ export default {
     margin-right: 10px;
     margin-bottom: 0px;
     margin-top: 5px;
+  }
+
+  select{
+    margin: 10px;
+    margin-top: 10px;
+    font-size: 180%;
+    color: black;
+    border: none;
+    border-bottom: lightgrey 1px solid;
   }
 </style>
