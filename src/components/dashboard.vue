@@ -51,7 +51,7 @@
           </div>
         </div>
         <div class="col-sm-4">
-          <div class="calendar-controls">
+          <div id="calendar-controls">
             <button v-on:click="calendarButtonPress('prev')"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
             <button id="calendar-btn-today" v-on:click="calendarButtonPress('today')">Heute</button>
             <button v-on:click="calendarButtonPress('next')"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
@@ -79,6 +79,9 @@ export default {
         header: false,
       });
       $("#calendar-btn-today").click();
+
+      var col = $('#calendar-controls').parent();
+      col.css('margin-top', col.parent().height() - (col.height() + parseInt(col.css('padding-top')) + parseInt(col.css('padding-bottom'))));
     });
   },
   data: function () {
@@ -111,7 +114,7 @@ export default {
   }
 
   .dashboard .col-sm-4 {
-    padding: 1%;
+    padding: 5px;
   }
 
   .dashboard>.container>.row {
@@ -177,7 +180,7 @@ export default {
     margin: 0px !important;
   }
 
-  .calendar-controls>button {
+  #calendar-controls>button {
     border: 1px solid #ccc;
     box-shadow: 1px 1px 4px #ccc;
     color: #282828;
@@ -185,11 +188,15 @@ export default {
     padding: 5px 15px 5px 15px;
   }
 
-  .calendar-controls>h3 {
+  #calendar-controls>h3 {
     color:  #282828;
   }
 
-  .calendar-controls>button:hover {
+  #calendar-controls>button:hover {
     background-color: rgb(245,245,245);
+  }
+
+  .col-sm-12 {
+    padding: 5px;
   }
 </style>
