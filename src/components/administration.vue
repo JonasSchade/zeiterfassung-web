@@ -8,8 +8,8 @@
         <h4>Vertragsdaten verwalten</h4>
       </div>
       <ul>
-        <li><a href="default.asp">Arbeitspläne</a></li>
-        <li><a href="news.asp">Feiertage</a></li>
+        <li><router-link to="arbeitsplaene" append>Arbeitspläne</router-link></li>
+        <li><router-link to="feiertage" append>Feiertage</router-link></li>
       </ul>
     </div>
     <div class="box organisation">
@@ -18,8 +18,8 @@
         <h4>Organisationsdaten verwalten</h4>
       </div>
       <ul>
-        <li><a href="default.asp">Länder</a></li>
-        <li><a href="news.asp">Standorte</a></li>
+        <li><router-link to="laender" append>Länder</router-link></li>
+        <li><router-link to="standorte" append>Standorte</router-link></li>
       </ul>
     </div>
     <div class="box personal">
@@ -28,9 +28,9 @@
         <h4>Personaldaten verwalten</h4>
       </div>
       <ul>
-        <li><a href="default.asp">Abteilungen</a></li>
-        <li><a href="news.asp">Projekte</a></li>
-        <li><a href="contact.asp">Benutzer</a></li>
+        <li><router-link to="abteilungen" append>Abteilungen</router-link></li>
+        <li><router-link to="adprojekte" append>Projekte</router-link></li>
+        <li><router-link to="benutzer" append>Benutzer</router-link></li>
       </ul>
     </div>
   </div>

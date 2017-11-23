@@ -4,6 +4,13 @@ import dashboard from '@/components/dashboard'
 import administration from '@/components/administration'
 import mitarbeiter from '@/components/mitarbeiter'
 import projekte from '@/components/projekte'
+import arbeitsplaene from '@/components/administration/arbeitsplaene'
+import feiertage from '@/components/administration/feiertage'
+import laender from '@/components/administration/laender'
+import standorte from '@/components/administration/standorte'
+import abteilungen from '@/components/administration/abteilungen'
+import adprojekte from '@/components/administration/adprojekte'
+import benutzer from '@/components/administration/benutzer'
 
 Vue.use(Router)
 
@@ -38,6 +45,41 @@ export default new Router({
       path: '/projekte',
       name: 'projekte',
       component: projekte
+    },
+    {
+      path: '/administration/arbeitsplaene',
+      name: 'arbeitsplaene',
+      component: arbeitsplaene
+    },
+    {
+      path: '/administration/feiertage',
+      name: 'feiertage',
+      component: feiertage
+    },
+    {
+      path: '/administration/laender',
+      name: 'laender',
+      component: laender
+    },
+    {
+      path: '/administration/standorte',
+      name: 'standorte',
+      component: standorte
+    },
+    {
+      path: '/administration/abteilungen',
+      name: 'abteilungen',
+      component: abteilungen
+    },
+    {
+      path: '/administration/adprojekte',
+      name: 'adprojekte',
+      component: adprojekte
+    },
+    {
+      path: '/administration/benutzer',
+      name: 'benutzer',
+      component: benutzer
     }
   ]
 })
