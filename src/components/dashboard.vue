@@ -55,7 +55,7 @@
             <button v-on:click="calendarButtonPress('prev')"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
             <button id="calendar-btn-today" v-on:click="calendarButtonPress('today')">Heute</button>
             <button v-on:click="calendarButtonPress('next')"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
-            <h4>{{calendarCurrentMonth}}</h4>
+            <h3>{{calendarCurrentMonth}}</h3>
           </div>
         </div>
       </div>
@@ -123,6 +123,7 @@ export default {
     background-color: white;
     border-radius: 2px;
     box-shadow: 0px 0px 7px #ccc;
+    border: 1px solid #ccc;
   }
 
   .card>.header {
@@ -140,11 +141,6 @@ export default {
     padding-top: 5px;
     padding-bottom: 5px;
     padding-left: 10px;
-  }
-
-  .calendar-controls {
-    background-color: #F2F2F2;
-    height: 100%;
   }
 
   .card>hr {
@@ -181,4 +177,19 @@ export default {
     margin: 0px !important;
   }
 
+  .calendar-controls>button {
+    border: 1px solid #ccc;
+    box-shadow: 1px 1px 4px #ccc;
+    color: #282828;
+    background-color: white;
+    padding: 5px 15px 5px 15px;
+  }
+
+  .calendar-controls>h3 {
+    color:  #282828;
+  }
+
+  .calendar-controls>button:hover {
+    background-color: rgb(245,245,245);
+  }
 </style>
