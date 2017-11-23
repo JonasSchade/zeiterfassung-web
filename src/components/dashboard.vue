@@ -11,16 +11,24 @@
             <div class="content">
               <div class="container-flex">
                 <div class="row">
-                  <div class="col-sm-6"><span class="timelabel">Stunden Soll:</span></div>
-                  <div class="col-sm-6"><span class="timevalue">{{monthTime[0]}} h</span></div>
+                  <div class="col-xs-6"><span class="timelabel">Stunden Soll:</span></div>
+                  <div class="col-xs-6"><span class="timevalue">{{monthTime[0]}} h</span></div>
                 </div>
                 <div class="row">
-                  <div class="col-sm-6"><span class="timelabel">Stunden Ist:</span></div>
-                  <div class="col-sm-6"><span class="timevalue">{{monthTime[1]}} h</span></div>
+                  <div class="col-xs-6"><span class="timelabel">Stunden Ist:</span></div>
+                  <div class="col-xs-6"><span class="timevalue">{{monthTime[1]}} h</span></div>
                 </div>
                 <div class="row">
-                  <div class="col-sm-6"><span class="timelabel">Differenz:</span></div>
-                  <div class="col-sm-6"><span class="timevalue">{{Math.round ((monthTime[0] - monthTime[1])*10)/10}} h</span></div>
+                  <div class="col-xs-6"><span class="timelabel">Differenz:</span></div>
+                  <div class="col-xs-6"><span class="timevalue">{{Math.round ((monthTime[0] - monthTime[1])*10)/10}} h</span></div>
+                </div>
+                <div class="row">
+                  <div class="col-xs-12">
+                    <div class="progress">
+                      <div class="progress-bar progress-bar-success" role="progressbar" v-bind:aria-valuenow="monthTime[1]"
+                           aria-valuemin="0" v-bind:aria-valuemax="monthTime[0]" v-bind:style="{ width: monthTime[1]/monthTime[0]*100 + '%' }"></div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -35,16 +43,24 @@
             <div class="content">
               <div class="container-flex">
                 <div class="row">
-                  <div class="col-sm-6"><span class="timelabel">Soll:</span></div>
-                  <div class="col-sm-6"><span class="timevalue">{{flexTime[0]}} h</span></div>
+                  <div class="col-xs-6"><span class="timelabel">Stunden Soll:</span></div>
+                  <div class="col-xs-6"><span class="timevalue">{{flexTime[0]}} h</span></div>
                 </div>
                 <div class="row">
-                  <div class="col-sm-6"><span class="timelabel">Ist:</span></div>
-                  <div class="col-sm-6"><span class="timevalue">{{flexTime[1]}} h</span></div>
+                  <div class="col-xs-6"><span class="timelabel">Stunden Ist:</span></div>
+                  <div class="col-xs-6"><span class="timevalue">{{flexTime[1]}} h</span></div>
                 </div>
                 <div class="row">
-                  <div class="col-sm-6"><span class="timelabel">Differenz:</span></div>
-                  <div class="col-sm-6"><span class="timevalue">{{Math.round ((flexTime[0] - flexTime[1])*10)/10}} h</span></div>
+                  <div class="col-xs-6"><span class="timelabel">Differenz:</span></div>
+                  <div class="col-xs-6"><span class="timevalue">{{Math.round ((flexTime[0] - flexTime[1])*10)/10}} h</span></div>
+                </div>
+                <div class="row">
+                  <div class="col-xs-12">
+                    <div class="progress">
+                      <div class="progress-bar progress-bar-success" role="progressbar" v-bind:aria-valuenow="flexTime[1]"
+                           aria-valuemin="0" v-bind:aria-valuemax="flexTime[0]" v-bind:style="{ width: flexTime[1]/flexTime[0]*100 + '%' }"></div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -87,7 +103,7 @@ export default {
   data: function () {
     return {
       monthTime: [160,128.7],
-      flexTime: [1634.6,1283.4],
+      flexTime: [1000,700],
       calendarCurrentMonth: 'error_init',
     };
   },
@@ -160,11 +176,11 @@ export default {
     padding-bottom: 2px;
   }
 
-  .col-sm-6:first-child {
+  .col-xs-6:first-child {
     text-align: left;
   }
 
-  .col-sm-6:last-child {
+  .col-xs-6:last-child {
     text-align: right;
   }
 
@@ -198,5 +214,12 @@ export default {
 
   .col-sm-12 {
     padding: 5px;
+  }
+
+  .progress {
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 0px;
+    margin-top: 5px;
   }
 </style>
