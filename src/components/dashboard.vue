@@ -104,11 +104,15 @@
 export default {
   name: 'dashboard',
   created: function () {
-    //init calendar
+    var component = this;
     $(document).ready(function() {
+      //init calendar
       $('#calendar').fullCalendar({
         locale: 'de',
-        header: false
+        header: false,
+        dayClick: function(date, jsEvent, view) {
+          component.$router.push("/dashboard/day/"+date.format());
+        },
       });
 
       //add options to year select
@@ -120,8 +124,8 @@ export default {
         document.getElementById('calendar-select-year').add(option,i);
       }
 
-      //reset calendar controls; basically to update the calender controls
-      $("#calendar-btn-today").click();
+      //init calendar controls
+      component.calendarUpdateControls();
 
       /*
       var col = $('#calendar-controls').parent();
