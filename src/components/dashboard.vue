@@ -11,16 +11,16 @@
             <div class="content">
               <div class="container-flex">
                 <div class="row">
-                  <div class="col-xs-6"><span class="timelabel">Stunden Soll:</span></div>
-                  <div class="col-xs-6"><span class="timevalue">{{monthTime[0]}} h</span></div>
+                  <div class="col-xs-6"><span class="time-label">Stunden Soll:</span></div>
+                  <div class="col-xs-6"><span class="time-value">{{monthTime[0]}} h</span></div>
                 </div>
                 <div class="row">
-                  <div class="col-xs-6"><span class="timelabel">Stunden Ist:</span></div>
-                  <div class="col-xs-6"><span class="timevalue">{{monthTime[1]}} h</span></div>
+                  <div class="col-xs-6"><span class="time-label">Stunden Ist:</span></div>
+                  <div class="col-xs-6"><span class="time-value">{{monthTime[1]}} h</span></div>
                 </div>
                 <div class="row">
-                  <div class="col-xs-6"><span class="timelabel">Differenz:</span></div>
-                  <div class="col-xs-6"><span class="timevalue">{{Math.round ((monthTime[0] - monthTime[1])*10)/10}} h</span></div>
+                  <div class="col-xs-6"><span class="time-label">Differenz:</span></div>
+                  <div class="col-xs-6"><span class="time-value">{{Math.round ((monthTime[0] - monthTime[1])*10)/10}} h</span></div>
                 </div>
                 <div class="row">
                   <div class="col-xs-12">
@@ -43,16 +43,16 @@
             <div class="content">
               <div class="container-flex">
                 <div class="row">
-                  <div class="col-xs-6"><span class="timelabel">Stunden Soll:</span></div>
-                  <div class="col-xs-6"><span class="timevalue">{{yearTime[0]}} h</span></div>
+                  <div class="col-xs-6"><span class="time-label">Stunden Soll:</span></div>
+                  <div class="col-xs-6"><span class="time-value">{{yearTime[0]}} h</span></div>
                 </div>
                 <div class="row">
-                  <div class="col-xs-6"><span class="timelabel">Stunden Ist:</span></div>
-                  <div class="col-xs-6"><span class="timevalue">{{yearTime[1]}} h</span></div>
+                  <div class="col-xs-6"><span class="time-label">Stunden Ist:</span></div>
+                  <div class="col-xs-6"><span class="time-value">{{yearTime[1]}} h</span></div>
                 </div>
                 <div class="row">
-                  <div class="col-xs-6"><span class="timelabel">Differenz:</span></div>
-                  <div class="col-xs-6"><span class="timevalue">{{Math.round ((yearTime[0] - yearTime[1])*10)/10}} h</span></div>
+                  <div class="col-xs-6"><span class="time-label">Differenz:</span></div>
+                  <div class="col-xs-6"><span class="time-value">{{Math.round ((yearTime[0] - yearTime[1])*10)/10}} h</span></div>
                 </div>
                 <div class="row">
                   <div class="col-xs-12">
@@ -115,19 +115,9 @@ export default {
         fixedWeekCount: false,
         dayRender: function (date,cell) {
           //background weekends:
-
           if ($(cell).get(0).className.indexOf("fc-sun") !== -1 || $(cell).get(0).className.indexOf("fc-sat") !== -1) {
-            //cell.css("background-color", "#f3f3f3");
             cell.css("background-color", "#e3f8fc");
           }
-/*
-          if ($(cell).get(0).className.indexOf("fc-disabled-day") !== -1) {
-            cell.css("background-color", "#ddd");
-            cell.css("opacity", "1");
-            //cell.css("height", "112px");
-          }
-*/
-
         },
         dayClick: function(date, jsEvent, view) {
           component.$router.push("/dashboard/day/"+date.format());
@@ -146,10 +136,6 @@ export default {
       //init calendar controls
       component.calendarUpdateControls();
 
-      /*
-      var col = $('#calendar-controls').parent();
-      col.css('margin-top', col.parent().height() - (col.height() + parseInt(col.css('padding-top')) + parseInt(col.css('padding-bottom'))));
-      */
     });
   },
   data: function () {
@@ -196,19 +182,8 @@ export default {
 
 <style scoped>
 
-  h4>i {
-    padding-right: 7px;
-  }
-
   .dashboard .col-sm-4 {
     padding: 5px;
-  }
-
-  .dashboard>.container>.row {
-    margin-top: 5px;
-    margin-bottom: 5px;
-    margin-left: 0px;
-    margin-right: 0px;
   }
 
   .card {
@@ -222,10 +197,6 @@ export default {
     text-align: left;
     border-top-left-radius: 2px;
     border-top-right-radius: 2px;
-    /*
-    background-color: #003452;
-    color: white;
-    */
     color: #282828;
     background-color: white;
     margin-top: 0px;
@@ -233,6 +204,10 @@ export default {
     padding-top: 5px;
     padding-bottom: 5px;
     padding-left: 10px;
+  }
+
+  .card>.header>i {
+    padding-right: 7px;
   }
 
   .card>hr {
@@ -244,31 +219,48 @@ export default {
     padding-bottom: 5px;
   }
 
-  .content>.container-flex>.row {
+  .card>.content>.container-flex>.row {
     padding-top: 2px;
     padding-bottom: 2px;
   }
 
-  .col-xs-6:first-child {
+  .card>.content>.container-flex>.row>.col-xs-6:first-child {
     text-align: left;
   }
 
-  .col-xs-6:last-child {
+  .card>.content>.container-flex>.row>.col-xs-6:last-child {
     text-align: right;
   }
 
-  .timelabel {
+  .time-label {
     padding-left: 10px;
   }
-  .timevalue  {
+
+  .time-value  {
     padding-right: 10px;
   }
 
-  .fc-header-toolbar {
-    height: 0px !important;
-    margin: 0px !important;
+  .progress {
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 0px;
+    margin-top: 5px;
   }
 
+  .col-sm-12 {
+    padding: 5px;
+  }
+
+  .dashboard>.container>.row {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-left: 0px;
+    margin-right: 0px;
+  }
+
+  /*********************************
+      CALENDAR-CONTROLS
+   *********************************/
   #calendar-controls>button {
     border: 1px solid #ccc;
     box-shadow: 1px 1px 4px #ccc;
@@ -292,18 +284,7 @@ export default {
     color: #a4a4a4;
   }
 
-  .col-sm-12 {
-    padding: 5px;
-  }
-
-  .progress {
-    margin-left: 10px;
-    margin-right: 10px;
-    margin-bottom: 0px;
-    margin-top: 5px;
-  }
-
-  select{
+  #calendar-controls>select {
     margin: 10px;
     margin-top: 10px;
     font-size: 180%;
