@@ -12,22 +12,22 @@
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav navbar-right">
           <li v-bind:class="{active: activePage == 'dashboard'}">
-            <router-link to="dashboard">
+            <router-link to="/dashboard">
               <i class="fa fa-calendar" aria-hidden="true" title="Dashboard"></i>Dashboard
             </router-link>
           </li>
           <li v-bind:class="{active: activePage == 'mitarbeiter'}">
-            <router-link to="mitarbeiter">
+            <router-link to="/mitarbeiter">
               <i class="fa fa-users" aria-hidden="true" title="Mitarbeiter"></i>Mitarbeiter
             </router-link>
           </li>
           <li v-bind:class="{active: activePage == 'projekte'}">
-            <router-link to="projekte">
+            <router-link to="/projekte">
               <i class="fa fa-list-ul" aria-hidden="true" title="Projekte"></i>Projekte
             </router-link>
           </li>
           <li v-bind:class="{active: activePage == 'administration'}">
-            <router-link to="administration">
+            <router-link to="/administration">
               <i class="fa fa-server" aria-hidden="true" title="Administration"></i>Administration
             </router-link>
           </li>
@@ -58,7 +58,7 @@ export default {
   },
   watch: {
     '$route' (to, from) {
-      this.activePage= to.name;
+      this.activePage= to.fullPath().split("/")[1];
     }
   }
 }
