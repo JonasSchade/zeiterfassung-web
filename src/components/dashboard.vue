@@ -37,28 +37,28 @@
         <div class="col-sm-4">
           <div class="card">
             <h4 class="header">
-              <i class="fa fa-clock-o" aria-hidden="true"></i>Gleitzeit:
+              <i class="fa fa-clock-o" aria-hidden="true"></i>Seit Jahresbeginn:
             </h4>
             <hr/>
             <div class="content">
               <div class="container-flex">
                 <div class="row">
                   <div class="col-xs-6"><span class="timelabel">Stunden Soll:</span></div>
-                  <div class="col-xs-6"><span class="timevalue">{{flexTime[0]}} h</span></div>
+                  <div class="col-xs-6"><span class="timevalue">{{yearTime[0]}} h</span></div>
                 </div>
                 <div class="row">
                   <div class="col-xs-6"><span class="timelabel">Stunden Ist:</span></div>
-                  <div class="col-xs-6"><span class="timevalue">{{flexTime[1]}} h</span></div>
+                  <div class="col-xs-6"><span class="timevalue">{{yearTime[1]}} h</span></div>
                 </div>
                 <div class="row">
                   <div class="col-xs-6"><span class="timelabel">Differenz:</span></div>
-                  <div class="col-xs-6"><span class="timevalue">{{Math.round ((flexTime[0] - flexTime[1])*10)/10}} h</span></div>
+                  <div class="col-xs-6"><span class="timevalue">{{Math.round ((yearTime[0] - yearTime[1])*10)/10}} h</span></div>
                 </div>
                 <div class="row">
                   <div class="col-xs-12">
                     <div class="progress">
-                      <div class="progress-bar progress-bar-success" role="progressbar" v-bind:aria-valuenow="flexTime[1]"
-                           aria-valuemin="0" v-bind:aria-valuemax="flexTime[0]" v-bind:style="{ width: flexTime[1]/flexTime[0]*100 + '%' }"></div>
+                      <div class="progress-bar progress-bar-success" role="progressbar" v-bind:aria-valuenow="yearTime[1]"
+                           aria-valuemin="0" v-bind:aria-valuemax="yearTime[0]" v-bind:style="{ width: yearTime[1]/yearTime[0]*100 + '%' }"></div>
                     </div>
                   </div>
                 </div>
@@ -109,7 +109,26 @@ export default {
       //init calendar
       $('#calendar').fullCalendar({
         locale: 'de',
+        showNonCurrentDates: false,
+        height: "auto",
         header: false,
+        fixedWeekCount: false,
+        dayRender: function (date,cell) {
+          //background weekends:
+
+          if ($(cell).get(0).className.indexOf("fc-sun") !== -1 || $(cell).get(0).className.indexOf("fc-sat") !== -1) {
+            //cell.css("background-color", "#f3f3f3");
+            cell.css("background-color", "#e3f8fc");
+          }
+/*
+          if ($(cell).get(0).className.indexOf("fc-disabled-day") !== -1) {
+            cell.css("background-color", "#ddd");
+            cell.css("opacity", "1");
+            //cell.css("height", "112px");
+          }
+*/
+
+        },
         dayClick: function(date, jsEvent, view) {
           component.$router.push("/dashboard/day/"+date.format());
         },
@@ -136,7 +155,7 @@ export default {
   data: function () {
     return {
       monthTime: [160,128.7],
-      flexTime: [1000,700],
+      yearTime: [1000,700],
     };
   },
   methods: {
