@@ -58,7 +58,7 @@ export default {
   },
   watch: {
     '$route' (to, from) {
-      this.activePage= to.fullPath().split("/")[1];
+      this.activePage= to.fullPath.split("/")[1];
     }
   }
 }
