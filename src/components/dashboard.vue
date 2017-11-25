@@ -66,29 +66,26 @@
             </div>
           </div>
         </div>
-        <div class="col-sm-4">
-          <div id="calendar-controls">
-            <button id="calendar-btn-prev" v-on:click="calendarButtonPress('prev')"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
-            <button id="calendar-btn-today" v-on:click="calendarButtonPress('today')">Heute</button>
-            <button id="calendar-btn-next" v-on:click="calendarButtonPress('next')"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
-            <br/>
-              <select id="calendar-select-month" v-on:change="calendarSelectChanged()">
-                <option>Januar</option>
-                <option>Februar</option>
-                <option>März</option>
-                <option>April</option>
-                <option>Mai</option>
-                <option>Juni</option>
-                <option>Juli</option>
-                <option>August</option>
-                <option>September</option>
-                <option>Oktober</option>
-                <option>November</option>
-                <option>Dezember</option>
-              </select>
-              <select id="calendar-select-year" v-on:change="calendarSelectChanged()">
-              </select>
-          </div>
+        <div class="col-sm-4 text-right align-right align-bottom">
+          <select id="calendar-select-month" v-on:change="calendarSelectChanged()">
+            <option>Jan</option>
+            <option>Feb</option>
+            <option>Mär</option>
+            <option>Apr</option>
+            <option>Mai</option>
+            <option>Jun</option>
+            <option>Jul</option>
+            <option>Aug</option>
+            <option>Sep</option>
+            <option>Okt</option>
+            <option>Nov</option>
+            <option>Dez</option>
+          </select>
+          <select id="calendar-select-year" v-on:change="calendarSelectChanged()"></select>
+          <br/>
+          <button id="calendar-btn-prev" v-on:click="calendarButtonPress('prev')"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
+          <button id="calendar-btn-today" v-on:click="calendarButtonPress('today')">Heute</button>
+          <button id="calendar-btn-next" v-on:click="calendarButtonPress('next')"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
         </div>
       </div>
       <div class="row">
@@ -115,7 +112,7 @@ export default {
         fixedWeekCount: false,
         dayRender: function (date,cell) {
           //background weekends:
-          if ($(cell).get(0).className.indexOf("fc-sun") !== -1 || $(cell).get(0).className.indexOf("fc-sat") !== -1) {
+          if (($(cell).get(0).className.indexOf("fc-sun") !== -1 || $(cell).get(0).className.indexOf("fc-sat") !== -1) && $(cell).get(0).className.indexOf("fc-today") == -1) {
             cell.css("background-color", "#e3f8fc");
           }
         },
@@ -182,7 +179,7 @@ export default {
 
 <style scoped>
 
-  .dashboard .col-sm-4 {
+  .dashboard div[class^="col-sm-"] {
     padding: 5px;
   }
 
@@ -247,10 +244,6 @@ export default {
     margin-top: 5px;
   }
 
-  .col-sm-12 {
-    padding: 5px;
-  }
-
   .dashboard>.container>.row {
     margin-top: 5px;
     margin-bottom: 5px;
@@ -261,7 +254,7 @@ export default {
   /*********************************
       CALENDAR-CONTROLS
    *********************************/
-  #calendar-controls>button {
+  #calendar-btn-prev, #calendar-btn-next, #calendar-btn-today {
     border: 1px solid #ccc;
     box-shadow: 1px 1px 4px #ccc;
     color: #282828;
@@ -269,24 +262,20 @@ export default {
     padding: 5px 15px 5px 15px;
   }
 
-  #calendar-controls>h3 {
-    color:  #282828;
-  }
-
-  #calendar-controls>button:hover {
+  #calendar-btn-prev:hover, #calendar-btn-next:hover, #calendar-btn-today:hover {
     background-color: rgb(245,245,245);
   }
 
-  #calendar-controls>button:disabled {
+  #calendar-btn-prev:disabled, #calendar-btn-next:disabled, #calendar-btn-today:disabled {
     box-shadow: none;
     border: 1px solid #dcdcdc;
     background-color: #dcdcdc;
     color: #a4a4a4;
   }
 
-  #calendar-controls>select {
-    margin: 10px;
-    margin-top: 10px;
+  #calendar-select-year, #calendar-select-month {
+    margin-bottom: 5px;
+    margin-left: 5px;
     font-size: 180%;
     color: black;
     border: none;
