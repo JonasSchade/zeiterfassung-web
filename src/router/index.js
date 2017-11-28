@@ -1,10 +1,11 @@
-import Vue from 'vue'
+ import Vue from 'vue'
 import Router from 'vue-router'
 import dashboard from '@/components/dashboard'
 import dashboardDayDetail from '@/components/dashboard/dashboard-day-detail'
 import administration from '@/components/administration'
 import mitarbeiter from '@/components/mitarbeiter'
 import projekte from '@/components/projekte'
+import newProject from '@/components/projects/newProject'
 
 Vue.use(Router)
 
@@ -44,6 +45,11 @@ export default new Router({
       path: '/projekte',
       name: 'projekte',
       component: projekte
+    },
+    {
+      path: '/newProject',
+      name: 'newProject',
+      component: newProject
     }
   ]
 })
