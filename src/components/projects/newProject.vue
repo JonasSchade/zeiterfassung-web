@@ -1,10 +1,9 @@
 <template>
 <div class="newProject">
-
   <div id="newProjectDiv" class="center-block">
     Hier kann man Daten für ein neues Projekt eingeben...
     <router-link to="/projekte">
-<button id="btn_close"><i class="fa fa-times-circle-o" aria-hidden="true"></i></button>
+      <button id="btn_close"><i class="fa fa-times-circle-o" aria-hidden="true"></i></button>
     </router-link>
     <div class="form-group">
       <label for="prjname">Projektname:</label>
@@ -14,9 +13,9 @@
       <label for="description">Beschreibung:</label>
       <input type="text" class="form-control" id="description">
     </div>
-      <router-link to="/projekte">
-  <button><i class="fa fa-check" aria-hidden="true"></i> Projekt anlegen</button>
-      </router-link>
+    <router-link to="/projekte">
+      <button><i class="fa fa-check" aria-hidden="true"></i> Projekt anlegen</button>
+    </router-link>
   </div>
 </div>
 </template>
@@ -49,7 +48,7 @@ button {
   border: 1px solid #ccc;
 }
 
-#btn_close{
+#btn_close {
   position: absolute;
   font-size: 20px;
   right: 15px;
