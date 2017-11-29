@@ -5,22 +5,36 @@
   </router-link>
   <div id="container">
     <p id="abc">kbjbk</p>
+    <ul id="example-1">
+      <projectcontainer v-for="item in items" :key="item.name" :project-name="item.name" :project-description="item.beschreibung">
+
+      </projectcontainer>
+    </ul>
   </div>
 </div>
 </template>
 
 <script>
+import projectcontainer from '@/components/projects/projectcontainer'
 var anzProjekte = 3;
 export default {
   name: 'projekte',
-
+  components: {projectcontainer},
   methods: {
 
   },
+  data: function() {
+    return {
+      items: [
+        { name: 'Foo', beschreibung: 'super Projekt' },
+        { name: 'Bar', beschreibung: 'tolles Projekt' }
+      ],
+    }
+  },
+  /*
   mounted() {
     for (var i = 0; i < anzProjekte; i++) {
-      var box = document.createElement("div");
-      box.classList.add("project_box");
+      var box = document.createElement("projectcontainer");
       document.getElementById("container").appendChild(box);
       var projName = document.createElement("p");
       projName.innerHTML = "hallo";
@@ -28,7 +42,7 @@ export default {
     }
     document.getElementById("btn_new_project").style.background = "red";
   }
-
+*/
 }
 </script>
 

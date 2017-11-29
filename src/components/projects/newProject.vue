@@ -14,7 +14,8 @@
       <input type="text" class="form-control" id="description">
     </div>
     <router-link to="/projekte">
-      <button><i class="fa fa-check" aria-hidden="true"></i> Projekt anlegen</button>
+      <button><i class="fa fa-check btn_rechts" aria-hidden="true"></i> Projekt anlegen</button>
+      <button><i class="fa fa-times btn_rechts" aria-hidden="true"></i> Abbrechen</button>
     </router-link>
   </div>
 </div>
@@ -78,5 +79,9 @@ button:hover {
 h1 {
   display: block;
   line-height: 100px;
+}
+
+.btn_rechts{
+
 }
 </style>
