@@ -66,11 +66,11 @@ a {
   top: 20px;
   padding-right: 30px;
 }
+
 ul{
   border: 1px solid grey;
   border-radius: 5px;
   padding: 15px;
   list-style-type: none;
 }
-
 </style>
