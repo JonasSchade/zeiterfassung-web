@@ -5,7 +5,8 @@
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
           <i class="fa fa-bars" aria-hidden="true"></i>
         </button>
-        <span class="navbar-brand">Zeiterfassung</span>
+          <img class="icon" src="\src\assets\Chronos_Icon.png" />
+        <!--<span class="navbar-brand">Zeiterfassung</span>-->
       </div>
 
       <!-- Collect the nav links, forms, and other content for toggling -->
@@ -139,4 +140,12 @@ export default {
   .navbar-default .navbar-nav > li > a {
     color: white; /*Change active text color here*/
   }
+
+  img.icon {
+  position: absolute;
+  top: 1px;
+  left: 3%;
+  width: 100px;
+  max-width:70%;
+}
 </style>
