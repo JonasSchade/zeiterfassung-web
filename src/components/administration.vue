@@ -1,3 +1,4 @@
+
 <template>
 <div class="administration">
   <div class="container">

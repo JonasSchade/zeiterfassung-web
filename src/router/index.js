@@ -13,6 +13,7 @@ import abteilungen from '@/components/administration/abteilungen'
 import adprojekte from '@/components/administration/adprojekte'
 import benutzer from '@/components/administration/benutzer'
 import newProject from '@/components/projects/newProject'
+import login from '@/components/login'
 
 
 Vue.use(Router)
@@ -93,7 +94,11 @@ export default new Router({
       path: '/newProject',
       name: 'newProject',
       component: newProject
-
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: login
     }
   ]
 })

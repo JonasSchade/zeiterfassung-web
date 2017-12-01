@@ -4,7 +4,6 @@
     <button id="btn_new_project"><i class="fa fa-plus" aria-hidden="true"></i> Neues Projekt</button>
   </router-link>
   <div id="container">
-    <p id="abc">kbjbk</p>
     <ul id="example-1">
       <projectcontainer v-for="item in items" :key="item.name" :project-name="item.name" :project-description="item.beschreibung">
 
@@ -26,8 +25,8 @@ export default {
   data: function() {
     return {
       items: [
-        { name: 'Foo', beschreibung: 'super Projekt' },
-        { name: 'Bar', beschreibung: 'tolles Projekt' }
+        { name: 'Projekt Foo', beschreibung: 'Das ist ein super Projekt' },
+        { name: 'Projekt Baa', beschreibung: 'Das ist ein tolles Projekt' }
       ],
     }
   },
