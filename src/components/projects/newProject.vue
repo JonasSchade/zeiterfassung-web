@@ -1,20 +1,23 @@
 <template>
 <div class="newProject">
   <div id="newProjectDiv" class="center-block">
-    Hier kann man Daten für ein neues Projekt eingeben...
+    <h3>
+      Neues Projekt anlegen
+    </h3>
     <router-link to="/projekte">
       <button id="btn_close"><i class="fa fa-times-circle-o" aria-hidden="true"></i></button>
     </router-link>
     <div class="form-group">
       <label for="prjname">Projektname:</label>
-      <input type="text" class="form-control" id="prjname">
+      <input type="text" class="form-control" id="prjname" placeholder="Projektname"">
     </div>
     <div class="form-group">
       <label for="description">Beschreibung:</label>
-      <input type="text" class="form-control" id="description">
+      <input type="text" class="form-control" id="description" placeholder="Beschreibung"">
     </div>
     <router-link to="/projekte">
-      <button><i class="fa fa-check" aria-hidden="true"></i> Projekt anlegen</button>
+      <button class="btn_rechts"><i class="fa fa-check" aria-hidden="true"></i> Projekt anlegen</button>
+      <button class="btn_rechts"><i class="fa fa-times" aria-hidden="true"></i> Abbrechen</button>
     </router-link>
   </div>
 </div>
@@ -69,14 +72,24 @@ button {
   padding-left: 0px;
   padding-right: 0px;
   padding: 30px;
+  text-align: left;
 }
 
 button:hover {
   background-color: rgb(245, 245, 245);
 }
 
-h1 {
+h3 {
   display: block;
-  line-height: 100px;
+  line-height: 50px;
+}
+
+.btn_rechts{
+margin-top: 30px;
+margin-bottom: 30px;
+}
+
+.btn_rechts{
+
 }
 </style>
