@@ -5,7 +5,9 @@
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
           <i class="fa fa-bars" aria-hidden="true"></i>
         </button>
-          <img class="icon" src="\src\assets\Chronos_Icon.png" />
+        <router-link to="/login">
+            <img class="icon" src="\src\assets\Chronos_Icon.png" />
+        </router-link>
         <!--<span class="navbar-brand">Zeiterfassung</span>-->
       </div>
 

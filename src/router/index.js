@@ -6,6 +6,7 @@ import administration from '@/components/administration'
 import mitarbeiter from '@/components/mitarbeiter'
 import projekte from '@/components/projekte'
 import newProject from '@/components/projects/newProject'
+import login from '@/components/login'
 
 Vue.use(Router)
 
@@ -50,6 +51,11 @@ export default new Router({
       path: '/newProject',
       name: 'newProject',
       component: newProject
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: login
     }
   ]
 })
