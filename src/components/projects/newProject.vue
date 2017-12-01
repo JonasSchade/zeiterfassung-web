@@ -87,7 +87,6 @@ h3 {
 .btn_rechts{
 margin-top: 30px;
 margin-bottom: 30px;
-<<<<<<< HEAD
 }
 
 .btn_rechts{
