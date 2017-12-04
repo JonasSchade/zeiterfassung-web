@@ -1,19 +1,25 @@
- import Vue from 'vue'
+import Vue from 'vue'
 import Router from 'vue-router'
 import dashboard from '@/components/dashboard'
 import dashboardDayDetail from '@/components/dashboard/dashboard-day-detail'
 import administration from '@/components/administration'
 import mitarbeiter from '@/components/mitarbeiter'
 import projekte from '@/components/projekte'
-import arbeitsplaene from '@/components/administration/arbeitsplaene'
-import feiertage from '@/components/administration/feiertage'
-import laender from '@/components/administration/laender'
-import standorte from '@/components/administration/standorte'
-import abteilungen from '@/components/administration/abteilungen'
-import adprojekte from '@/components/administration/adprojekte'
-import benutzer from '@/components/administration/benutzer'
+import arbeitsplaene from '@/components/administration/arbeitsplan/arbeitsplaene'
+import feiertage from '@/components/administration/feiertag/feiertage'
+import laender from '@/components/administration/land/laender'
+import standorte from '@/components/administration/standort/standorte'
+import abteilungen from '@/components/administration/abteilung/abteilungen'
+import adprojekte from '@/components/administration/projekte/adprojekte'
+import benutzer from '@/components/administration/benutzer/benutzer'
 import newProject from '@/components/projects/newProject'
 import login from '@/components/login'
+import neueAbteilung from '@/components/administration/abteilung/neueAbteilung'
+import neuesLand from '@/components/administration/land/neuesLand'
+import neuerArbeitsplan from '@/components/administration/arbeitsplan/neuerArbeitsplan'
+import neuerFeiertag from '@/components/administration/feiertag/neuerFeiertag'
+import neuerBenutzer from '@/components/administration/benutzer/neuerBenutzer'
+import neuerStandort from '@/components/administration/standort/neuerStandort'
 
 
 
@@ -100,6 +106,36 @@ export default new Router({
       path: '/login',
       name: 'login',
       component: login
+    },
+    {
+      path: '/administration/neueAbteilung',
+      name: 'neueAbteilung',
+      component: neueAbteilung
+    },
+    {
+      path: '/administration/neuesLand',
+      name: 'neuesLand',
+      component: neuesLand
+    },
+    {
+      path: '/administration/neuerArbeitsplan',
+      name: 'neuerArbeitsplan',
+      component: neuerArbeitsplan
+    },
+    {
+      path: '/administration/neuerBenutzer',
+      name: 'neuesBenutzer',
+      component: neuerBenutzer
+    },
+    {
+      path: '/administration/neuerFeiertag',
+      name: 'neuerFeiertag',
+      component: neuerFeiertag
+    },
+    {
+      path: '/administration/neuerStandort',
+      name: 'neuerStandort',
+      component: neuerStandort
     }
   ]
 })
