@@ -59,6 +59,9 @@ export default {
       user: 'Dominik',
     };
   },
+  created: function () {
+    this.activePage= this.$route.fullPath.split("/")[1];
+  },
   watch: {
     '$route' (to, from) {
       this.activePage= to.fullPath.split("/")[1];
