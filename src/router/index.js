@@ -1,5 +1,6 @@
  import Vue from 'vue'
 import Router from 'vue-router'
+import BootstrapVue from 'bootstrap-vue'
 import dashboard from '@/components/dashboard'
 import dashboardDayDetail from '@/components/dashboard/dashboard-day-detail'
 import administration from '@/components/administration'
@@ -13,9 +14,12 @@ import abteilungen from '@/components/administration/abteilungen'
 import adprojekte from '@/components/administration/adprojekte'
 import benutzer from '@/components/administration/benutzer'
 import newProject from '@/components/projects/newProject'
+import login from '@/components/login'
+
 
 
 Vue.use(Router)
+Vue.use(BootstrapVue);
 
 export default new Router({
   routes: [
@@ -93,7 +97,11 @@ export default new Router({
       path: '/newProject',
       name: 'newProject',
       component: newProject
-
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: login
     }
   ]
 })
