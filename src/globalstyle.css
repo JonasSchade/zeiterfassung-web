@@ -1,0 +1,52 @@
+button, select, input {
+  outline-width: 0;
+  color: #282828;
+  border: none;
+  margin: 0px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: normal;
+}
+
+/**************************************************
+  Button
+ **************************************************/
+
+button {
+  border: 1px solid #ccc;
+  box-shadow: 1px 1px 4px #ccc;
+  background-color: white;
+  padding: 5px 15px 5px 15px;
+}
+
+button:hover {
+  background-color: rgb(245,245,245);
+}
+
+button:disabled {
+  box-shadow: none;
+  border: 1px solid #dcdcdc;
+  background-color: #dcdcdc;
+  color: #a4a4a4;
+}
+
+
+/**************************************************
+  Select/Input
+ **************************************************/
+select, input {
+ border-bottom: lightgrey 1px solid;
+ border-top: rgba(0,0,0,0) 1px solid;
+ transition: ease-in-out border-bottom .2s;
+}
+
+select:focus, input:focus {
+ border-bottom: #003452 1px solid;
+}
+
+
+select option {
+  background-color: rgb(245,245,245);
+}
