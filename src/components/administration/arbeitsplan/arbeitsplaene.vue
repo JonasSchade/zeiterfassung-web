@@ -29,11 +29,7 @@ export default {
   #btn_neuer_arbeitsplan {
     margin: 20px;
   }
-
-  button:hover {
-    background-color: rgb(245, 245, 245);
-  }
-
+  
   h1 {
     display: block;
     line-height: 700px;

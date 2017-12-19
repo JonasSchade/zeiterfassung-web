@@ -55,26 +55,6 @@ img.icon {
   display: block;
   margin : 0 auto;
 }
-input{
-  max-width: 400px;
-  min-width: 200px;
-  width: 300px;
-  border: 1px solid grey;
-  border-radius: 5px;
-  padding: 10px;
-}
-
-button{
-  max-width: 400px;
-  min-width: 200px;
-  width: 300px;
-  margin-top: 5px;
-  margin-bottom: 30px;
-  max-width: 300px;
-  border: 1px solid grey;
-  border-radius: 5px;
-  padding: 10px;
-}
 
 .input_wrapper{
   display: flex;

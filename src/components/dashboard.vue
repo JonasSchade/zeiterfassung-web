@@ -254,31 +254,9 @@ export default {
   /*********************************
       CALENDAR-CONTROLS
    *********************************/
-  #calendar-btn-prev, #calendar-btn-next, #calendar-btn-today {
-    border: 1px solid #ccc;
-    box-shadow: 1px 1px 4px #ccc;
-    color: #282828;
-    background-color: white;
-    padding: 5px 15px 5px 15px;
-  }
-
-  #calendar-btn-prev:hover, #calendar-btn-next:hover, #calendar-btn-today:hover {
-    background-color: rgb(245,245,245);
-  }
-
-  #calendar-btn-prev:disabled, #calendar-btn-next:disabled, #calendar-btn-today:disabled {
-    box-shadow: none;
-    border: 1px solid #dcdcdc;
-    background-color: #dcdcdc;
-    color: #a4a4a4;
-  }
-
-  #calendar-select-year, #calendar-select-month {
-    margin-bottom: 5px;
-    margin-left: 5px;
-    font-size: 180%;
-    color: black;
-    border: none;
-    border-bottom: lightgrey 1px solid;
-  }
+   select {
+     font-size: 180%;
+     margin-bottom: 5px;
+     margin-left: 5px;
+   }
 </style>

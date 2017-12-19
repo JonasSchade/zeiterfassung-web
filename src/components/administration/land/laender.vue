@@ -38,10 +38,6 @@ export default {
     margin: 20px;
   }
 
-  button:hover {
-    background-color: rgb(245, 245, 245);
-  }
-
   .abteilung_box {
     max-width: 800px;
     margin: 0 auto;

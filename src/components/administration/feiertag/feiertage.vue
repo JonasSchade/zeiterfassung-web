@@ -22,8 +22,4 @@ export default {
   #btn_neuer_feiertag {
     margin: 20px;
   }
-
-  button:hover {
-    background-color: rgb(245, 245, 245);
-  }
 </style>

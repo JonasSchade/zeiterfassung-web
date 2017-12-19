@@ -38,20 +38,9 @@ export default {
   text-align: center;
 }
 
-button {
-  box-shadow: 1px 1px 4px #ccc;
-  color: #282828;
-  background-color: white;
-  padding: 5px 15px 5px 15px;
-  border: 1px solid #ccc;
-}
 
 #btn_neue_abteilung {
   margin: 20px;
-}
-
-button:hover {
-  background-color: rgb(245, 245, 245);
 }
 
 .abteilung_box {

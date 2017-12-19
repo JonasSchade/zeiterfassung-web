@@ -99,13 +99,6 @@ var arbeitsplan = new Vue({
     line-height: 700px;
   }
 
-  button {
-    box-shadow: 1px 1px 4px #ccc;
-    color: #282828;
-    background-color: white;
-    padding: 5px 15px 5px 15px;
-    border: 1px solid #ccc;
-  }
 
   #btn_close {
     position: absolute;
@@ -134,10 +127,6 @@ var arbeitsplan = new Vue({
   #week{
     text-align: left;
     padding-left: 50px;
-  }
-
-  button:hover {
-    background-color: rgb(245, 245, 245);
   }
 
   h3 {
