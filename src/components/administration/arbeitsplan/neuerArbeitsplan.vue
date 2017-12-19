@@ -10,7 +10,7 @@
       </router-link>
       <div class="form-group">
         <label for="arbeitsplanname">Arbeitsplan:</label>
-        <input type="text" class="form-control" id="arbeitsplanname" placeholder="Arbeitsplanname" v-model="arbeitsplanname">
+        <input type="text" class="full-width" id="arbeitsplanname" placeholder="Arbeitsplanname" v-model="arbeitsplanname">
         <div id="week">
         <div class="days">
           Montag von

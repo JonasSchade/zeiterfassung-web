@@ -36,17 +36,20 @@ button:disabled {
 /**************************************************
   Select/Input
  **************************************************/
-select, input {
+select, input[type="text"] {
  border-bottom: lightgrey 1px solid;
  border-top: rgba(0,0,0,0) 1px solid;
  transition: ease-in-out border-bottom .2s;
 }
 
-select:focus, input:focus {
+select:focus, input[type="text"]:focus {
  border-bottom: #003452 1px solid;
 }
 
-
 select option {
   background-color: rgb(245,245,245);
+}
+
+select.full-width, input[type="text"].full-width {
+  width: 100%;
 }

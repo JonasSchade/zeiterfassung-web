@@ -9,11 +9,11 @@
     </router-link>
     <div class="form-group">
       <label for="prjname">Projektname:</label>
-      <input type="text" class="form-control" id="prjname" placeholder="Projektname"">
+      <input type="text" class="full-width" id="prjname" placeholder="Projektname"">
     </div>
     <div class="form-group">
       <label for="description">Beschreibung:</label>
-      <input type="text" class="form-control" id="description" placeholder="Beschreibung"">
+      <input type="text" class="full-width" id="description" placeholder="Beschreibung"">
     </div>
     <router-link to="/projekte">
       <button class="btn_rechts"><i class="fa fa-check" aria-hidden="true"></i> Projekt anlegen</button>

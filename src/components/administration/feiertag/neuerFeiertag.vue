@@ -10,7 +10,7 @@
       </router-link>
       <div class="form-group">
         <label for="feiertagname">Feiertag:</label>
-        <input type="text" class="form-control" id="feiertagname" placeholder="Name des Feiertags" v-model="feiertagname">
+        <input type="text" class="full-width" id="feiertagname" placeholder="Name des Feiertags" v-model="feiertagname">
       </div>
       <router-link to="/administration/feiertage">
         <button class="btn_rechts" v-on:click="create"><i class="fa fa-check" aria-hidden="true" ></i> Feiertag anlegen</button>

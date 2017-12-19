@@ -10,7 +10,7 @@
       </router-link>
       <div class="form-group">
         <label for="landname">Land:</label>
-        <input type="text" class="form-control" id="landname" placeholder="Land oder Bundesland" v-model="landname">
+        <input type="text" class="full-width" id="landname" placeholder="Land oder Bundesland" v-model="landname">
       </div>
       <router-link to="/administration/laender">
         <button class="btn_rechts" v-on:click="create"><i class="fa fa-check" aria-hidden="true" ></i> Land anlegen</button>

@@ -11,11 +11,11 @@
       <div class="form-group">
         <span>
             <label for="benutzername">Nachname:</label>
-          <input type="text" class="form-control" id="lastname" placeholder="Nachname des Benutzers" v-model="lastname">
+          <input type="text" class="full-width" id="lastname" placeholder="Nachname des Benutzers" v-model="lastname">
         </span>
         <span>
           <label for="benutzername">Vorname:</label>
-          <input type="text" class="form-control" id="firstname" placeholder="Vorname des benutzers" v-model="firstname">
+          <input type="text" class="full-width" id="firstname" placeholder="Vorname des benutzers" v-model="firstname">
         </span>
         <div>
         Wähle den Standort:

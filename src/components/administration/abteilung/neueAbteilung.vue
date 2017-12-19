@@ -10,7 +10,7 @@
       </router-link>
       <div class="form-group">
         <label for="abtname">Abteilung:</label>
-        <input type="text" class="form-control" id="abtname" placeholder="Abteilungname" v-model="abtname">
+        <input type="text" class="full-width" id="abtname" placeholder="Abteilungname" v-model="abtname">
       </div>
       <div class="form-group">
         <span>Wähle den Abteilungsleiter: </span>

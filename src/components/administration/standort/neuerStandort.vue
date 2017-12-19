@@ -10,7 +10,7 @@
       </router-link>
       <div class="form-group">
         <label for="standortname">Standort:</label>
-        <input type="text" class="form-control" id="standortname" placeholder="Name des Standorts" v-model="standortname">
+        <input type="text" class="full-width" id="standortname" placeholder="Name des Standorts" v-model="standortname">
       </div>
       <router-link to="/administration/standort">
         <button class="btn_rechts" v-on:click="create"><i class="fa fa-check" aria-hidden="true" ></i> Standort anlegen</button>
