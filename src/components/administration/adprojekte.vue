@@ -79,7 +79,6 @@ export default {
     height: 700px;
     text-align: center;
   }
-
 .header{
   background-color: #cdd2d8;
   padding: 30px;
@@ -87,12 +86,10 @@ export default {
   padding-bottom: 10px;
   margin: 0px;
 }
-
   h1 {
     display: block;
     margin: 20px;
   }
-
   #btn_new_project{
     box-shadow: 1px 1px 4px #ccc;
     color: #282828;
@@ -101,7 +98,6 @@ export default {
     margin: 25px;
     border: 1px solid #ccc;
   }
-
   .container{
     position: relative;
     max-width: 800px;
@@ -112,12 +108,9 @@ export default {
     padding-left: 0px;
     padding-right: 0px;
   }
-
   .mb-1{
     margin: 10px;
   }
-
-
   .pjkt_button {
       background-color: #003452;
       padding: 10px;
