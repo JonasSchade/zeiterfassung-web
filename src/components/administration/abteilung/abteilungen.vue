@@ -25,7 +25,6 @@ export default {
     return {
       items: [
         { abtname: 'Abt 1', abtleiter: 'Hans Mayer' },
-        { abtname: 'Abt 2', abtleiter: 'Max Mustermann' }
       ],
     }
   }

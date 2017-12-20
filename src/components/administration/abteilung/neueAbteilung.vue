@@ -6,7 +6,7 @@
         Neue Abteilung anlegen
       </h3>
       <router-link to="/administration/abteilungen">
-        <button id="btn_close" v-on:click="cancel()"><i class="fa fa-times-circle-o" aria-hidden="true"></i></button>
+        <button id="btn_close"><i class="fa fa-times-circle-o" aria-hidden="true"></i></button>
       </router-link>
       <div class="form-group">
         <label for="abtname">Abteilung:</label>
@@ -25,8 +25,8 @@
         </select>
       </div>
       <router-link to="/administration/abteilungen">
-        <button class="btn_rechts" v-on:click="create"><i class="fa fa-check" aria-hidden="true" ></i> Abteilung anlegen</button>
-        <button class="btn_rechts" v-on:click="cancel"><i class="fa fa-times" aria-hidden="true" ></i> Abbrechen</button>
+        <button class="btn_rechts"><i class="fa fa-check" aria-hidden="true" ></i> Abteilung anlegen</button>
+        <button class="btn_rechts"><i class="fa fa-times" aria-hidden="true" ></i> Abbrechen</button>
       </router-link>
     </div>
     </div>
@@ -47,16 +47,7 @@ var department = new Vue({
     option: '',
     options: ['Hans Mayer','Max Mustermann','Peter Schmid']
   },
-  methods: {
-    create: function(){
-      alert("Abteilung wird erstellt! Abteilungsleiter:"+ this.selected + "Abteilungsname" + this.abtname);
-    },
-    cancel: function(){
-      alert("Abteilung wird nicht erstellt!!!");
-    }
-  }
-
-})
+  })
 </script>
 
 <style scoped>
