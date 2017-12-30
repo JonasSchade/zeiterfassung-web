@@ -99,13 +99,19 @@ export default {
       var elem = event.target;
       var text = elem.value;
 
+      if (elem.id.search("hours") == -1) {
+        var ceeling = 60;
+      } else {
+        var ceeling = 23;
+      };
+
       if (text.match("[^0-9]") !== null) {
         elem.style.color = "red";
         return;
       }
 
       var num = parseInt(text);
-      if (num > 23 || num < 0) {
+      if (num > ceeling || num < 0) {
         elem.style.color = "red";
         return;
       }
@@ -155,7 +161,7 @@ export default {
 
 
       this.computedTime.minutes = moment1.format("mm");
-      this.computedTime.hours = moment1.format("hh");
+      this.computedTime.hours = moment1.format("HH");
 
     }
   },
