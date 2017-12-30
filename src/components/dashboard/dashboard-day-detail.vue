@@ -216,35 +216,12 @@ export default {
     margin-right: 0px;
   }
 
-  button {
-    border: 1px solid #ccc;
-    box-shadow: 1px 1px 4px #ccc;
-    color: #282828;
-    background-color: white;
-    padding: 5px 15px 5px 15px;
-    outline-width: 0;
-  }
-
-  button:hover {
-    background-color: rgb(245,245,245);
-  }
-
   h3 {
     margin: 0px;
   }
 
   input {
-    color: black;
-    margin: 0px;
     text-align: center;
-    border: none;
-    border-bottom: lightgrey 1px solid;
-    outline-width: 0;
-    transition: ease-in-out border-bottom .2s;
-  }
-
-  input:focus {
-    border-bottom: #003452 1px solid;
   }
 
   label{
