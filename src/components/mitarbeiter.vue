@@ -15,7 +15,7 @@ export default {
   created() {
     var vueinst = this;
 
-    Vue.http.get('http://localhost:3000/api/roles').then(response => {
+    this.$http.get('http://localhost:3000/api/roles').then(response => {
         console.log(response);
         vueinst.roles = response.body;
     });
