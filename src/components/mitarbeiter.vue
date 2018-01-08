@@ -1,23 +1,36 @@
 <template>
   <div class="mitarbeiter">
-    <h1>Mitarbeiter</h1>
+    <p v-for="post in posts">{{post.title}}</p>
   </div>
 </template>
 
 <script>
 export default {
   name: 'mitarbeiter',
+  data() {
+    return {
+      posts: [],
+    }
+  },
+  created() {
+    var vueinst = this;
+
+    Vue.http.get('http://jsonplaceholder.typicode.com/posts')
+      .then(response => {
+        console.log(response);
+        vueinst.posts = response.body;
+    });
+  }
 }
 </script>
 
 <style scoped>
   .mitarbeiter {
-    height: 700px;
     text-align: center;
   }
 
-  h1 {
+  p {
+    padding-bottom: 50px;
     display: block;
-    line-height: 700px;
   }
 </style>
