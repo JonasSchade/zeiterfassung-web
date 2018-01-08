@@ -67,37 +67,18 @@ export default {
        assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore
        wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher
        vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic
-       synth nesciunt you probably haven't heard of them accusamus labore VHS.
+       synth nesciunt you probably heard of them accusamus labore VHS.
      `
    }
  },
- /*
- computed: {
-   getProjects(){
+   created() {
+    var vueinst = this;
 
-     this.text = 'txtftvbjk';
-     // Create a request variable and assign a new XMLHttpRequest object to it.
-     var request = new XMLHttpRequest();
-
-     // Open a new connection, using the GET request on the URL endpoint
-     request.open('GET', 'http://localhost:3000/api/projekte/01', true);
-
-     request.onload = function () {
-       // Begin accessing JSON data here
- var data = JSON.parse(this.response);
-
- if (request.status >= 200 && request.status < 400) {
-     console.log(data.Name);
- } else {
-   console.log('error');
- }
-       }
-
-     // Send request
-     request.send();
-   }
- }
- */
+    Vue.http.get('http://localhost:3000/api/projekte/01').then(response => {
+        console.log(response);
+        vueinst.text = response.body;
+    });
+  }
 }
 </script>
 
