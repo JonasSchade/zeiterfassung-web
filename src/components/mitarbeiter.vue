@@ -13,11 +13,10 @@ export default {
     }
   },
   created() {
-    var vueinst = this;
 
     this.$http.get('http://localhost:3000/api/roles').then(response => {
         console.log(response);
-        vueinst.roles = response.body;
+        this.roles = response.body;
     });
   }
 }
