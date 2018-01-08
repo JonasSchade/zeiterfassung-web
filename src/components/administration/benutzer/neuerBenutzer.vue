@@ -50,16 +50,13 @@
 <script>
 export default {
   name: 'neuerBenutzer',
-}
-</script>
-<script>
-var benutzer = new Vue({
-  el: '#app',
-  data:{
-    firstname: "",
-    lastname: "",
-    selectedcity: "",
-    selectedabt: ""
+  data: function () {
+    return {
+      firstname: "",
+      lastname: "",
+      selectedcity: "",
+      selectedabt: ""
+    };
   },
   methods: {
     create: function(){
@@ -69,8 +66,7 @@ var benutzer = new Vue({
       alert("Benutzer wird nicht erstellt!!!");
     }
   }
-
-})
+}
 </script>
 
 <style scoped>
@@ -107,7 +103,7 @@ var benutzer = new Vue({
     padding: 30px;
     text-align: left;
   }
-  
+
   h3 {
     display: block;
     line-height: 50px;

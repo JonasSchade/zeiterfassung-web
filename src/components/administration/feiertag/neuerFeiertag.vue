@@ -24,13 +24,10 @@
 <script>
 export default {
   name: 'neuerFeiertag',
-}
-</script>
-<script>
-var feiertag = new Vue({
-  el: '#app',
-  data:{
-    feiertagname: ""
+  data: function () {
+    return {
+      feiertagname: ""
+    };
   },
   methods: {
     create: function(){
@@ -40,8 +37,7 @@ var feiertag = new Vue({
       alert("Feiertag wird nicht erstellt!!!");
     }
   }
-
-})
+}
 </script>
 
 <style scoped>

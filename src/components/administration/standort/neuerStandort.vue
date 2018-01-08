@@ -24,13 +24,10 @@
 <script>
 export default {
   name: 'neuerStandort',
-}
-</script>
-<script>
-var feiertag = new Vue({
-  el: '#app',
-  data:{
-    standortname: ""
+  data: function () {
+    return {
+      standortname: ""
+    };
   },
   methods: {
     create: function(){
@@ -40,8 +37,7 @@ var feiertag = new Vue({
       alert("Standort wird nicht erstellt!!!");
     }
   }
-
-})
+}
 </script>
 
 <style scoped>

@@ -36,18 +36,15 @@
 <script>
 export default {
   name: 'neueAbteilung',
-}
-</script>
-<script>
-var department = new Vue({
-  el: '#app',
-  data:{
-    abtname: "",
-    selected: "",
-    option: '',
-    options: ['Hans Mayer','Max Mustermann','Peter Schmid']
+  data: function () {
+    return {
+      abtname: "",
+      selected: "",
+      option: '',
+      options: ['Hans Mayer','Max Mustermann','Peter Schmid']
+    };
   },
-  })
+}
 </script>
 
 <style scoped>

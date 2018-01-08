@@ -68,13 +68,12 @@
 <script>
 export default {
   name: 'neuerArbeitsplan',
-}
-</script>
-<script>
-var arbeitsplan = new Vue({
-  el: '#app',
-  data:{
-    arbeitsplanname: ""
+  data: function () {
+    return {
+      arbeitsplanname: "",
+      mytime: "",
+      time: ""
+    };
   },
   methods: {
     create: function(){
@@ -84,8 +83,7 @@ var arbeitsplan = new Vue({
       alert("Arbeitsplan wird nicht erstellt!!!");
     }
   }
-
-})
+}
 </script>
 
 <style scoped>

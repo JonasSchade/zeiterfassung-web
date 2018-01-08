@@ -24,13 +24,10 @@
 <script>
 export default {
   name: 'neuesLand',
-}
-</script>
-<script>
-var department = new Vue({
-  el: '#app',
-  data:{
-    landname: ""
+  data: function () {
+    return {
+      landname: ""
+    };
   },
   methods: {
     create: function(){
@@ -41,7 +38,7 @@ var department = new Vue({
     }
   }
 
-})
+}
 </script>
 
 <style scoped>
