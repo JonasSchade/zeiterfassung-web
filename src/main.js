@@ -7,9 +7,11 @@ import router from './router'
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
-new Vue({
+var vueInst = new Vue({
   el: '#app',
   router,
   template: '<App/>',
   components: { App }
 })
+
+vueInst.use(require('vue-resource'))
