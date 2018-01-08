@@ -1,6 +1,6 @@
 <template>
   <div class="mitarbeiter">
-    <p v-for="post in posts">{{post.title}}</p>
+    <p v-for="role in roles">ID: {{role.ID}} || Name: {{role.Name}}</p>
   </div>
 </template>
 
@@ -9,16 +9,15 @@ export default {
   name: 'mitarbeiter',
   data() {
     return {
-      posts: [],
+      roles: [],
     }
   },
   created() {
     var vueinst = this;
 
-    Vue.http.get('http://jsonplaceholder.typicode.com/posts')
-      .then(response => {
+    Vue.http.get('http://localhost:3000/api/roles').then(response => {
         console.log(response);
-        vueinst.posts = response.body;
+        vueinst.roles = response.body;
     });
   }
 }
