@@ -15,7 +15,6 @@ export default {
   created() {
 
     this.$http.get('http://localhost:3000/api/roles').then(response => {
-        console.log(response);
         this.roles = response.body;
     });
   }
