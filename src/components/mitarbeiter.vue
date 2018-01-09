@@ -1,23 +1,33 @@
 <template>
   <div class="mitarbeiter">
-    <h1>Mitarbeiter</h1>
+    <p v-for="role in roles">ID: {{role.ID}} || Name: {{role.Name}}</p>
   </div>
 </template>
 
 <script>
 export default {
   name: 'mitarbeiter',
+  data() {
+    return {
+      roles: [],
+    }
+  },
+  created() {
+
+    this.$http.get('http://localhost:3000/api/roles').then(response => {
+        this.roles = response.body;
+    });
+  }
 }
 </script>
 
 <style scoped>
   .mitarbeiter {
-    height: 700px;
     text-align: center;
   }
 
-  h1 {
+  p {
+    padding-bottom: 50px;
     display: block;
-    line-height: 700px;
   }
 </style>
