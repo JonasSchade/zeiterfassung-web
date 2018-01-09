@@ -1,18 +1,12 @@
 <template>
 <div class="login">
-  <div class="box center-block">
-    <img class="icon" src="\src\assets\Chronos_Icon.png" />
+  <div class="box center">
+    <img src="\src\assets\Chronos_Icon.png" />
     <h3>Welcome to Chronos!</h3>
     <div class="login_wrapper">
-      <div class="input_wrapper">
-          <input class="center" type="text" id="user" placeholder="Username">
-      </div>
-      <div class="input_wrapper">
-          <input class="center" type="text" id="password" placeholder="Password">
-      </div>
-      <div class="button_wrapper">
-          <button class="center">Login</button>
-      </div>
+        <input type="text" id="user" placeholder="Username">
+        <input  type="password" id="password" placeholder="Password">
+        <button >Login</button>
     </div>
   </div>
 </div>
@@ -26,15 +20,21 @@ export default {
 
 <style scoped>
 .login {
-  height: 700px;
-  text-align: center;
+  min-height: 85vh;
 }
 
 .box {
-  box-shadow: 0 3px 5px -1px rgba(0, 0, 0, .2), 0 6px 10px 0 rgba(0, 0, 0, .14), 0 1px 18px 0 rgba(0, 0, 0, .12);
-  padding: 30px;
-max-width: 800px;
+  background-color: white;
+  border-radius: 2px;
+  box-shadow: 0px 0px 7px #ccc;
+  border: 1px solid #ccc;
 
+  padding: 20px;
+  min-width: 300px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .login_wrapper{
@@ -46,23 +46,16 @@ h3 {
   line-height: 40px;
 }
 
-img.icon {
+img {
   width: 150px;
   max-width: 70%;
 }
 
-.center{
-  display: block;
-  margin : 0 auto;
+
+input {
+  width: 95%;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
-.input_wrapper{
-  display: flex;
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
-
-.button_wrapper{
-    display: flex;
-}
 </style>
