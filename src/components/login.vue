@@ -2,7 +2,6 @@
 <div class="login">
   <div class="box center">
     <img src="\src\assets\Chronos_Icon.png" />
-    <h3>Welcome to Chronos!</h3>
     <div class="login_wrapper">
         <input type="text" id="user" placeholder="Username">
         <input  type="password" id="password" placeholder="Password">
