@@ -4,7 +4,7 @@
     <h3>
       Neues Projekt anlegen
     </h3>
-    <router-link to="/projekte">
+    <router-link to="/administration/adprojekte">
       <button id="btn_close"><i class="fa fa-times-circle-o" aria-hidden="true"></i></button>
     </router-link>
     <div class="form-group">
@@ -15,7 +15,7 @@
       <label for="description">Beschreibung:</label>
       <input type="text" class="full-width" id="description" placeholder="Beschreibung"">
     </div>
-    <router-link to="/projekte">
+    <router-link to="/administration/adprojekte">
       <button class="btn_rechts"><i class="fa fa-check" aria-hidden="true"></i> Projekt anlegen</button>
       <button class="btn_rechts"><i class="fa fa-times" aria-hidden="true"></i> Abbrechen</button>
     </router-link>
@@ -60,7 +60,7 @@ export default {
   max-width: 800px;
   top: 20px;
   bottom: 20px;
-  box-shadow: 0 3px 5px -1px rgba(0, 0, 0, .2), 0 6px 10px 0 rgba(0, 0, 0, .14), 0 1px 18px 0 rgba(0, 0, 0, .12);
+  box-shadow: 0px 0px 7px #ccc;
   padding-left: 0px;
   padding-right: 0px;
   padding: 30px;
@@ -75,9 +75,7 @@ h3 {
 .btn_rechts{
 margin-top: 30px;
 margin-bottom: 30px;
+width: 160px;
 }
 
-.btn_rechts{
-
-}
 </style>
