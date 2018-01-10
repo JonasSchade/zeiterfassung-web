@@ -9,7 +9,11 @@
     </router-link>
     <div class="form-group">
       <label for="prjname">Projektname:</label>
-      <input type="text" class="full-width" id="prjname" placeholder="Projektname"">
+      <input type="text" class="full-width" id="prjname" placeholder="Projektname">
+    </div>
+    <div class="form-group">
+      <label for="description">Projektleiter:</label>
+      <input type="text" class="full-width" id="description" placeholder="Projektleiter"">
     </div>
     <div class="form-group">
       <label for="description">Beschreibung:</label>
@@ -46,12 +50,11 @@ export default {
 #btn_close {
   position: absolute;
   font-size: 20px;
-  right: 15px;
+  right: 10px;
   top: 10px;
-  box-shadow: none;
   color: #003452;
+  box-shadow: none;
   background-color: white;
-  padding: 5px 15px 5px 15px;
   border: 0;
 }
 

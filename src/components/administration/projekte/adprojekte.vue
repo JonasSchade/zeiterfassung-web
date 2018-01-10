@@ -16,7 +16,7 @@
       </div>
       <div class="row">
         <div class="col-sm-offset-8 col-sm-4 text-right">
-          <button id="btn_new_project" v-on:click="$router.push('/administration/')">
+          <button id="btn_new_project" v-on:click="$router.push('../newProject')">
             <i class="fa fa-plus" aria-hidden="true"></i>
             Neues Projekt
            </button>
@@ -35,7 +35,7 @@
           </div>
         </b-card-header>
         <b-card-body class="row">
-          <b-collapse class="col-sm-12" v-bind:id="'conatiner-'+project.id" role="tabpanel" visible accordion="tablist">
+          <b-collapse class="col-sm-12" v-bind:id="'conatiner-'+project.id" role="tabpanel" accordion="tablist">
             <div>
               <p class="card-text">
                 {{ project.manager }}
