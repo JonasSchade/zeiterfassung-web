@@ -6,59 +6,47 @@
       <div class="row">
         <div class="col-sm-4 text-left">
           <button v-on:click="$router.push('/administration/')">
-        <i class="fa fa-chevron-left" aria-hidden="true"></i>
-        Administration
-      </button>
+            <i class="fa fa-chevron-left" aria-hidden="true"></i>
+            Administration
+          </button>
         </div>
-        <div class="col-sm-4  text-middle">
+        <div class="col-sm-4 text-middle">
           <h3>Projekte</h3>
         </div>
       </div>
       <div class="row">
-        <div class="col-sm-4">
-        </div>
-        <div class="col-sm-4">
-        </div>
-        <div class="col-sm-4 text-right">
-          <router-link to="/newProject">
-            <button id="btn_new_project"><i class="fa fa-plus" aria-hidden="true"></i> Neues Projekt</button>
-          </router-link>
+        <div class="col-sm-offset-8 col-sm-4 text-right">
+          <button id="btn_new_project" v-on:click="$router.push('/administration/')">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            Neues Projekt
+           </button>
         </div>
       </div>
     </div>
 
-    <div role="tablist">
-      <div v-for="project in projects">
-        <b-card class="mb-1">
-          <b-card-header header-tag="header" class="p-1" role="tab">
-            <div class="row">
-              <div class="col-sm-12">
-                <div class="pjkt_button" block v-b-toggle="'conatiner-'+project.id">{{project.name}}
-                  <i class="settings fa fa-pencil-square-o " v-on:click="$router.push('/administration/')" aria-hidden="true"></i>
-                </div>
-              </div>
-
+    <div class="tablist" role="tablist">
+      <b-card v-for="project in projects" :key="project.id">
+        <b-card-header header-tag="header" class="row" role="tab">
+          <div class="col-sm-12">
+            <div class="pjkt_button" block v-b-toggle="'conatiner-'+project.id">{{project.name}}
+              <i class="fa fa-trash-o" aria-hidden="true"></i>
+              <i class="fa fa-pencil-square-o " v-on:click="$router.push('/administration/')" aria-hidden="true"></i>
             </div>
-          </b-card-header>
-          <b-card-body>
-            <b-collapse v-bind:id="'conatiner-'+project.id" visible accordion="my-accordion" role="tabpanel">
-
-              <div class="information">
-
-                  <p class="card-text">
-                    {{ project.manager }}
-                  </p>
-
-                  <p class="card-text">
-                    {{ project.description }}
-                  </p>
-
-              </div>
-
-            </b-collapse>
-          </b-card-body>
-        </b-card>
-      </div>
+          </div>
+        </b-card-header>
+        <b-card-body class="row">
+          <b-collapse class="col-sm-12" v-bind:id="'conatiner-'+project.id" role="tabpanel" visible accordion="tablist">
+            <div>
+              <p class="card-text">
+                {{ project.manager }}
+              </p>
+              <p class="card-text">
+                {{ project.description }}
+              </p>
+            </div>
+          </b-collapse>
+        </b-card-body>
+      </b-card>
 
 
     </div>
@@ -87,21 +75,12 @@ export default {
 
 <style scoped>
 .adprojekte {
-  height: 700px;
+  min-height: 700px;
   text-align: center;
 }
 
-.header {
-  background-color: #cdd2d8;
-  padding: 30px;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  margin: 0px;
-}
-
-h1 {
-  display: block;
-  margin: 20px;
+.topper {
+  margin-bottom: 30px;
 }
 
 .container {
@@ -110,12 +89,25 @@ h1 {
   top: 20px;
   bottom: 20px;
   margin-bottom: 30px;
-  padding-left: 0px;
-  padding-right: 0px;
+  padding-left: 5px;
+  padding-right: 5px;
 }
 
-.mb-1 {
+.tablist .card {
   margin-bottom: 30px;
+}
+
+.tablist .card-header {
+  box-shadow: 0px 0px 7px #ccc;
+}
+
+.tablist .card-body, .tablist .card-header {
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+.tablist .col-sm-12 {
+  padding: 0px;
 }
 
 .pjkt_button {
@@ -128,25 +120,18 @@ h1 {
   box-shadow: 0px 0px 7px #ccc;
 }
 
-.topper {
-  margin-bottom: 30px;
-}
-
-.settings {
+.pjkt_button i {
   color: white;
   background-color: none;
   float: right;
   line-height: 26px;
+  margin-left: 15px;
 }
 
-.information{
+.collapse div {
   border-radius: 0px 0px 3px 3px;
   box-shadow: 0px 0px 7px #ccc;
   padding: 20px;
-}
-
-.p-1{
-    box-shadow: 0px 0px 7px #ccc;
 }
 
 </style>
