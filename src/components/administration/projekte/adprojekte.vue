@@ -33,7 +33,7 @@
           <b-card-header header-tag="header" class="p-1" role="tab">
             <div class="row">
               <div class="col-sm-12">
-                <div class="pjkt_button" block v-b-toggle="'test-'+project.ID">{{project.Name}}
+                <div class="pjkt_button" block v-b-toggle="'conatiner-'+project.id">{{project.name}}
                   <i class="settings fa fa-pencil-square-o " v-on:click="$router.push('/administration/')" aria-hidden="true"></i>
                 </div>
               </div>
@@ -41,12 +41,12 @@
             </div>
           </b-card-header>
           <b-card-body>
-            <b-collapse v-bind:id="'test-'+project.ID" visible accordion="my-accordion" role="tabpanel">
+            <b-collapse v-bind:id="'conatiner-'+project.id" visible accordion="my-accordion" role="tabpanel">
 
               <div class="information">
 
                   <p class="card-text">
-                    {{ project.Manager }}
+                    {{ project.manager }}
                   </p>
 
                   <p class="card-text">
