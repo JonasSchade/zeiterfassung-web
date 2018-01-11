@@ -10,17 +10,15 @@
             Administration
           </button>
         </div>
-        <div class="col-sm-4 text-middle">
+        <div class="col-sm-4">
           <h3>Projekte</h3>
         </div>
-      </div>
-      <div class="row">
-        <div class="col-sm-offset-8 col-sm-4 text-right">
-          <button id="btn_new_project" v-on:click="$router.push('../newProject')">
+        <div class="col-sm-4 text-right">
+          <button id="btn_new_project" v-on:click="$router.push('/administration/')">
             <i class="fa fa-plus" aria-hidden="true"></i>
             Neues Projekt
            </button>
-        </div>
+         </div>
       </div>
     </div>
 
@@ -80,7 +78,12 @@ export default {
 }
 
 .topper {
-  margin-bottom: 30px;
+  margin-bottom: 20px;
+}
+
+.topper h3 {
+  margin-bottom: 5px;
+  margin-top: 5px;
 }
 
 .container {
