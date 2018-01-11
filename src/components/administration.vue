@@ -35,7 +35,7 @@
           </div>
           <ul>
             <li><router-link to="abteilungen" append>Abteilungen</router-link></li>
-            <li><router-link to="adprojekte" append>Projekte</router-link></li>
+            <li><router-link to="projekte" append>Projekte</router-link></li>
             <li><router-link to="benutzer" append>Benutzer</router-link></li>
           </ul>
         </div>

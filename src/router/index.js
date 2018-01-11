@@ -11,7 +11,7 @@ import feiertage from '@/components/administration/feiertag/feiertage'
 import laender from '@/components/administration/land/laender'
 import standorte from '@/components/administration/standort/standorte'
 import abteilungen from '@/components/administration/abteilung/abteilungen'
-import adprojekte from '@/components/administration/projekte/adprojekte'
+import adprojekte from '@/components/administration/projekte/projekte'
 import benutzer from '@/components/administration/benutzer/benutzer'
 import newProject from '@/components/projects/newProject'
 import login from '@/components/login'
@@ -90,8 +90,8 @@ export default new Router({
       component: abteilungen
     },
     {
-      path: '/administration/adprojekte',
-      name: 'adprojekte',
+      path: '/administration/projekte',
+      name: 'projekte',
       component: adprojekte
     },
     {

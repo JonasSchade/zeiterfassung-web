@@ -4,7 +4,7 @@
     <h3>
       Neues Projekt anlegen
     </h3>
-    <router-link to="/administration/adprojekte">
+    <router-link to="/administration/projekte">
       <button id="btn_close"><i class="fa fa-times-circle-o" aria-hidden="true"></i></button>
     </router-link>
     <div class="form-group">
@@ -19,7 +19,7 @@
       <label for="description">Beschreibung:</label>
       <input type="text" class="full-width" id="description" placeholder="Beschreibung"">
     </div>
-    <router-link to="/administration/adprojekte">
+    <router-link to="/administration/projekte">
       <button class="btn_rechts"><i class="fa fa-check" aria-hidden="true"></i> Projekt anlegen</button>
       <button class="btn_rechts"><i class="fa fa-times" aria-hidden="true"></i> Abbrechen</button>
     </router-link>

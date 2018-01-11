@@ -1,5 +1,5 @@
 <template>
-<div class="adprojekte">
+<div class="projekte">
   <div class="container">
 
     <div class="topper">
@@ -55,7 +55,7 @@
 
 <script>
 export default {
-  name: 'adprojekte',
+  name: 'projekte',
   data() {
     return {
       projects: []
@@ -72,7 +72,7 @@ export default {
 </script>
 
 <style scoped>
-.adprojekte {
+.projekte {
   min-height: 700px;
   text-align: center;
 }
