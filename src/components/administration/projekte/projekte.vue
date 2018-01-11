@@ -14,7 +14,7 @@
           <h3>Projekte</h3>
         </div>
         <div class="col-sm-4 text-right">
-          <button id="btn_new_project" v-on:click="$router.push('/administration/')">
+          <button id="btn_new_project" v-on:click="$router.push('projekte/new')">
             <i class="fa fa-plus" aria-hidden="true"></i>
             Neues Projekt
            </button>
@@ -23,30 +23,14 @@
     </div>
 
     <div class="tablist" role="tablist">
-      <b-card v-for="project in projects" :key="project.id">
-        <b-card-header header-tag="header" class="row" role="tab">
-          <div class="col-sm-12">
-            <div class="pjkt_button" block v-b-toggle="'conatiner-'+project.id">{{project.name}}
-              <i class="fa fa-trash-o" aria-hidden="true"></i>
-              <i class="fa fa-pencil-square-o " v-on:click="$router.push('/administration/')" aria-hidden="true"></i>
-            </div>
-          </div>
-        </b-card-header>
-        <b-card-body class="row">
-          <b-collapse class="col-sm-12" v-bind:id="'conatiner-'+project.id" role="tabpanel" accordion="tablist">
-            <div>
-              <p class="card-text">
-                {{ project.manager }}
-              </p>
-              <p class="card-text">
-                {{ project.description }}
-              </p>
-            </div>
-          </b-collapse>
-        </b-card-body>
-      </b-card>
-
-
+      <projektcontainer v-for="project in projects" :key="project.id" :contentid="project.id" :contentname="project.name">
+        <p class="card-text">
+          {{ project.manager }}
+        </p>
+        <p class="card-text">
+          {{ project.description }}
+        </p>
+      </projektcontainer>
     </div>
 
   </div>
@@ -54,8 +38,11 @@
 </template>
 
 <script>
+import projektcontainer from '@/components/administration/projekte/projektconatiner'
+
 export default {
   name: 'projekte',
+  components: { projektcontainer },
   data() {
     return {
       projects: []
@@ -94,47 +81,6 @@ export default {
   margin-bottom: 30px;
   padding-left: 5px;
   padding-right: 5px;
-}
-
-.tablist .card {
-  margin-bottom: 30px;
-}
-
-.tablist .card-header {
-  box-shadow: 0px 0px 7px #ccc;
-}
-
-.tablist .card-body, .tablist .card-header {
-  margin-left: 0px;
-  margin-right: 0px;
-}
-
-.tablist .col-sm-12 {
-  padding: 0px;
-}
-
-.pjkt_button {
-  text-align: left;
-  background-color: #003452;
-  padding: 20px;
-  border: none;
-  font-size: 18px;
-  color: white;
-  box-shadow: 0px 0px 7px #ccc;
-}
-
-.pjkt_button i {
-  color: white;
-  background-color: none;
-  float: right;
-  line-height: 26px;
-  margin-left: 15px;
-}
-
-.collapse div {
-  border-radius: 0px 0px 3px 3px;
-  box-shadow: 0px 0px 7px #ccc;
-  padding: 20px;
 }
 
 </style>

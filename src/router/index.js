@@ -91,7 +91,7 @@ export default new Router({
     },
     {
       path: '/administration/projekte',
-      name: 'projekte',
+      name: 'adprojekte',
       component: adprojekte
     },
     {
