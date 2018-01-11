@@ -12,6 +12,7 @@ import laender from '@/components/administration/land/laender'
 import standorte from '@/components/administration/standort/standorte'
 import abteilungen from '@/components/administration/abteilung/abteilungen'
 import adprojekte from '@/components/administration/projekte/projekte'
+import adprojektneu from '@/components/administration/projekte/new'
 import benutzer from '@/components/administration/benutzer/benutzer'
 import newProject from '@/components/projects/newProject'
 import login from '@/components/login'
@@ -93,6 +94,11 @@ export default new Router({
       path: '/administration/projekte',
       name: 'adprojekte',
       component: adprojekte
+    },
+    {
+      path: '/administration/projekte/new',
+      name: 'adprojektneu',
+      component: adprojektneu
     },
     {
       path: '/administration/benutzer',
