@@ -1,8 +1,8 @@
 <template>
-  <b-card class="projektcontainer">
+  <b-card class="tablistitem">
     <b-card-header header-tag="header" class="row" role="tab">
       <div class="col-sm-12">
-        <div class="pjkt_button" block v-b-toggle="'conatiner-'+contentid">{{contentname}}
+        <div class="expandbutton" block v-b-toggle="'conatiner-'+contentid">{{contentname}}
           <i class="fa fa-pencil-square-o " v-on:click="$router.push({path:($router.history.current.fullPath+'/edit/'+contentid) })" aria-hidden="true"></i>
         </div>
       </div>
@@ -20,7 +20,7 @@
 
 <script>
 export default {
-  name: 'projektcontainer',
+  name: 'tablistitem',
   props: {
     contentid: Number,
     contentname: String,
@@ -29,7 +29,7 @@ export default {
 </script>
 
 <style scoped>
-.projektcontainer {
+.tablistitem {
 }
 
 
@@ -50,7 +50,7 @@ export default {
   padding: 0px;
 }
 
-.pjkt_button {
+.expandbutton {
   text-align: left;
   background-color: #003452;
   padding: 20px;
@@ -60,7 +60,7 @@ export default {
   box-shadow: 0px 0px 7px #ccc;
 }
 
-.pjkt_button i {
+.expandbutton i {
   color: white;
   background-color: none;
   float: right;

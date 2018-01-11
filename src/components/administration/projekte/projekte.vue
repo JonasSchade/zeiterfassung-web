@@ -23,14 +23,14 @@
     </div>
 
     <div class="tablist" role="tablist">
-      <projektcontainer v-for="project in projects" :key="project.id" :contentid="project.id" :contentname="project.name">
+      <tablistitem v-for="project in projects" :key="project.id" :contentid="project.id" :contentname="project.name">
         <p class="card-text">
           {{ project.manager }}
         </p>
         <p class="card-text">
           {{ project.description }}
         </p>
-      </projektcontainer>
+      </tablistitem>
     </div>
 
   </div>
@@ -38,11 +38,11 @@
 </template>
 
 <script>
-import projektcontainer from '@/components/administration/projekte/projektconatiner'
+import tablistitem from '@/components/administration/tablistitem'
 
 export default {
   name: 'projekte',
-  components: { projektcontainer },
+  components: { tablistitem },
   data() {
     return {
       projects: []
