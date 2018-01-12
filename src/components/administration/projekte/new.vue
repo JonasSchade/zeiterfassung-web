@@ -15,23 +15,23 @@
       </div>
     </div>
 
-    <form class="container-flex">
+    <form class="container-flex" id="newProjectForm">
       <div class="row align-middle">
         <label class="col-sm-offset-1 col-sm-3 text-right">Name:</label>
         <div class="col-sm-9">
-          <input type="text" class="full-width" />
+          <input name="name" type="text" class="full-width" />
         </div>
       </div>
       <div class="row">
         <label class="col-sm-offset-1 col-sm-3 text-right">Beschreibung:</label>
         <div class="col-sm-9">
-          <textarea class="full-width" rows="5"></textarea>
+          <textarea name="description" class="full-width" rows="5"></textarea>
         </div>
       </div>
       <div class="row">
         <label class="col-sm-offset-1 col-sm-3 text-right">Manager:</label>
         <div class="col-sm-9">
-          <select class="full-width">
+          <select name="manager" class="full-width" v-on:change="updateManager($event)">
             <option v-for="user in users" :value="user.id">{{user.firstname}} {{user.lastname}}</option>
           </select>
         </div>
@@ -39,7 +39,7 @@
       <div class="row">
         <label class="col-sm-offset-1 col-sm-3 text-right">Zugewiesene Mitarbeiter:</label>
         <select class="col-sm-6" id="adduser">
-          <option v-for="user in users.filter(user => ! linkedusers.includes(user))" :value="user.id">{{user.firstname}} {{user.lastname}}</option>
+          <option v-for="user in users.filter(user => (!(linkedusers.includes(user)) && (user != manager)))" :value="user.id">{{user.firstname}} {{user.lastname}}</option>
         </select>
         <div class="col-sm-3">
           <button class="full-width" v-on:click="addUser()">
@@ -49,7 +49,7 @@
         </div>
       </div>
       <div class="row">
-        <div  id="linkedusers" class="col-sm-6 col-sm-offset-3">
+        <div id="linkedusers" class="col-sm-6 col-sm-offset-3">
           <ul class="container-flex">
             <li class="row" v-for="user in linkedusers">
               <div class="col-xs-10">{{user.firstname}} {{user.lastname}}</div>
@@ -61,9 +61,10 @@
         </div>
       </div>
       <div class="row">
-        <button>
+        <button type="button" v-on:click="sendHTTP()">
           <i class="fa fa-plus" aria-hidden="true"></i>
-          Projekt hinzufügen</button>
+          Projekt hinzufügen
+        </button>
       </div>
     </form>
   </div>
@@ -76,7 +77,8 @@ export default {
   data() {
     return {
       users: [],
-      linkedusers: []
+      linkedusers: [],
+      manager: Number,
     }
   },
   created() {
@@ -84,6 +86,8 @@ export default {
     this.$http.get('http://localhost:3000/api/user').then(response => {
       console.log(response.body)
       this.users = response.body;
+
+      this.manager = this.users[0];
     });
   },
   methods: {
@@ -114,6 +118,25 @@ export default {
       var index = this.findById(this.linkedusers, el.srcElement.getAttribute("value"));
 
       this.linkedusers.splice(index,1)
+    },
+    updateManager: function(el) {
+      var index = this.findById(this.users, el.srcElement.options[el.srcElement.selectedIndex].value);
+
+      this.manager = this.users[index];
+    },
+    sendHTTP: function() {
+      var formArr = $("#newProjectForm").serializeArray();
+      var obj = new Object();
+      for (var i = 0; i < formArr.length; i++) {
+        if (formArr[i].value == "") {
+          return;
+        }
+
+        obj[formArr[i].name] = formArr[i].value;
+      }
+
+      console.log(obj);
+      this.$http.post("http://localhost:3000/api/project", obj).then(function(response) { return; }, function(response) { return; });
     }
   }
 }
