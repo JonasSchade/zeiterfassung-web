@@ -18,9 +18,11 @@
           <input type="text" class="full-width" id="firstname" placeholder="Vorname des benutzers" v-model="firstname">
         </span>
         <div>
-        Wähle den Standort:
+          <p>
+            Standort:
+          </p>
         <select v-model="selectedcity">
-          <option disabled value="">>Wähle einen Standort aus</option>
+          <option disabled value="">Wähle einen Standort aus</option>
           <option>München</option>
           <option>Berlin</option>
           <option>Frankfurt</option>
@@ -28,7 +30,9 @@
         <span>Ausgewählt: {{ selectedcity }}</span>
       </div>
         <div>
-          Wähle die Abteilung
+          <p>
+            Abteilung:
+          </p>
           <select v-model="selectedabt">
             <option disabled value="">Wähle eine Abteilung aus</option>
             <option>Marketing</option>
@@ -72,7 +76,7 @@ export default {
 <style scoped>
   .neuerBenutzer {
     height: 700px;
-    text-align: center;
+    text-align: left;
   }
 
   h1 {
@@ -112,5 +116,13 @@ export default {
   .btn_rechts{
   margin-top: 30px;
   margin-bottom: 30px;
+  }
+
+  #app{
+    text-align: left;
+  }
+
+  p{
+    font-weight: bold;
   }
 </style>

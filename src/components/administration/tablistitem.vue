@@ -30,6 +30,7 @@ export default {
 
 <style scoped>
 .tablistitem {
+  text-align: left;
 }
 
 
@@ -70,8 +71,11 @@ export default {
 
 .collapse div {
   border-radius: 0px 0px 3px 3px;
-  box-shadow: 0px 0px 7px #ccc;
+  box-shadow: 0px 5px 7px #ccc;
   padding: 20px;
 }
 
+.card-text{
+  padding: 20px;
+}
 </style>

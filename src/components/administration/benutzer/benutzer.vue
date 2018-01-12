@@ -1,25 +1,90 @@
 <template>
   <div class="benutzer">
-  <router-link to="/administration/neuerbenutzer">
-    <button id="btn_neuer_benutzer"><i class="fa fa-plus" aria-hidden="true"></i> Neuer Benutzer</button>
-  </router-link>
+      <div class="container">
+        <div class="topper">
+          <div class="row">
+            <div class="col-sm-4 text-left">
+              <button v-on:click="$router.push('/administration/')">
+                <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                Administration
+              </button>
+            </div>
+            <div class="col-sm-4">
+              <h3>Mitarbeiter</h3>
+            </div>
+            <div class="col-sm-4 text-right">
+              <button id="btn_new_project" v-on:click="$router.push('/administration/neuerbenutzer')">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+                Neuer Mitarbeiter
+               </button>
+             </div>
+          </div>
+        </div>
+
+        <div class="tablist" role="tablist">
+          <tablistitem v-for="employee in employees" :key="employee.id" :contentid="employee.id" :contentname="employee.firstname+' '+employee.lastname">
+            <p class="card-text">
+              {{ employee.firstname }} {{ employee.lastname }}
+            </p>
+            <p class="card-text">
+              {{ employee.departmentid }}
+            </p>
+            <p class="card-text">
+              {{ employee.username }}
+            </p>
+          </tablistitem>
+        </div>
+      </div>
   </div>
 </template>
 
 <script>
-import benutzercontainer from '@/components/administration/benutzer/benutzercontainer'
+import tablistitem from '@/components/administration/tablistitem'
+
 export default {
   name: 'benutzer',
+  components: { tablistitem },
+  data() {
+    return {
+      employees: []
+    }
+},
+created() {
+
+  this.$http.get('http://localhost:3000/api/user').then(response => {
+    console.log(response);
+    this.employees = response.body;
+  });
+}
 }
 </script>
 
 <style scoped>
   .benutzer {
-    height: 700px;
+    min-height: 700px;
     text-align: center;
   }
 
   #btn_neuer_benutzer {
     margin: 20px;
+  }
+
+  .container {
+    position: relative;
+    max-width: 800px;
+    top: 20px;
+    bottom: 20px;
+    margin-bottom: 30px;
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+
+  .topper {
+    margin-bottom: 20px;
+  }
+
+  .topper h3 {
+    margin-bottom: 5px;
+    margin-top: 5px;
   }
 </style>
