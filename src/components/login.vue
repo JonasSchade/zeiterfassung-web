@@ -1,7 +1,7 @@
 <template>
 <div class="login">
   <div class="box center">
-    <img src="\src\assets\Chronos_Icon.png" />
+    <img src="\src\assets\Chronos_Icon_dark.png" />
     <div class="login_wrapper">
         <input type="text" id="user" v-model="username" placeholder="Username">
         <input type="password" id="password" v-model="pw_plaintext" placeholder="Password">
@@ -80,10 +80,15 @@ h3 {
 }
 
 img {
-  width: 150px;
+  width: 200px;
   max-width: 70%;
+  margin: 25px;
 }
 
+button {
+margin: 20px 20px 0px 20px; 
+
+}
 
 input {
   width: 95%;
