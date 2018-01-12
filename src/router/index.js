@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-//import BootstrapVue from 'bootstrap-vue'
+import Unorm from 'unorm'
 import dashboard from '@/components/dashboard'
 import dashboardDayDetail from '@/components/dashboard/dashboard-day-detail'
 import administration from '@/components/administration'
@@ -26,7 +26,7 @@ import neuerStandort from '@/components/administration/standort/neuerStandort'
 
 
 Vue.use(Router)
-//Vue.use(BootstrapVue);
+Vue.use(Unorm);
 
 export default new Router({
   routes: [
