@@ -51,7 +51,6 @@ export default {
   created() {
 
     this.$http.get('http://localhost:3000/api/project').then(response => {
-      console.log(response);
       this.projects = response.body;
     });
   }
@@ -62,6 +61,7 @@ export default {
 .projekte {
   min-height: 700px;
   text-align: center;
+  width: 100%;
 }
 
 .topper {

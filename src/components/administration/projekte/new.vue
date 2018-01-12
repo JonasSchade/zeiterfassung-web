@@ -84,7 +84,6 @@ export default {
   created() {
 
     this.$http.get('http://localhost:3000/api/user').then(response => {
-      console.log(response.body)
       this.users = response.body;
 
       this.manager = this.users[0];
@@ -125,18 +124,47 @@ export default {
       this.manager = this.users[index];
     },
     sendHTTP: function() {
+
+      //Make sure all inputs are valid
+      if(! this.validate()) {
+        return;
+      }
+
+      //create json object
       var formArr = $("#newProjectForm").serializeArray();
       var obj = new Object();
       for (var i = 0; i < formArr.length; i++) {
-        if (formArr[i].value == "") {
-          return;
-        }
 
         obj[formArr[i].name] = formArr[i].value;
       }
 
-      console.log(obj);
-      this.$http.post("http://localhost:3000/api/project", obj).then(function(response) { return; }, function(response) { return; });
+      //POST Request
+      this.$http.post("http://localhost:3000/api/project", obj).then(function(response) { this.$router.push('/administration/projekte') }, function(response) { return; });
+    },
+    validate: function() {
+      var formArr = $("#newProjectForm").serializeArray();
+
+      var name = formArr.filter(x => x.name == "name")[0].value;
+      var desc = formArr.filter(x => x.name == "description")[0].value;
+
+      if (name == "") {
+        alert("Bitte Namen eingeben!");
+        return false;
+      }
+      if (desc == "") {
+        alert("Bitte Beschreibung eingeben!");
+        return false;
+      }
+      if (name.length < 5) {
+        alert("Der Name muss aus mindestens fünf Buchstaben bestehen.");
+        return false;
+      }
+      if (desc.length < 5) {
+        alert("Die Beschreibung muss aus mindestens fünf Buchstaben bestehen.");
+        return false;
+      }
+
+      return true;
     }
   }
 }
@@ -144,6 +172,7 @@ export default {
 
 <style scoped>
   .newproject {
+    width: 100%;
     text-align: center;
   }
 
@@ -180,12 +209,12 @@ export default {
   .container-flex label {
     margin: 0px;
   }
-
+/*
   *[class^="col-sm-"] {
     padding-left: 10px;
     padding-right: 10px;
   }
-
+*/
   #linkedusers {
     padding: 0px;
   }
