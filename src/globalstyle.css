@@ -1,4 +1,4 @@
-button, select, input {
+button, select, input, textarea {
   outline-width: 0;
   color: #282828;
   border: none;
@@ -32,6 +32,9 @@ button:disabled {
   color: #a4a4a4;
 }
 
+button.full-width {
+  width: 100%;
+}
 
 /**************************************************
   Select/Input
@@ -50,6 +53,17 @@ select option {
   background-color: rgb(245,245,245);
 }
 
-select.full-width, input[type="text"].full-width, input[type="password"].full-width {
+select.full-width, input[type="text"].full-width, input[type="password"].full-width, textarea.full-width {
   width: 100%;
+}
+
+textarea {
+  overflow: hidden;
+  resize: none;
+  border: lightgrey 1px solid;
+  transition: ease-in-out border .2s;
+}
+
+textarea:focus {
+  border: #003452 1px solid;
 }

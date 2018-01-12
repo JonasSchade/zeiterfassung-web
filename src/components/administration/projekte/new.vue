@@ -16,35 +16,49 @@
     </div>
 
     <form class="container-flex">
-      <div class="row">
-        <label class="text-right">Name:</label>
-        <input  type="text" />
+      <div class="row align-middle">
+        <label class="col-sm-offset-1 col-sm-3 text-right">Name:</label>
+        <div class="col-sm-9">
+          <input type="text" class="full-width" />
+        </div>
       </div>
       <div class="row">
-        <label class="text-right">Beschreibung:</label>
-        <textarea ></textarea>
+        <label class="col-sm-offset-1 col-sm-3 text-right">Beschreibung:</label>
+        <div class="col-sm-9">
+          <textarea class="full-width" rows="5"></textarea>
+        </div>
       </div>
       <div class="row">
-        <label class="text-right">Manager:</label>
-        <select >
-          <option v-for="user in users" :value="user.id">{{user.firstname}} {{user.lastname}}</option>
-        </select>
+        <label class="col-sm-offset-1 col-sm-3 text-right">Manager:</label>
+        <div class="col-sm-9">
+          <select class="full-width">
+            <option v-for="user in users" :value="user.id">{{user.firstname}} {{user.lastname}}</option>
+          </select>
+        </div>
       </div>
       <div class="row">
-        <label class="text-right">Zugewiesene Mitarbeiter:</label>
-        <select id="adduser">
+        <label class="col-sm-offset-1 col-sm-3 text-right">Zugewiesene Mitarbeiter:</label>
+        <select class="col-sm-6" id="adduser">
           <option v-for="user in users.filter(user => ! linkedusers.includes(user))" :value="user.id">{{user.firstname}} {{user.lastname}}</option>
         </select>
-        <button v-on:click="addUser()">
-          <i class="fa fa-plus" aria-hidden="true"></i>
-          Hinzufügen
-        </button>
-        <ul>
-          <li v-for="user in linkedusers">
-            {{user.firstname}} {{user.lastname}}
-            <i class="fa fa-minus" aria-hidden="true" :value="user.id" v-on:click="removeUser($event)"></i>
-          </li>
-        </ul>
+        <div class="col-sm-3">
+          <button class="full-width" v-on:click="addUser()">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            Hinzufügen
+          </button>
+        </div>
+      </div>
+      <div class="row">
+        <div  id="linkedusers" class="col-sm-6 col-sm-offset-3">
+          <ul class="container-flex">
+            <li class="row" v-for="user in linkedusers">
+              <div class="col-xs-10">{{user.firstname}} {{user.lastname}}</div>
+              <div class="col-xs-2">
+                <i class="fa fa-minus" aria-hidden="true" :value="user.id" v-on:click="removeUser($event)"></i>
+              </div>
+            </li>
+          </ul>
+        </div>
       </div>
       <div class="row">
         <button>
@@ -85,6 +99,10 @@ export default {
     addUser: function() {
 
       var userSelect = $("#adduser")[0];
+
+      if (userSelect.selectedIndex == -1) {
+        return;
+      }
 
       //find user with selected id in users
       var index = this.findById(this.users, userSelect.options[userSelect.selectedIndex].value);
@@ -131,8 +149,42 @@ export default {
     display: block;
   }
 
+  .container-flex .row {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
 
+  .container-flex label {
+    margin: 0px;
+  }
+
+  *[class^="col-sm-"] {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  #linkedusers {
+    padding: 0px;
+  }
+  #linkedusers ul {
+    list-style-type: none;
+    padding: 0px;
+    max-height: 200px;
+    overflow-y: scroll;
+  }
+
+  li {
+    width: 100%;
+  }
+
+  #linkedusers ul .row {
+    padding: 0px;
+    margin: 0px;
+    margin-bottom: 10px;
+  }
+/*
   .container-flex input, .container-flex button, .container-flex select {
     margin: 10px;
   }
+  */
 </style>
