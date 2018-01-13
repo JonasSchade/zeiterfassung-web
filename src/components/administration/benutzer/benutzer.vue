@@ -32,11 +32,10 @@
             <p class="card-text">
               Username: {{ employee.username }}
             </p>
-            <ul v-bind="getProjects(employee.id)">
-              <li v-for="project in projects">
-                <p>
-                    Projekt: {{ project.name }}
-                </p>
+            <p>Projekte:</p>
+            <ul>
+              <li v-for="project in getProjects(employee.id)">
+                {{ project.name }}
               </li>
             </ul>
           </tablistitem>
@@ -54,7 +53,7 @@ export default {
   data() {
     return {
       employees: [],
-      projects: []
+      projects: JSON
     }
 },
 methods:{
@@ -64,17 +63,22 @@ methods:{
     })
   },
   getProjects: function(id){
-    this.$http.get('http://localhost:3000/api/user_project/:id').then(response => {
-      console.log(response);
-      this.projects = response.body;
-    });
+    return this.projects[id.toString()];
   }
 },
 created() {
 
   this.$http.get('http://localhost:3000/api/user').then(response => {
-    console.log(response);
     this.employees = response.body;
+
+    for (var i = 0; i < this.employees.length; i++) {
+      this.$http.get('http://localhost:3000/api/user_project/'+this.employees[i].id).then(response => {
+        var id = response.url.replace("http://localhost:3000/api/user_project/","");
+        this.projects[id.toString()] = response.body;
+        console.log(this.projects);
+      });
+    }
+
   });
 }
 }
