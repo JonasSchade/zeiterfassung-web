@@ -75,7 +75,6 @@ created() {
       this.$http.get('http://localhost:3000/api/user_project/'+this.employees[i].id).then(response => {
         var id = response.url.replace("http://localhost:3000/api/user_project/","");
         this.projects[id.toString()] = response.body;
-        console.log(this.projects);
       });
     }
 
