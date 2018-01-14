@@ -53,7 +53,7 @@ export default {
   data() {
     return {
       employees: [],
-      projects: JSON
+      projects: [JSON]
     }
 },
 methods:{
