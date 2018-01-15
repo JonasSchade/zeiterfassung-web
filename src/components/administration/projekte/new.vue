@@ -81,9 +81,13 @@ export default {
   },
   created() {
 
-    this.$http.get('http://localhost:3000/api/user').then(response => {
+    this.$http.get('http://localhost:3000/api/user', {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
       console.log(response.body)
       this.users = response.body;
+    }, (err) => {
+      if (err.status == 401) {
+        this.$router.push("/login");
+      }
     });
   },
   methods: {
