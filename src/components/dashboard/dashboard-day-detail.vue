@@ -13,7 +13,7 @@
         <div class="col-sm-12">
           <h3>{{ formattedDate }}</h3>
         </div>
-        <div class="col-sm-12 text-left">
+        <div class="col-sm-12 text-left float-left">
           <div class="card">
             <h4 class="header">
               <i class="fa fa-clock-o" aria-hidden="true"></i>Arbeitszeiten:
@@ -24,10 +24,10 @@
                 <div class="row">
                   <label class="col-xs-2 text-left">Von:</label>
                   <div class="col-xs-10 text-left">
-                  <input type="text" id="time-start-hours" @input="checkInput" placeholder="hh" maxlength="2" size="2">
-                  <span>:</span>
-                  <input type="text" id="time-start-minutes" @input="checkInput" placeholder="mm" maxlength="2" size="2">
-                  <span>Uhr</span>
+                    <input type="text" id="time-start-hours" @input="checkInput" placeholder="hh" maxlength="2" size="2">
+                    <span>:</span>
+                    <input type="text" id="time-start-minutes" @input="checkInput" placeholder="mm" maxlength="2" size="2">
+                    <span>Uhr</span>
                   </div>
                 </div>
                 <div class="row">
@@ -72,6 +72,24 @@
               </form>
             </div>
           </div>
+          <!--Bootstrap Progress bar-->
+          <div class="float">
+          <div class="progress ">
+            <span>Verteilte Stunden</span>
+            <span>{{computedTime.hours}}:{{computedTime.minutes}} h</span>
+            <div class="progress-bar" role="progressbar" style="width: 15%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+            <span>Noch zu verteilende Stunden:</span>
+            <span>{{computedTime.hours}}:{{computedTime.minutes}} h</span>
+            <div class="progress-bar" role="progressbar" style="width: 15%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+        </div>
+        </div>
+      </div>
+      <div>
+        <div class="tablist" role="tablist">
+          <tablistitem v-for="project in projects" :key="project.id" :contentid="project.id" :contentname="project.name">
+            <b-col sm="9"><b-form-input :id="project.id" type="range"></b-form-input></b-col>
+          </tablistitem>
         </div>
       </div>
     </div>
@@ -79,15 +97,25 @@
 </template>
 
 <script>
+import tablistitem from '@/components/administration/tablistitem'
+
 export default {
   name: 'dashboard-day-detail',
+  components: { tablistitem },
   data: function (){
     return {
+      projects: [],
       computedTime: {
         minutes: "00",
         hours: "00",
       },
     };
+  },
+  created() {
+    this.$http.get('http://localhost:3000/api/project_users/1').then(response => {
+      var id = response.url.replace("http://localhost:3000/api/project_users/","");
+      this.projects = response.body;
+    });
   },
   computed: {
     "formattedDate": function () {
@@ -118,113 +146,113 @@ export default {
 
       //input validated
       elem.style.color = "";
-/*
+      /*
       //check if every input field has valid input
       for (var id in {"time-start-hours","time-start-minutes","time-stop-hours","time-stop-minutes","time-break-hours","time-break-minutes","time-travel-hours","time-travel-minutes"}) {
-        console.log(id);
-        var dom = document.getElementById(id);
-        if (dom.style.color == "red") {
-          return;
-        }
-      }
-*/
-
-      this.updateComputedTime();
-    },
-    updateComputedTime: function () {
-
-      var readValue = function (id) {
-        if (document.getElementById(id).value == "") {
-          return 0;
-        } else {
-          return parseInt(document.getElementById(id).value);
-        }
-      };
-
-      var moment1 = moment("2000-01-01");
-
-      //set stop time
-      moment1.hours(readValue("time-stop-hours"));
-      moment1.minutes(readValue("time-stop-minutes"));
-
-      //subtract start time
-      moment1.subtract(readValue("time-start-hours"),'h')
-      moment1.subtract(readValue("time-start-minutes"),'m')
-
-      //substract break
-      moment1.subtract(readValue("time-break-hours"),'h')
-      moment1.subtract(readValue("time-break-minutes"),'m')
-
-      //add travel time (half of it)
-      moment1.add(readValue("time-travel-hours")/2,'h')
-      moment1.add(readValue("time-travel-minutes")/2,'m')
-
-
-      this.computedTime.minutes = moment1.format("mm");
-      this.computedTime.hours = moment1.format("HH");
-
+      console.log(id);
+      var dom = document.getElementById(id);
+      if (dom.style.color == "red") {
+      return;
     }
-  },
+  }
+  */
+
+  this.updateComputedTime();
+},
+updateComputedTime: function () {
+
+  var readValue = function (id) {
+    if (document.getElementById(id).value == "") {
+      return 0;
+    } else {
+      return parseInt(document.getElementById(id).value);
+    }
+  };
+
+  var moment1 = moment("2000-01-01");
+
+  //set stop time
+  moment1.hours(readValue("time-stop-hours"));
+  moment1.minutes(readValue("time-stop-minutes"));
+
+  //subtract start time
+  moment1.subtract(readValue("time-start-hours"),'h')
+  moment1.subtract(readValue("time-start-minutes"),'m')
+
+  //substract break
+  moment1.subtract(readValue("time-break-hours"),'h')
+  moment1.subtract(readValue("time-break-minutes"),'m')
+
+  //add travel time (half of it)
+  moment1.add(readValue("time-travel-hours")/2,'h')
+  moment1.add(readValue("time-travel-minutes")/2,'m')
+
+
+  this.computedTime.minutes = moment1.format("mm");
+  this.computedTime.hours = moment1.format("HH");
+
+}
+},
 }
 </script>
 
 <style scoped>
 
-  *[class^="col-sm-"], *[class^="col-xs-"] {
-    padding: 5px;
-  }
+*[class^="col-sm-"], *[class^="col-xs-"] {
+  padding: 5px;
+}
 
-  .card {
-    background-color: white;
-    border-radius: 2px;
-    box-shadow: 0px 0px 7px #ccc;
-    border: 1px solid #ccc;
-    max-width: 400px;
-  }
+.card {
+  background-color: white;
+  border-radius: 2px;
+  box-shadow: 0px 0px 7px #ccc;
+  border: 1px solid #ccc;
+  max-width: 400px;
+}
 
-  .card>.header {
-    text-align: left;
-    border-top-left-radius: 2px;
-    border-top-right-radius: 2px;
-    color: #282828;
-    background-color: white;
-    margin-top: 0px;
-    margin-bottom: 0px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    padding-left: 10px;
-  }
+.card>.header {
+  text-align: left;
+  border-top-left-radius: 2px;
+  border-top-right-radius: 2px;
+  color: #282828;
+  background-color: white;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 10px;
+}
 
-  .card>.header>i {
-    padding-right: 7px;
-  }
+.card>.header>i {
+  padding-right: 7px;
+}
 
-  .card>hr {
-    margin: 0px;
-  }
+.card>hr {
+  margin: 0px;
+}
 
-  .card>.content {
-    padding-top: 5px;
-    padding-bottom: 5px;
-  }
+.card>.content {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
 
 
-  .row {
-    margin-top: 5px;
-    margin-bottom: 5px;
-    margin-left: 0px;
-    margin-right: 0px;
-  }
+.row {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  margin-left: 0px;
+  margin-right: 0px;
+}
 
-  h3 {
-    margin: 0px;
-  }
+h3 {
+  margin: 0px;
+}
 
-  input {
-    text-align: center;
-  }
+input {
+  text-align: center;
+}
 
-  label{
-    padding-left: 15px !important;
-  }
+label{
+  padding-left: 15px !important;
+}
 </style>
