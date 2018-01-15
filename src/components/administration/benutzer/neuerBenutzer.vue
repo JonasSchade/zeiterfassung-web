@@ -8,42 +8,39 @@
       <router-link to="/administration/benutzer">
         <button id="btn_close" v-on:click="cancel"><i class="fa fa-times-circle-o" aria-hidden="true"></i></button>
       </router-link>
-      <div class="form-group">
+      <form class="form-group" id="newUserForm">
         <span>
             <label for="benutzername">Nachname:</label>
-          <input type="text" class="full-width" id="lastname" placeholder="Nachname des Benutzers" v-model="lastname">
+          <input type="text" class="full-width" name="lastname" id="lastname" placeholder="Nachname">
         </span>
         <span>
           <label for="benutzername">Vorname:</label>
-          <input type="text" class="full-width" id="firstname" placeholder="Vorname des benutzers" v-model="firstname">
+          <input type="text" class="full-width" name="firstname" id="firstname" placeholder="Vorname">
         </span>
-        <div>
-          <p>
-            Standort:
-          </p>
-        <select v-model="selectedcity">
-          <option disabled value="">Wähle einen Standort aus</option>
-          <option>München</option>
-          <option>Berlin</option>
-          <option>Frankfurt</option>
-        </select>
-        <span>Ausgewählt: {{ selectedcity }}</span>
-      </div>
+        <span>
+          <label for="password">Passwort:</label>
+          <input type="text" class="full-width" name="password" id="password" placeholder="Passwort">
+        </span>
+        <span>
+          <label for="password">Passwort wiederholen:</label>
+          <input type="text" class="full-width" name="password_repeat" id="password_repeat" placeholder="Passwort wiederholen">
+        </span>
         <div>
           <p>
             Abteilung:
           </p>
-          <select v-model="selectedabt">
+          <select v-model="department" name="department" id="department">
             <option disabled value="">Wähle eine Abteilung aus</option>
             <option>Marketing</option>
             <option>IT</option>
             <option>Buchhaltung</option>
+            <option>Keine Abteilung</option>
           </select>
-          <span>Ausgewählt: {{ selectedabt }}</span>
+          <span>{{ department }}</span>
         </div>
-      </div>
-      <router-link to="/administration/benutzer">
-        <button class="btn_rechts" v-on:click="create"><i class="fa fa-check" aria-hidden="true" ></i> Benutzer anlegen</button>
+      </form>
+        <button class="btn_rechts" v-on:click="sendHTTP()"><i class="fa fa-check" aria-hidden="true" ></i> Benutzer anlegen</button>
+        <router-link to="/administration/benutzer">
         <button class="btn_rechts" v-on:click="cancel"><i class="fa fa-times" aria-hidden="true" ></i> Abbrechen</button>
       </router-link>
     </div>
@@ -58,8 +55,8 @@ export default {
     return {
       firstname: "",
       lastname: "",
-      selectedcity: "",
-      selectedabt: ""
+      password: "",
+      department: ""
     };
   },
   methods: {
@@ -68,6 +65,56 @@ export default {
     },
     cancel: function(){
       alert("Benutzer wird nicht erstellt!!!");
+    },
+    sendHTTP: function() {
+
+      //Make sure all inputs are valid
+      if(! this.validate()) {
+        return;
+      }
+
+      //create json object
+      var formArr = $("#newUserForm").serializeArray();
+      var obj = new Object();
+      for (var i = 0; i < formArr.length; i++) {
+
+        obj[formArr[i].name] = formArr[i].value;
+      }
+
+      //POST Request
+    //  this.$http.post("http://localhost:3000/api/user", obj).then(function(response) { this.$router.push('/administration/benutzer') }, function(response) { return; });
+    },
+    validate: function() {
+      var formArr = $("#newUserForm").serializeArray();
+
+      var firstname = formArr.filter(x => x.name == "firstname")[0].value;
+      var lastname = formArr.filter(x => x.name == "lastname")[0].value;
+      var password = formArr.filter(x => x.name == "password")[0].value;
+      var password_repeat = formArr.filter(x => x.name == "password_repeat")[0].value;
+      var department = formArr.filter(x => x.name == "department")[0].value;
+
+      if (firstname == "") {
+        alert("Bitte Vornamen eingeben!");
+        return false;
+      }
+      if (lastname == "") {
+        alert("Bitte Nachnamen eingeben!");
+        return false;
+      }
+      if (firstname.length < 2) {
+        alert("Der Vorname muss aus mindestens zwei Buchstaben bestehen.");
+        return false;
+      }
+      if (lastname.length < 2) {
+        alert("Der Nachname muss aus mindestens zwei Buchstaben bestehen.");
+        return false;
+      }
+      if (password != password_repeat) {
+        alert("Passwort stimmt nicht überein.");
+        return false;
+      }
+
+      return true;
     }
   }
 }
@@ -124,5 +171,9 @@ export default {
 
   p{
     font-weight: bold;
+  }
+
+  input{
+    margin-bottom: 20px;
   }
 </style>
