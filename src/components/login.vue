@@ -55,7 +55,7 @@ export default {
         window.sessionStorage.chronosAuthToken = response.body.token;
         this.$router.push("/dashboard");
 
-      },(error) => {console.log(error)});
+      }).catch((error) => {console.log(error)});
     }
   }
 }

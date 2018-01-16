@@ -26,122 +26,149 @@ import neuerStandort from '@/components/administration/standort/neuerStandort'
 
 Vue.use(Router)
 
+function beforeEnterFunction(to, from, next) {
+  next();
+}
+
+
 export default new Router({
   routes: [
     {
       path: '/',
-      redirect: '/dashboard',
+      redirect: '/login',
+      beforeEnter: beforeEnterFunction,
     },
     {
       path: '*',
       component: {
-          template: '<p>Page Not Found</p>'
-      }
+        template: '<p>Page Not Found</p>'
+      },
+      beforeEnter: beforeEnterFunction,
     },
     {
       path: '/dashboard',
       name: 'dashboard',
-      component: dashboard
+      component: dashboard,
+      beforeEnter: beforeEnterFunction,
     },
     {
       path: '/dashboard/day/:day',
       name: 'dashboard-day-detail',
-      component: dashboardDayDetail
+      component: dashboardDayDetail,
+      beforeEnter: beforeEnterFunction,
     },
     {
       path: '/administration',
       name: 'administration',
-      component: administration
+      component: administration,
+      beforeEnter: beforeEnterFunction,
     },
     {
       path: '/mitarbeiter',
       name: 'mitarbeiter',
-      component: mitarbeiter
+      component: mitarbeiter,
+      beforeEnter: beforeEnterFunction,
     },
     {
       path: '/projekte',
       name: 'projekte',
-      component: projekte
+      component: projekte,
+      beforeEnter: beforeEnterFunction,
     },
     {
       path: '/administration/arbeitsplaene',
       name: 'arbeitsplaene',
-      component: arbeitsplaene
+      component: arbeitsplaene,
+      beforeEnter: beforeEnterFunction,
     },
     {
       path: '/administration/feiertage',
       name: 'feiertage',
-      component: feiertage
+      component: feiertage,
+      beforeEnter: beforeEnterFunction,
     },
     {
       path: '/administration/laender',
       name: 'laender',
-      component: laender
+      component: laender,
+      beforeEnter: beforeEnterFunction,
     },
     {
       path: '/administration/standorte',
       name: 'standorte',
-      component: standorte
+      component: standorte,
+      beforeEnter: beforeEnterFunction,
     },
     {
       path: '/administration/abteilungen',
       name: 'abteilungen',
-      component: abteilungen
+      component: abteilungen,
+      beforeEnter: beforeEnterFunction,
     },
     {
       path: '/administration/projekte',
       name: 'adprojekte',
-      component: adprojekte
+      component: adprojekte,
+      beforeEnter: beforeEnterFunction,
     },
     {
       path: '/administration/projekte/new',
       name: 'adprojektneu',
-      component: adprojektneu
+      component: adprojektneu,
+      beforeEnter: beforeEnterFunction,
     },
     {
       path: '/administration/benutzer',
       name: 'benutzer',
-      component: benutzer
+      component: benutzer,
+      beforeEnter: beforeEnterFunction,
     },
     {
       path: '/newProject',
       name: 'newProject',
-      component: newProject
+      component: newProject,
+      beforeEnter: beforeEnterFunction,
     },
     {
       path: '/login',
       name: 'login',
-      component: login
+      component: login,
     },
     {
       path: '/administration/neueAbteilung',
       name: 'neueAbteilung',
-      component: neueAbteilung
+      component: neueAbteilung,
+      beforeEnter: beforeEnterFunction,
     },
     {
       path: '/administration/neuesLand',
       name: 'neuesLand',
-      component: neuesLand
+      component: neuesLand,
+      beforeEnter: beforeEnterFunction,
     },
     {
       path: '/administration/neuerArbeitsplan',
       name: 'neuerArbeitsplan',
-      component: neuerArbeitsplan
+      component: neuerArbeitsplan,
+      beforeEnter: beforeEnterFunction,
     },
     {
       path: '/administration/neuerBenutzer',
       name: 'neuesBenutzer',
-      component: neuerBenutzer
+      component: neuerBenutzer,
+      beforeEnter: beforeEnterFunction,
     },
     {
       path: '/administration/neuerFeiertag',
       name: 'neuerFeiertag',
-      component: neuerFeiertag
+      component: neuerFeiertag,
+      beforeEnter: beforeEnterFunction,
     },
     {
       path: '/administration/neuerStandort',
       name: 'neuerStandort',
-      component: neuerStandort
+      component: neuerStandort,
+      beforeEnter: beforeEnterFunction,
     }
   ]
 })
