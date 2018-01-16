@@ -70,10 +70,6 @@ export default {
           this.users[id.toString()] = response.body;
         });
       }
-    }).catch((err) => {
-      if (err.status == 401) {
-        this.$router.push("/login");
-      }
     });
   }
 }
