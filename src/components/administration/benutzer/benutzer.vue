@@ -68,11 +68,11 @@ methods:{
 },
 created() {
 
-  this.$http.get('http://localhost:3000/api/user').then(response => {
+  this.$http.get('http://localhost:3000/api/user', {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
     this.employees = response.body;
 
     for (var i = 0; i < this.employees.length; i++) {
-      this.$http.get('http://localhost:3000/api/user_project/'+this.employees[i].id).then(response => {
+      this.$http.get('http://localhost:3000/api/user_project/'+this.employees[i].id, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
         var id = response.url.replace("http://localhost:3000/api/user_project/","");
         this.projects[id.toString()] = response.body;
       });
@@ -85,7 +85,7 @@ created() {
 
 <style scoped>
   .benutzer {
-    min-height: 700px;
+    min-height: 100vh;
     text-align: center;
   }
 
