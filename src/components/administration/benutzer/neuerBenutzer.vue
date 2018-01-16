@@ -192,6 +192,7 @@ export default {
 <style scoped>
 .neuerBenutzer {
   width: 100%;
+  min-height: 100vh;
   text-align: center;
 }
 

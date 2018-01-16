@@ -33,7 +33,7 @@ export default {
 
 <style scoped>
 .abteilungen {
-  height: 700px;
+  min-height: 100vh;
   text-align: center;
 }
 

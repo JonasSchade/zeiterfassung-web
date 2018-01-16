@@ -72,7 +72,7 @@ export default {
 
 <style scoped>
 .neueAbteilung {
-  height: 700px;
+  min-height: 100vh;
   text-align: center;
 }
 
