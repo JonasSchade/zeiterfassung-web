@@ -46,7 +46,7 @@ export default {
 
       var pw = this.encrypt(this.pw_plaintext, this.username);
 
-      this.$http.post("http://localhost:3000/api/token", {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}, body: {"username":this.username,"pw":pw}}).then(response => {
+      this.$http.post("http://localhost:3000/api/token", {"username":this.username,"pw":pw}).then(response => {
         if (! response.body.success) {
           this.error = "Credentials invalid"
           return;
@@ -55,7 +55,9 @@ export default {
         window.sessionStorage.chronosAuthToken = response.body.token;
         this.$router.push("/dashboard");
 
-      }).catch((error) => {console.log(error)});
+      }).catch((error) => {
+        this.error = "Ooops something went wrong :( Error "+error.status;
+      });
     }
   }
 }
