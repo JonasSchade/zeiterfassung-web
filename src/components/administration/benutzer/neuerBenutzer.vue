@@ -100,7 +100,7 @@ export default {
   },
   created() {
 
-    this.$http.get('http://localhost:3000/api/department').then(response => {
+    this.$http.get('http://localhost:3000/api/department', {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
       this.departments = response.body;
     });
   },
@@ -128,11 +128,11 @@ export default {
       console.log(obj);
 
       //POST Request
-      this.$http.post("http://localhost:3000/api/user/", obj).then((response) => {
+      this.$http.post("http://localhost:3000/api/user/", {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}, body: obj}).then(response => {
 
       });
 
-      this.$http.get('http://localhost:3000/api/user').then(response => {
+      this.$http.get('http://localhost:3000/api/user', {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
         this.users = response.body;
         console.log(this.users);
       });
@@ -147,7 +147,7 @@ export default {
       logobj.username = formArr[2].value;
       logobj.password = formArr[3].value;
       console.log(logobj);
-      this.$http.post("http://localhost:3000/api/logdata", logobj).then(function(response) {
+      this.$http.post("http://localhost:3000/api/logdata", {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}, body: logobj}).then(response => {
         this.$router.push('/administration/benutzer')
       }, function(response) {
         return;

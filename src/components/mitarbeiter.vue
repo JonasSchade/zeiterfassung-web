@@ -14,7 +14,7 @@ export default {
   },
   created() {
 
-    this.$http.get('http://localhost:3000/api/roles').then(response => {
+    this.$http.get('http://localhost:3000/api/roles', {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
         this.roles = response.body;
     });
   }

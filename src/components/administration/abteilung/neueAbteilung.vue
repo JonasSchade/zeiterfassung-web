@@ -63,7 +63,7 @@ export default {
   },
   created() {
 
-    this.$http.get('http://localhost:3000/api/user').then(response => {
+    this.$http.get('http://localhost:3000/api/user', {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
       this.options = response.body;
     });
   }

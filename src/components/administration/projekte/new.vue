@@ -84,7 +84,7 @@ export default {
   created() {
 
 
-    this.$http.get('http://localhost:3000/api/user').then(response => {
+    this.$http.get('http://localhost:3000/api/user', {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}, body: obj}).then(response => {
       this.users = response.body;
 
       this.manager = this.users[0];
@@ -140,7 +140,11 @@ export default {
       }
 
       //POST Request
-      this.$http.post("http://localhost:3000/api/project", obj).then(function(response) { this.$router.push('/administration/projekte') }, function(response) { return; });
+      this.$http.post("http://localhost:3000/api/project", {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}, body: obj}).then(response => {
+        this.$router.push('/administration/projekte');
+      }).catch((err) => {
+        console.log(err);
+      });
     },
     validate: function() {
       var formArr = $("#newProjectForm").serializeArray();
