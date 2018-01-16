@@ -81,7 +81,7 @@ export default {
 
 <style scoped>
 .projekte {
-  min-height: 700px;
+  min-height: 100vh;
   text-align: center;
   width: 100%;
 }

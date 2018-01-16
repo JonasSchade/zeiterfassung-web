@@ -85,7 +85,7 @@ created() {
 
 <style scoped>
   .benutzer {
-    min-height: 700px;
+    min-height: 100vh;
     text-align: center;
   }
 
