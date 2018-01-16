@@ -1,97 +1,100 @@
 <template>
-<div class="dashboard-day-detail">
-  <div class="container">
-    <div class="row">
-      <div class="col-sm-4  text-left">
-        <button v-on:click="$router.push('/dashboard/')">
+  <div class="dashboard-day-detail">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-4  text-left">
+          <button v-on:click="$router.push('/dashboard/')">
             <i class="fa fa-chevron-left" aria-hidden="true"></i>
             Dashboard
           </button>
+        </div>
       </div>
-    </div>
-    <div class="row">
-      <div class="col-sm-12">
-        <h3>{{ formattedDate }}</h3>
-      </div>
-      <div class="col-sm-12 text-left">
-        <div class="card">
-          <h4 class="header">
+      <div class="row">
+        <div class="col-sm-12">
+          <h3>{{ formattedDate }}</h3>
+        </div>
+        <div class="col-sm-12 text-left">
+          <div class="card">
+            <h4 class="header">
               <i class="fa fa-clock-o" aria-hidden="true"></i>Arbeitszeiten:
             </h4>
-          <hr/>
-          <div class="content">
-            <form class="container-flex">
-              <div class="row">
-                <label class="col-xs-2 text-left">Von:</label>
-                <div class="col-xs-10 text-left">
-                  <input type="text" id="time-start-hours" @input="checkInput" placeholder="hh" maxlength="2" size="2">
-                  <span>:</span>
-                  <input type="text" id="time-start-minutes" @input="checkInput" placeholder="mm" maxlength="2" size="2">
-                  <span>Uhr</span>
-                </div>
-              </div>
-              <div class="row">
-                <label class="col-xs-2 text-left">Bis:</label>
-                <div class="col-xs-10 text-left">
-                  <input type="text" id="time-stop-hours" @input="checkInput" placeholder="hh" maxlength="2" size="2">
-                  <span>:</span>
-                  <input type="text" id="time-stop-minutes" @input="checkInput" placeholder="mm" maxlength="2" size="2">
-                  <span>Uhr</span>
-                </div>
-              </div>
-              <div class="row">
-                <hr style="margin: 3px 10px;" />
-              </div>
-              <div class="row">
-                <label class="col-xs-2 text-left">Pause:</label>
-                <div class="col-xs-10 text-left">
-                  <input type="text" id="time-break-hours" @input="checkInput" placeholder="hh" maxlength="2" size="2">
-                  <span>:</span>
-                  <input type="text" id="time-break-minutes" @input="checkInput" placeholder="mm" maxlength="2" size="2">
-                  <span>h</span>
-                </div>
-              </div>
-              <div class="row">
-                <label class="col-xs-2 text-left">Reise:</label>
-                <div class="col-xs-10 text-left">
-                  <input type="text" id="time-travel-hours" @input="checkInput" placeholder="hh" maxlength="2" size="2">
-                  <span>:</span>
-                  <input type="text" id="time-travel-minutes" @input="checkInput" placeholder="mm" maxlength="2" size="2">
-                  <span>h</span>
-                </div>
-              </div>
-              <div class="row">
-                <hr style="margin: 3px 10px;" />
-              </div>
-              <div class="row">
-                <label class="col-xs-4 col-xs-offset-1 text-left">Insgesamt:</label>
-                <div class="col-xs-4 text-left">
-                  <span>{{computedTime.hours}}:{{computedTime.minutes}} h</span>
-                </div>
-              </div>
-            </form>
-          </div>
-          <!--Bootstrap Progress bar-->
-          <div class="float">
-            <div class="progress ">
-              <div>
+            <hr/>
+            <div class="content">
+              <form class="container-flex">
                 <div class="row">
-                  <span>Verteilte Stunden</span>
-                  <span>{{addedTime.hours}}:{{addedTime.minutes}} h</span>
+                  <label class="col-xs-2 text-left">Von:</label>
+                  <div class="col-xs-10 text-left">
+                    <input type="text" id="time-start-hours" @input="checkInput" placeholder="hh" maxlength="2" size="2">
+                    <span>:</span>
+                    <input type="text" id="time-start-minutes" @input="checkInput" placeholder="mm" maxlength="2" size="2">
+                    <span>Uhr</span>
+                  </div>
                 </div>
-                <div class="progress-bar" role="progressbar" style="width: 15%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-              <div>
                 <div class="row">
-                  <span>Noch zu verteilende Stunden:</span>
-                  <span>{{computedTime.hours}}:{{computedTime.minutes}} h</span>
+                  <label class="col-xs-2 text-left">Bis:</label>
+                  <div class="col-xs-10 text-left">
+                    <input type="text" id="time-stop-hours" @input="checkInput" placeholder="hh" maxlength="2" size="2">
+                    <span>:</span>
+                    <input type="text" id="time-stop-minutes" @input="checkInput" placeholder="mm" maxlength="2" size="2">
+                    <span>Uhr</span>
+                  </div>
                 </div>
-                <div class="progress-bar" role="progressbar" style="width: 5%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+                <div class="row">
+                  <hr style="margin: 3px 10px;" />
+                </div>
+                <div class="row">
+                  <label class="col-xs-2 text-left">Pause:</label>
+                  <div class="col-xs-10 text-left">
+                    <input type="text" id="time-break-hours" @input="checkInput" placeholder="hh" maxlength="2" size="2">
+                    <span>:</span>
+                    <input type="text" id="time-break-minutes" @input="checkInput" placeholder="mm" maxlength="2" size="2">
+                    <span>h</span>
+                  </div>
+                </div>
+                <div class="row">
+                  <label class="col-xs-2 text-left">Reise:</label>
+                  <div class="col-xs-10 text-left">
+                    <input type="text" id="time-travel-hours" @input="checkInput" placeholder="hh" maxlength="2" size="2">
+                    <span>:</span>
+                    <input type="text" id="time-travel-minutes" @input="checkInput" placeholder="mm" maxlength="2" size="2">
+                    <span>h</span>
+                  </div>
+                </div>
+                <div class="row">
+                  <hr style="margin: 3px 10px;" />
+                </div>
+                <div class="row">
+                  <label class="col-xs-4 col-xs-offset-1 text-left">Insgesamt:</label>
+                  <div class="col-xs-4 text-left">
+                    <span>{{computedTime.hours}}:{{computedTime.minutes}} h</span>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <!--
+            <div class="float">
+              <div class="progress ">
+                <div>
+                  <div class="row">
+                    <span>Verteilte Stunden</span>
+                    <span>{{addedTime.hours}}:{{addedTime.minutes}} h</span>
+                  </div>
+                  <div class="progress-bar" role="progressbar" style="width: 15%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <div>
+                  <div class="row">
+                    <span>Noch zu verteilende Stunden:</span>
+                    <span>{{computedTime.hours}}:{{computedTime.minutes}} h</span>
+                  </div>
+                  <div class="progress-bar" role="progressbar" style="width: 5%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
               </div>
             </div>
+          -->
           </div>
         </div>
       </div>
+      <!--
       <div>
         <div>
           <div v-for="project in projects" :key="project.id" :contentid="project.id" :contentname="project.name" class="eingabe">
@@ -99,17 +102,17 @@
               {{project.name}}
             </div>
             <p>{{project.firstname}}{{project.lastname}}
-            <p>{{project.description}}</p>
-            <input type="text" :id="project.id+hours" @input="checkTime" placeholder="hh" maxlength="2" size="2">
-            <span>:</span>
-            <input type="text" :id="project.id+minutes" @input="checkTime" placeholder="mm" maxlength="2" size="2">
-            <span>h</span>
+              <p>{{project.description}}</p>
+              <input type="text" :id="project.id+hours" @input="checkTime" placeholder="hh" maxlength="2" size="2">
+              <span>:</span>
+              <input type="text" :id="project.id+minutes" @input="checkTime" placeholder="mm" maxlength="2" size="2">
+              <span>h</span>
+            </div>
           </div>
-        </div>
+        </div>-->
       </div>
     </div>
   </div>
-</div>
 </template>
 
 <script>
@@ -117,21 +120,20 @@ export default {
   name: 'dashboard-day-detail',
   data: function() {
     return {
-      projects: ['test'],
+      //projects: ['test'],
       computedTime: {
         minutes: "00",
         hours: "00",
-      },
+      }/*,
       addedTime: {
         minutes: "00",
         hours: "00",
       },
-      projecttimes: []
+      projecttimes: []*/
     };
   },
   created() {
-
-    this.$http.get('http://localhost:3000/api/project').then(response => {
+    this.$http.get('http://localhost:3000/api/project', {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
       this.projects = response.body;
 
       for (var i = 0; i < this.projects.length; i++) {
@@ -148,7 +150,7 @@ export default {
       return moment(this.$route.params.day).locale("de").format("DD.MMMM YYYY");
     },
   },
-  methods: {
+  methods: {/*
     checkInput: function(event) {
       var elem = event.target;
       var text = elem.value;
@@ -176,84 +178,83 @@ export default {
     },
     updateAddedTime: function(){
       var readValue = function (id) {
-      /*
-            //check if every input field has valid input
-            for (var id in {"time-start-hours","time-start-minutes","time-stop-hours","time-stop-minutes","time-break-hours","time-break-minutes","time-travel-hours","time-travel-minutes"}) {
-              console.log(id);
-              var dom = document.getElementById(id);
-              if (dom.style.color == "red") {
-                return;
-              }
-            }
-      */
-
-      this.updateComputedTime();
-    },
-    updateComputedTime: function() {
-
-      var readValue = function(id) {
-        if (document.getElementById(id).value == "") {
-          return 0;
-        } else {
-          return parseInt(document.getElementById(id).value);
-        }
-      };
-
-      var moment1 = moment("2000-01-01");
-
-      //set stop time
-      moment1.hours(readValue("time-stop-hours"));
-      moment1.minutes(readValue("time-stop-minutes"));
-
-      this.addedTime.minutes = moment1.format("mm");
-      this.addedTime.hours = moment1.format("HH");
-    },
-    checkInput: function (event) {
-      var elem = event.target;
-      var text = elem.value;
-
-      if (elem.id.search("hours") == -1) {
-        var ceeling = 60;
-      } else {
-        var ceeling = 23;
-      };
-
-      if (text.match("[^0-9]") !== null) {
-        elem.style.color = "red";
+        //check if every input field has valid input
+        for (var id in {"time-start-hours","time-start-minutes","time-stop-hours","time-stop-minutes","time-break-hours","time-break-minutes","time-travel-hours","time-travel-minutes"}) {
+        console.log(id);
+        var dom = document.getElementById(id);
+        if (dom.style.color == "red") {
         return;
       }
-
-      var num = parseInt(text);
-      if (num > ceeling || num < 0) {
-        elem.style.color = "red";
-        return;
-      }
-      //subtract start time
-      moment1.subtract(readValue("time-start-hours"), 'h')
-      moment1.subtract(readValue("time-start-minutes"), 'm')
-
-      //substract break
-      moment1.subtract(readValue("time-break-hours"), 'h')
-      moment1.subtract(readValue("time-break-minutes"), 'm')
-
-      //add travel time (half of it)
-      moment1.add(readValue("time-travel-hours") / 2, 'h')
-      moment1.add(readValue("time-travel-minutes") / 2, 'm')
-
-      //input validated
-      elem.style.color = "";
-      /*
-      //check if every input field has valid input
-      for (var id in {"time-start-hours","time-start-minutes","time-stop-hours","time-stop-minutes","time-break-hours","time-break-minutes","time-travel-hours","time-travel-minutes"}) {
-      console.log(id);
-      var dom = document.getElementById(id);
-      if (dom.style.color == "red") {
-      return;
     }
-  }
-  */
 
-  this.updateComputedTime();
+    this.updateComputedTime();
+  }
+}*/
+updateComputedTime: function() {
+
+  var readValue = function(id) {
+    if (document.getElementById(id).value == "") {
+      return 0;
+    } else {
+      return parseInt(document.getElementById(id).value);
+    }
+  };
+
+  var moment1 = moment("2000-01-01");
+
+  //set stop time
+  moment1.hours(readValue("time-stop-hours"));
+  moment1.minutes(readValue("time-stop-minutes"));
+
+  this.addedTime.minutes = moment1.format("mm");
+  this.addedTime.hours = moment1.format("HH");
+},
+checkInput: function (event) {
+  var elem = event.target;
+  var text = elem.value;
+
+  if (elem.id.search("hours") == -1) {
+    var ceeling = 60;
+  } else {
+    var ceeling = 23;
+  };
+
+  if (text.match("[^0-9]") !== null) {
+    elem.style.color = "red";
+    return;
+  }
+
+  var num = parseInt(text);
+  if (num > ceeling || num < 0) {
+    elem.style.color = "red";
+    return;
+  }
+  //subtract start time
+  moment1.subtract(readValue("time-start-hours"), 'h')
+  moment1.subtract(readValue("time-start-minutes"), 'm')
+
+  //substract break
+  moment1.subtract(readValue("time-break-hours"), 'h')
+  moment1.subtract(readValue("time-break-minutes"), 'm')
+
+  //add travel time (half of it)
+  moment1.add(readValue("time-travel-hours") / 2, 'h')
+  moment1.add(readValue("time-travel-minutes") / 2, 'm')
+
+  //input validated
+  elem.style.color = "";
+  /*
+  //check if every input field has valid input
+  for (var id in {"time-start-hours","time-start-minutes","time-stop-hours","time-stop-minutes","time-break-hours","time-break-minutes","time-travel-hours","time-travel-minutes"}) {
+  console.log(id);
+  var dom = document.getElementById(id);
+  if (dom.style.color == "red") {
+  return;
+}
+}
+*/
+
+this.updateComputedTime();
 },
 updateComputedTime: function () {
 
@@ -296,7 +297,6 @@ updateComputedTime: function () {
 .dashboard-day-detail {
   min-height: 100vh;
 }
-
 
 *[class^="col-sm-"],
 *[class^="col-xs-"] {
