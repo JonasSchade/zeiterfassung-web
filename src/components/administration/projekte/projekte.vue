@@ -30,6 +30,12 @@
         <p class="card-text">
           {{ project.description }}
         </p>
+        <p>Beteiligte Mitarbeiter:</p>
+        <ul>
+          <li v-for="user in getUsers(project.id)">
+            {{ user.firstname }} {{user.lastname}}
+          </li>
+        </ul>
       </tablistitem>
     </div>
 
@@ -45,14 +51,26 @@ export default {
   components: { tablistitem },
   data() {
     return {
-      projects: []
+      projects: [],
+      users: [JSON]
+    }
+  },
+  methods:{
+    getUsers: function(id){
+      return this.users[id.toString()];
     }
   },
   created() {
 
     this.$http.get('http://localhost:3000/api/project', {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
       this.projects = response.body;
-    }, (err) => {
+      for (var i = 0; i < this.projects.length; i++) {
+        this.$http.get('http://localhost:3000/api/project_users/'+this.projects[i].id).then(response => {
+          var id = response.url.replace("http://localhost:3000/api/project_users/","");
+          this.users[id.toString()] = response.body;
+        });
+      }
+    }).catch((err) => {
       if (err.status == 401) {
         this.$router.push("/login");
       }
@@ -65,6 +83,7 @@ export default {
 .projekte {
   min-height: 700px;
   text-align: center;
+  width: 100%;
 }
 
 .topper {

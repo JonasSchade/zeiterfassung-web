@@ -10,7 +10,7 @@
           </button>
         </div>
         <div class="col-sm-4">
-          <h3>Neues Projekt</h3>
+          <h3>Projekt bearbeiten</h3>
         </div>
       </div>
     </div>
@@ -19,19 +19,19 @@
       <div class="row align-middle">
         <label class="col-sm-offset-1 col-sm-3 text-right">Name:</label>
         <div class="col-sm-9">
-          <input name="name" type="text" class="full-width" />
+          <input name="name" type="text" class="full-width" :value="name"/>
         </div>
       </div>
       <div class="row">
         <label class="col-sm-offset-1 col-sm-3 text-right">Beschreibung:</label>
         <div class="col-sm-9">
-          <textarea name="description" class="full-width" rows="5"></textarea>
+          <textarea name="description" class="full-width" rows="5" :value="description"></textarea>
         </div>
       </div>
       <div class="row">
         <label class="col-sm-offset-1 col-sm-3 text-right">Manager:</label>
         <div class="col-sm-9">
-          <select name="manager" class="full-width" v-on:change="updateManager($event)">
+          <select name="manager" class="full-width" id="managerSelect" v-on:change="updateManager($event)">
             <option v-for="user in users" :value="user.id">{{user.firstname}} {{user.lastname}}</option>
           </select>
         </div>
@@ -78,17 +78,24 @@ export default {
     return {
       users: [],
       linkedusers: [],
+      name: "",
+      description: "",
       manager: Number,
     }
   },
   created() {
-
-
     this.$http.get('http://localhost:3000/api/user').then(response => {
       this.users = response.body;
 
       this.manager = this.users[0];
     });
+    this.$http.get('http://localhost:3000/api/project/'+this.$route.params.id).then(response => {
+      this.name = response.body.name;
+      this.description = response.body.description;
+      this.manager = this.findById(this.users, response.body.manager);
+      document.getElementById("managerSelect").selectedIndex = this.manager;
+    });
+
   },
   methods: {
     findById: function(arr, id) {

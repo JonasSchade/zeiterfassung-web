@@ -27,11 +27,17 @@
               {{ employee.firstname }} {{ employee.lastname }}
             </p>
             <p class="card-text">
-              {{ employee.departmentid }}
+              Abteilung: {{ employee.departmentid }}
             </p>
             <p class="card-text">
-              {{ employee.username }}
+              Username: {{ employee.username }}
             </p>
+            <p>Projekte:</p>
+            <ul>
+              <li v-for="project in getProjects(employee.id)">
+                {{ project.name }}
+              </li>
+            </ul>
           </tablistitem>
         </div>
       </div>
@@ -46,14 +52,32 @@ export default {
   components: { tablistitem },
   data() {
     return {
-      employees: []
+      employees: [],
+      projects: [JSON]
     }
+},
+methods:{
+  filterItems: function(items) {
+    return items.filter(function(item) {
+      return item.price > 10;
+    })
+  },
+  getProjects: function(id){
+    return this.projects[id.toString()];
+  }
 },
 created() {
 
   this.$http.get('http://localhost:3000/api/user').then(response => {
-    console.log(response);
     this.employees = response.body;
+
+    for (var i = 0; i < this.employees.length; i++) {
+      this.$http.get('http://localhost:3000/api/user_project/'+this.employees[i].id).then(response => {
+        var id = response.url.replace("http://localhost:3000/api/user_project/","");
+        this.projects[id.toString()] = response.body;
+      });
+    }
+
   });
 }
 }
