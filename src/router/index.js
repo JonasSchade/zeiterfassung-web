@@ -25,10 +25,41 @@ import neuerStandort from '@/components/administration/standort/neuerStandort'
 
 
 
-Vue.use(Router)
+Vue.use(Router);
 
-function beforeEnterFunction(to, from, next) {
-  next();
+function authPromise() {
+  return new Promise((resolve, reject) => {
+    let xhr = new XMLHttpRequest();
+
+    xhr.open("GET", 'http://localhost:3000/api/authenticate',true);
+    xhr.setRequestHeader("Authorization", 'bearer '+ window.sessionStorage.chronosAuthToken);
+
+    xhr.onreadystatechange  = () => {
+      if(xhr.readyState == XMLHttpRequest.DONE) {
+        if(JSON.parse(xhr.response).loggedin) {
+          resolve();
+        } else {
+          reject();
+        }
+      }
+    }
+
+    xhr.send();
+  });
+}
+
+async function auth() {
+  return await authPromise();
+}
+
+
+function checkIfLoggedIn(to, from, next) {
+  auth().then(result => {
+    next();
+  }, () => {
+    next('/');
+  });
+
 }
 
 
@@ -37,86 +68,86 @@ export default new Router({
     {
       path: '/',
       redirect: '/login',
-      beforeEnter: beforeEnterFunction,
+      beforeEnter: checkIfLoggedIn,
     },
     {
       path: '*',
       component: {
         template: '<p>Page Not Found</p>'
       },
-      beforeEnter: beforeEnterFunction,
+      beforeEnter: checkIfLoggedIn,
     },
     {
       path: '/dashboard',
       name: 'dashboard',
       component: dashboard,
-      beforeEnter: beforeEnterFunction,
+      beforeEnter: checkIfLoggedIn,
     },
     {
       path: '/dashboard/day/:day',
       name: 'dashboard-day-detail',
       component: dashboardDayDetail,
-      beforeEnter: beforeEnterFunction,
+      beforeEnter: checkIfLoggedIn,
     },
     {
       path: '/administration',
       name: 'administration',
       component: administration,
-      beforeEnter: beforeEnterFunction,
+      beforeEnter: checkIfLoggedIn,
     },
     {
       path: '/mitarbeiter',
       name: 'mitarbeiter',
       component: mitarbeiter,
-      beforeEnter: beforeEnterFunction,
+      beforeEnter: checkIfLoggedIn,
     },
     {
       path: '/projekte',
       name: 'projekte',
       component: projekte,
-      beforeEnter: beforeEnterFunction,
+      beforeEnter: checkIfLoggedIn,
     },
     {
       path: '/administration/arbeitsplaene',
       name: 'arbeitsplaene',
       component: arbeitsplaene,
-      beforeEnter: beforeEnterFunction,
+      beforeEnter: checkIfLoggedIn,
     },
     {
       path: '/administration/feiertage',
       name: 'feiertage',
       component: feiertage,
-      beforeEnter: beforeEnterFunction,
+      beforeEnter: checkIfLoggedIn,
     },
     {
       path: '/administration/laender',
       name: 'laender',
       component: laender,
-      beforeEnter: beforeEnterFunction,
+      beforeEnter: checkIfLoggedIn,
     },
     {
       path: '/administration/standorte',
       name: 'standorte',
       component: standorte,
-      beforeEnter: beforeEnterFunction,
+      beforeEnter: checkIfLoggedIn,
     },
     {
       path: '/administration/abteilungen',
       name: 'abteilungen',
       component: abteilungen,
-      beforeEnter: beforeEnterFunction,
+      beforeEnter: checkIfLoggedIn,
     },
     {
       path: '/administration/projekte',
       name: 'adprojekte',
       component: adprojekte,
-      beforeEnter: beforeEnterFunction,
+      beforeEnter: checkIfLoggedIn,
     },
     {
       path: '/administration/projekte/new',
       name: 'adprojektneu',
       component: adprojektneu,
-      beforeEnter: beforeEnterFunction,
+      beforeEnter: checkIfLoggedIn,
     },
     {
       path: '/administration/projekte/edit/:id',
@@ -127,13 +158,13 @@ export default new Router({
       path: '/administration/benutzer',
       name: 'benutzer',
       component: benutzer,
-      beforeEnter: beforeEnterFunction,
+      beforeEnter: checkIfLoggedIn,
     },
     {
       path: '/newProject',
       name: 'newProject',
       component: newProject,
-      beforeEnter: beforeEnterFunction,
+      beforeEnter: checkIfLoggedIn,
     },
     {
       path: '/login',
@@ -144,37 +175,37 @@ export default new Router({
       path: '/administration/neueAbteilung',
       name: 'neueAbteilung',
       component: neueAbteilung,
-      beforeEnter: beforeEnterFunction,
+      beforeEnter: checkIfLoggedIn,
     },
     {
       path: '/administration/neuesLand',
       name: 'neuesLand',
       component: neuesLand,
-      beforeEnter: beforeEnterFunction,
+      beforeEnter: checkIfLoggedIn,
     },
     {
       path: '/administration/neuerArbeitsplan',
       name: 'neuerArbeitsplan',
       component: neuerArbeitsplan,
-      beforeEnter: beforeEnterFunction,
+      beforeEnter: checkIfLoggedIn,
     },
     {
       path: '/administration/neuerBenutzer',
       name: 'neuesBenutzer',
       component: neuerBenutzer,
-      beforeEnter: beforeEnterFunction,
+      beforeEnter: checkIfLoggedIn,
     },
     {
       path: '/administration/neuerFeiertag',
       name: 'neuerFeiertag',
       component: neuerFeiertag,
-      beforeEnter: beforeEnterFunction,
+      beforeEnter: checkIfLoggedIn,
     },
     {
       path: '/administration/neuerStandort',
       name: 'neuerStandort',
       component: neuerStandort,
-      beforeEnter: beforeEnterFunction,
+      beforeEnter: checkIfLoggedIn,
     }
   ]
 })
