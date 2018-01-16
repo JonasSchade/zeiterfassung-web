@@ -74,22 +74,38 @@
           </div>
           <!--Bootstrap Progress bar-->
           <div class="float">
-          <div class="progress ">
-            <span>Verteilte Stunden</span>
-            <span>{{computedTime.hours}}:{{computedTime.minutes}} h</span>
-            <div class="progress-bar" role="progressbar" style="width: 15%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
-            <span>Noch zu verteilende Stunden:</span>
-            <span>{{computedTime.hours}}:{{computedTime.minutes}} h</span>
-            <div class="progress-bar" role="progressbar" style="width: 15%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+            <div class="progress ">
+              <div>
+                <div class="row">
+                  <span>Verteilte Stunden</span>
+                  <span>{{computedTime.hours}}:{{computedTime.minutes}} h</span>
+                </div>
+                <div class="progress-bar" role="progressbar" style="width: 15%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+              <div>
+                <div class="row">
+                  <span>Noch zu verteilende Stunden:</span>
+                  <span>{{computedTime.hours}}:{{computedTime.minutes}} h</span>
+                </div>
+                <div class="progress-bar" role="progressbar" style="width: 5%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+            </div>
           </div>
-        </div>
         </div>
       </div>
       <div>
-        <div class="tablist" role="tablist">
-          <tablistitem v-for="project in projects" :key="project.id" :contentid="project.id" :contentname="project.name">
-            <b-col sm="9"><b-form-input :id="project.id" type="range"></b-form-input></b-col>
-          </tablistitem>
+        <div>
+          <div v-for="project in projects" :key="project.id" :contentid="project.id" :contentname="project.name" class="eingabe">
+            <div>
+              {{project.name}}
+            </div>
+            <p>{{project.firstname}}{{project.lastname}}
+            <p>{{project.description}}</p>
+            <input type="text" :id="project.id+hours" @input="checkInput" placeholder="hh" maxlength="2" size="2">
+            <span>:</span>
+            <input type="text" :id="project.id+minutes" @input="checkInput" placeholder="mm" maxlength="2" size="2">
+            <span>h</span>
+          </div>
         </div>
       </div>
     </div>
@@ -97,11 +113,8 @@
 </template>
 
 <script>
-import tablistitem from '@/components/administration/tablistitem'
-
 export default {
   name: 'dashboard-day-detail',
-  components: { tablistitem },
   data: function (){
     return {
       projects: [],
@@ -112,9 +125,17 @@ export default {
     };
   },
   created() {
-    this.$http.get('http://localhost:3000/api/project_users/1').then(response => {
-      var id = response.url.replace("http://localhost:3000/api/project_users/","");
+
+    this.$http.get('http://localhost:3000/api/project').then(response => {
       this.projects = response.body;
+
+      for (var i = 0; i < this.projects.length; i++) {
+        this.$http.get('http://localhost:3000/api/project_users/'+this.projects[i].id).then(response => {
+          var id = response.url.replace("http://localhost:3000/api/project_users/","");
+          this.users[id.toString()] = response.body;
+        });
+      }
+
     });
   },
   computed: {
@@ -254,5 +275,12 @@ input {
 
 label{
   padding-left: 15px !important;
+}
+
+.eingabe{
+  border-bottom: lightgrey 1px solid;
+  border-top: rgba(0,0,0,0) 1px solid;
+  transition: ease-in-out border-bottom .2s;
+  padding: 25px
 }
 </style>
