@@ -78,7 +78,7 @@
               <div>
                 <div class="row">
                   <span>Verteilte Stunden</span>
-                  <span>{{computedTime.hours}}:{{computedTime.minutes}} h</span>
+                  <span>{{addedTime.hours}}:{{addedTime.minutes}} h</span>
                 </div>
                 <div class="progress-bar" role="progressbar" style="width: 15%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
               </div>
@@ -101,9 +101,9 @@
             </div>
             <p>{{project.firstname}}{{project.lastname}}
             <p>{{project.description}}</p>
-            <input type="text" :id="project.id+hours" @input="checkInput" placeholder="hh" maxlength="2" size="2">
+            <input type="text" :id="project.id+hours" @input="checkTime" placeholder="hh" maxlength="2" size="2">
             <span>:</span>
-            <input type="text" :id="project.id+minutes" @input="checkInput" placeholder="mm" maxlength="2" size="2">
+            <input type="text" :id="project.id+minutes" @input="checkTime" placeholder="mm" maxlength="2" size="2">
             <span>h</span>
           </div>
         </div>
@@ -117,11 +117,16 @@ export default {
   name: 'dashboard-day-detail',
   data: function (){
     return {
-      projects: [],
+      projects: ['test'],
       computedTime: {
         minutes: "00",
         hours: "00",
       },
+      addedTime: {
+        minutes: "00",
+        hours: "00",
+      },
+      projecttimes: []
     };
   },
   created() {
@@ -144,6 +149,49 @@ export default {
     },
   },
   methods: {
+    checkTime: function(event){
+      var elem = event.target;
+      var text = elem.value;
+
+      if (elem.id.search("hours") == -1) {
+        var ceeling = 60;
+      } else {
+        var ceeling = 23;
+      };
+
+      if (text.match("[^0-9]") !== null) {
+        elem.style.color = "red";
+        return;
+      }
+
+      var num = parseInt(text);
+      if (num > ceeling || num < 0) {
+        elem.style.color = "red";
+        return;
+      }
+
+      //input validated
+      elem.style.color = "";
+      this.updateAddedTime();
+    },
+    updateAddedTime: function(){
+      var readValue = function (id) {
+        if (document.getElementById(id).value == "") {
+          return 0;
+        } else {
+          return parseInt(document.getElementById(id).value);
+        }
+      };
+
+      var moment1 = moment("2000-01-01");
+
+      //set stop time
+      moment1.hours(readValue("time-stop-hours"));
+      moment1.minutes(readValue("time-stop-minutes"));
+
+      this.addedTime.minutes = moment1.format("mm");
+      this.addedTime.hours = moment1.format("HH");
+    },
     checkInput: function (event) {
       var elem = event.target;
       var text = elem.value;
@@ -275,12 +323,5 @@ input {
 
 label{
   padding-left: 15px !important;
-}
-
-.eingabe{
-  border-bottom: lightgrey 1px solid;
-  border-top: rgba(0,0,0,0) 1px solid;
-  transition: ease-in-out border-bottom .2s;
-  padding: 25px
 }
 </style>
