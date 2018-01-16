@@ -83,6 +83,7 @@ export default {
   },
   created() {
 
+
     this.$http.get('http://localhost:3000/api/user').then(response => {
       this.users = response.body;
 

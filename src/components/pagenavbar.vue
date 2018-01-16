@@ -5,43 +5,47 @@
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
           <i class="fa fa-bars" aria-hidden="true"></i>
         </button>
-        <router-link to="/login">
-            <img class="icon" src="\src\assets\Chronos_Icon.png" />
-        </router-link>
-        <!--<span class="navbar-brand">Zeiterfassung</span>-->
+        <span class="navbar-brand">
+          <img class="icon" src="\src\assets\Chronos_Icon.png" />
+        </span>
       </div>
 
       <!-- Collect the nav links, forms, and other content for toggling -->
-      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" v-if="loggedin">
         <ul class="nav navbar-nav navbar-right">
           <li v-bind:class="{active: activePage == 'dashboard'}">
             <router-link to="/dashboard">
               <i class="fa fa-calendar" aria-hidden="true" title="Dashboard"></i>Dashboard
             </router-link>
           </li>
-          <li v-bind:class="{active: activePage == 'mitarbeiter'}">
+          <li v-bind:class="{active: activePage == 'mitarbeiter'}" v-if="departmentmanager">
             <router-link to="/mitarbeiter">
               <i class="fa fa-users" aria-hidden="true" title="Mitarbeiter"></i>Mitarbeiter
             </router-link>
           </li>
-          <li v-bind:class="{active: activePage == 'projekte'}">
+          <li v-bind:class="{active: activePage == 'projekte'}" v-if="projectmanager">
             <router-link to="/projekte">
               <i class="fa fa-list-ul" aria-hidden="true" title="Projekte"></i>Projekte
             </router-link>
           </li>
-          <li v-bind:class="{active: activePage == 'administration'}">
+          <li v-bind:class="{active: activePage == 'administration'}" v-if="admin">
             <router-link to="/administration">
               <i class="fa fa-server" aria-hidden="true" title="Administration"></i>Administration
             </router-link>
           </li>
           <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-              <i class="fa fa-user" aria-hidden="true"></i>{{user}} <span class="caret"></span>
+              <i class="fa fa-user" aria-hidden="true"></i>{{userdisplayname}} <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
-              <li><router-link to="*">
-                <i class="fa fa-sign-out" aria-hidden="true"></i>Logout
-              </router-link></li>
+              <li>
+                <router-link to="/settings">
+                  <i class="fa fa-gear" aria-hidden="true"></i>Einstellungen
+                </router-link>
+                <a v-on:click="logout()">
+                  <i class="fa fa-sign-out" aria-hidden="true"></i>Logout
+                </a>
+              </li>
             </ul>
           </li>
         </ul>
@@ -56,15 +60,52 @@ export default {
   data: function () {
     return {
       activePage: 'dashboard',
-      user: 'Dominik',
+      userdisplayname: 'Dominik',
+      loggedin: false,
+      admin: false,
+      projectmanager: false,
+      departmentmanager: false,
     };
   },
   created: function () {
     this.activePage= this.$route.fullPath.split("/")[1];
+    this.updateRestrictions();
   },
   watch: {
     '$route' (to, from) {
       this.activePage= to.fullPath.split("/")[1];
+      this.updateRestrictions();
+    }
+  },
+  methods: {
+    updateRestrictions: function() {
+      this.userdisplayname = 'Dominik';
+      this.loggedin = false;
+      this.admin = false;
+      this.projectmanager = false;
+      this.departmentmanager = false;
+
+      if (window.sessionStorage.chronosAuthToken == null) {
+        return;
+      }
+
+      this.$http.get("http://localhost:3000/api/authenticate", {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
+        //api says no
+        if (!response.body.loggedin) {
+          return;
+        }
+
+        this.userdisplayname = response.body.userdisplayname;
+        this.loggedin = response.body.loggedin;
+        this.admin = response.body.admin;
+        this.projectmanager = response.body.projectmanager;
+        this.departmentmanager = response.body.departmentmanager;
+
+      });
+    },
+    logout: function() {
+      window.sessionStorage.chronosAuthToken = null;
+      this.$router.push("/");
     }
   }
 }
