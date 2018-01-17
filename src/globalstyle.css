@@ -49,6 +49,10 @@ select, input[type="text"], input[type="password"] {
  transition: ease-in-out border-bottom .2s;
 }
 
+input[type="text"]:invalid, input[type="password"]:invalid {
+  border-bottom: #cc0000 1px solid;
+}
+
 select:focus, input[type="text"]:focus, input[type="password"]:focus {
  border-bottom: #003452 1px solid;
 }

@@ -156,7 +156,8 @@ export default new Router({
     {
       path: '/administration/projekte/edit/:id',
       name: 'adprojektedit',
-      component: adprojektedit
+      component: adprojektedit,
+      beforeEnter: checkIfLoggedIn,
     },
     {
       path: '/administration/benutzer',

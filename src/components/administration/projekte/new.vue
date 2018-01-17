@@ -13,27 +13,28 @@
       <div class="row align-middle">
         <label class="col-sm-offset-1 col-sm-3 text-right">Name:</label>
         <div class="col-sm-9">
-          <input name="name" type="text" v-model="name" class="full-width" />
+          <input pattern="([A-Za-z0-9_.]|-){5,}" maxlength="40" type="text" v-model="name" class="full-width" />
         </div>
       </div>
       <div class="row">
         <label class="col-sm-offset-1 col-sm-3 text-right">Beschreibung:</label>
         <div class="col-sm-9">
-          <textarea name="description" v-model="description" class="full-width" rows="5"></textarea>
+          <textarea maxlength="160" cols="40" rows="5" v-model="description" class="full-width"></textarea>
         </div>
       </div>
       <div class="row">
         <label class="col-sm-offset-1 col-sm-3 text-right">Manager:</label>
         <div class="col-sm-9">
-          <select name="manager" class="full-width" v-on:change="updateManager($event)">
-            <option v-for="user in allusers" :value="user.id">{{user.firstname}} {{user.lastname}}</option>
+          <select name="manager" class="full-width" v-on:change="updateManager($event)" id="managerSelect">
+            <option value="" disabled hidden selected>Aus zugewiesenen Mitarbeitern wählen</option>
+            <option v-for="user in linkedusers" :value="user.id">{{user.firstname}} {{user.lastname}}</option>
           </select>
         </div>
       </div>
       <div class="row">
         <label class="col-sm-offset-1 col-sm-3 text-right">Zugewiesene Mitarbeiter:</label>
         <select class="col-sm-6" id="addLinkedUserSelect">
-          <option v-for="user in allusers.filter(user => (!(linkedusers.includes(user)) && (user != manager)))" :value="user.id">{{user.firstname}} {{user.lastname}}</option>
+          <option v-for="user in allMinusLinkedUsers()" :value="user.id">{{user.firstname}} {{user.lastname}}</option>
         </select>
         <div class="col-sm-3">
           <button  type="button" class="full-width" v-on:click="addLinkedUser($event)">
@@ -88,7 +89,7 @@ export default {
     this.$http.get('http://localhost:3000/api/user', {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
       this.allusers = response.body;
 
-      this.manager = this.allusers[0];
+      this.manager = {};
     });
   },
   methods: {
@@ -106,6 +107,11 @@ export default {
     addLinkedUser: function(el) {
 
       var selectedUser = $("#addLinkedUserSelect")[0];
+
+      if (selectedUser.options.length == 0) {
+        return 0;
+      }
+
       selectedUser = selectedUser.options[selectedUser.selectedIndex].value;
 
       if (selectedUser == -1) {
@@ -116,23 +122,31 @@ export default {
       var index = this.findById(this.allusers, selectedUser);
 
       this.linkedusers.push(this.allusers[index]);
+
+      if (this.linkedusers.length == 1) {
+        $("#managerSelect")[0].selectedIndex = 1;
+        this.manager = this.linkedusers[0];
+      }
     },
     removedLinkedUser: function(el) {
       var index = this.findById(this.linkedusers, el.srcElement.getAttribute("value"));
 
+      //we have to make sure the moving doesn't fuck it all up
+      //removing a linkedUser -> array shifts but selectedIndex stays same -> option one above current will be selected
+      var selIndex = $('#managerSelect')[0].selectedIndex;
+      if (index < selIndex - 1) {
+        $('#managerSelect')[0].selectedIndex = selIndex - 1;
+      };
+
       this.linkedusers.splice(index,1);
+      if (this.linkedusers.length == 0) {
+        $("#managerSelect")[0].selectedIndex = 0;
+      }
     },
     updateManager: function(el) {
-      var index = this.findById(this.allusers, el.srcElement.options[el.srcElement.selectedIndex].value);
+      var index = this.findById(this.linkedusers, el.srcElement.options[el.srcElement.selectedIndex].value);
 
-      this.manager = this.allusers[index];
-
-      //remove new manager from linked users
-      var luIndex = this.findById(this.linkedusers, this.manager.id);
-      if (luIndex != -1) {
-
-        this.linkedusers.splice(luIndex,1);
-      }
+      this.manager = this.linkedusers[index];
     },
     sendHTTP: function() {
 
@@ -151,7 +165,7 @@ export default {
       //POST Request to add project
       this.$http.post("http://localhost:3000/api/project", bodyobj, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
 
-        //POST Request to add linked users to newly created project TODO
+        //POST Request to add linked users to newly created project
         this.$http.post("http://localhost:3000/api/project_users/"+response.body.id, this.linkedusers, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
           //go back to projects
           this.$router.push('/administration/projekte');
@@ -181,7 +195,23 @@ export default {
         return false;
       }
 
+      if (this.linkedusers.length == 0) {
+        alert("Dem Projekt muss mindestens ein MItarbeiter zugeordnet sein.");
+        return false;
+      }
+
       return true;
+    },
+    allMinusLinkedUsers() {
+      var a = this.allusers;
+      var l = this.linkedusers;
+
+      console.log(this.allusers);
+      console.log(this.linkedusers);
+
+      return a.filter(au => (
+        l.filter(lu => (lu.id == au.id)).length == 0
+      ));
     }
   }
 }
@@ -193,7 +223,6 @@ export default {
     min-height: 100vh;
     text-align: center;
   }
-
 
   .topper {
     margin-bottom: 20px;
@@ -227,15 +256,11 @@ export default {
   .container-flex label {
     margin: 0px;
   }
-/*
-  *[class^="col-sm-"] {
-    padding-left: 10px;
-    padding-right: 10px;
-  }
-*/
+
   #linkedusers {
     padding: 0px;
   }
+
   #linkedusers ul {
     list-style-type: none;
     padding: 0px;
@@ -243,7 +268,7 @@ export default {
     overflow-y: scroll;
   }
 
-  li {
+  #linkedusers ul li {
     width: 100%;
   }
 
@@ -252,9 +277,4 @@ export default {
     margin: 0px;
     margin-bottom: 10px;
   }
-/*
-  .container-flex input, .container-flex button, .container-flex select {
-    margin: 10px;
-  }
-  */
 </style>
