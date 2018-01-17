@@ -69,6 +69,7 @@ export default {
     this.$http.get('http://localhost:3000/api/user', {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
       this.allusers = response.body;
     });
+
   },
   methods: {
     getUsers: function(id){
