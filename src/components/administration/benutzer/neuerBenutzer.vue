@@ -1,6 +1,6 @@
 <template>
 <div class="neuerBenutzer">
-    <div class="container">
+    <div id="container">
       <div class="topper">
         <div class="row">
           <div class="col-sm-4 text-left">

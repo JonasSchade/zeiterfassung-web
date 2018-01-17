@@ -22,6 +22,7 @@ import neuerArbeitsplan from '@/components/administration/arbeitsplan/neuerArbei
 import neuerFeiertag from '@/components/administration/feiertag/neuerFeiertag'
 import neuerBenutzer from '@/components/administration/benutzer/neuerBenutzer'
 import neuerStandort from '@/components/administration/standort/neuerStandort'
+import settings from '@/components/settings'
 
 
 
@@ -210,6 +211,12 @@ export default new Router({
       path: '/administration/neuerStandort',
       name: 'neuerStandort',
       component: neuerStandort,
+      beforeEnter: checkIfLoggedIn,
+    },
+    {
+      path: '/settings',
+      name: 'settings',
+      component: settings,
       beforeEnter: checkIfLoggedIn,
     }
   ]
