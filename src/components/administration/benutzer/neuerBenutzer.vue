@@ -128,10 +128,10 @@ export default {
       console.log(obj);
 
       //POST Request
-      this.$http.post("http://localhost:3000/api/user/", {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}, body: obj}).then(response => {
-
+      this.$http.post("http://localhost:3000/api/user/", obj, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
+        this.userId = response.body.userid;
       });
-
+/*
       this.$http.get('http://localhost:3000/api/user', {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
         this.users = response.body;
         console.log(this.users);
@@ -142,12 +142,13 @@ export default {
           this.userId = this.users[i].id;
         }
       }
+      */
       var logobj = new Object();
       logobj.userid = this.userId;
       logobj.username = formArr[2].value;
       logobj.password = formArr[3].value;
       console.log(logobj);
-      this.$http.post("http://localhost:3000/api/logdata", {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}, body: logobj}).then(response => {
+      this.$http.post("http://localhost:3000/api/logdata", logobj, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
         this.$router.push('/administration/benutzer')
       }, function(response) {
         return;
