@@ -228,9 +228,6 @@ export default {
       var a = this.allusers;
       var l = this.linkedusers;
 
-      console.log(this.allusers);
-      console.log(this.linkedusers);
-
       return a.filter(au => (
         l.filter(lu => (lu.id == au.id)).length == 0
       ));
