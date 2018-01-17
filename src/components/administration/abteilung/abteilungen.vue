@@ -1,24 +1,22 @@
 <template>
   <div class="abteilungen">
       <div class="container">
-        <div class="topper">
-          <div class="row">
-            <div class="col-sm-4 text-left">
-              <button v-on:click="$router.push('/administration/')">
-                <i class="fa fa-chevron-left" aria-hidden="true"></i>
-                Administration
-              </button>
-            </div>
-            <div class="col-sm-4">
-              <h3>Abteilungen</h3>
-            </div>
-            <div class="col-sm-4 text-right">
-              <button id="btn_new_project" v-on:click="$router.push('/administration/neueAbteilung')">
-                <i class="fa fa-plus" aria-hidden="true"></i>
-                Neue Abteilung
-               </button>
-             </div>
+        <div class="row topper">
+          <div class="col-sm-4 text-left">
+            <button v-on:click="$router.push('/administration/')">
+              <i class="fa fa-chevron-left" aria-hidden="true"></i>
+              Administration
+            </button>
           </div>
+          <div class="col-sm-4">
+            <h3>Abteilungen</h3>
+          </div>
+          <div class="col-sm-4 text-right">
+            <button id="btn_new_project" v-on:click="$router.push('/administration/neueAbteilung')">
+              <i class="fa fa-plus" aria-hidden="true"></i>
+              Neue Abteilung
+             </button>
+           </div>
         </div>
 
         <div class="tablist" role="tablist">
@@ -119,5 +117,9 @@ export default {
 .topper h3 {
   margin-bottom: 5px;
   margin-top: 5px;
+}
+
+.topper div[class^="col-sm"] {
+  padding: 0px;
 }
 </style>
