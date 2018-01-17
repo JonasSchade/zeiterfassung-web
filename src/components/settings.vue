@@ -26,7 +26,7 @@
       <div class="row">
         <label class="col-sm-offset-1 col-sm-3 text-right" for="password_alt">Altes Passwort:</label>
         <div class="col-sm-9">
-          <input type="password" class="full-width" name="password_alt" id="password_alt" placeholder="Altes Passwort">
+          <input type="password" class="full-width" name="password_alt" id="password_alt" placeholder="Altes Passwort"  v-model="password_alt">
         </div>
       </div>
       <div class="row">
@@ -35,20 +35,22 @@
       <div class="row">
         <label class="col-sm-offset-1 col-sm-3 text-right" for="password_neu">Neues Passwort:</label>
         <div class="col-sm-9">
-          <input type="password" class="full-width" name="password_neu" id="password_neu" placeholder="Neues Passwort">
+          <input type="password" class="full-width" name="password_neu" id="password_neu" placeholder="Neues Passwort"  v-model="password_neu">
         </div>
       </div>
       <div class="row">
         <label for="password_repeat" class="col-sm-offset-1 col-sm-3 text-right">Passwort bestätigen:</label>
         <div class="col-sm-9">
-          <input type="password" class="full-width" name="password_repeat" id="password_repeat" placeholder="Passwort bestätigen">
+          <input type="password" class="full-width" name="password_repeat" id="password_repeat" placeholder="Passwort bestätigen"  v-model="password_repeat">
+          <span id="warning" v-if="password_neu != password_repeat">Stimmt nicht mit neuem Passwort überein!</span>
         </div>
       </div>
     </form>
     <router-link to="/dashboard">
-      <button class="btn_confirm"><i class="fa fa-check"></i> Passwort ändern</button>
+      <button :disabled='!isComplete' class="btn_confirm"><i class="fa fa-check" v-on:click="setPassword()"></i> Passwort ändern</button>
       <button class="btn_confirm"><i class="fa fa-times"></i> Abbrechen</button>
     </router-link>
+    {{password_alt}} {{password_neu}} {{password_repeat}}
   </div>
 </div>
 </template>
@@ -57,18 +59,36 @@
 export default {
   name: 'settings',
   methods: {
+    setPassword: function(){
+      var obj = new Object();
+      obj.username = this.benutzer;
+      obj.password = this.password_neu;
+      obj.userid = this.userId;
 
+      this.$http.put('http://localhost:3000/api/logdata/'+this.userId, obj, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
+
+      });
+    }
   },
   data: function() {
     return {
-      benutzer: ""
+      benutzer: "",
+      userId: "",
+      password_alt: "",
+      password_neu: "",
+      password_repeat: ""
     }
   },
   created() {
     this.$http.get('http://localhost:3000/api/authenticate', {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
       this.benutzer = response.body.username;
     });
+  },
+  computed: {
+  isComplete () {
+    return this.password_alt && this.password_neu && this.password_repeat && this.password_neu == this.password_repeat;
   }
+}
 }
 </script>
 
@@ -139,5 +159,11 @@ span{
 
 #username_container{
     text-align: right;
+}
+
+#warning{
+  font-weight: lighter;
+  font-size: 10px;
+  color: red;
 }
 </style>
