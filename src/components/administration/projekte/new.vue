@@ -64,7 +64,7 @@
         <div class="col-xs-6">
           <button type="button" v-on:click="sendHTTP()">
             <i class="fa fa-check" aria-hidden="true"></i>
-            Hinzufügen
+            Bestätigen
           </button>
         </div>
       </div>
