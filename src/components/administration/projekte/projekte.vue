@@ -24,18 +24,26 @@
 
     <div class="tablist" role="tablist">
       <tablistitem v-for="project in projects" :key="project.id" :contentid="project.id" :contentname="project.name">
-        <p class="card-text">
-          {{ project.manager }}
-        </p>
-        <p class="card-text">
-          {{ project.description }}
-        </p>
-        <p>Beteiligte Mitarbeiter:</p>
-        <ul>
-          <li v-for="user in getUsers(project.id)">
-            {{ user.firstname }} {{user.lastname}}
-          </li>
-        </ul>
+        <div class="conatiner-flex">
+          <div class="row">
+            <div class="col-sm-6">
+              <h4>Manager:</h4>
+              <p class="card-text">{{ project.firstname }} {{ project.lastname }}</p>
+              <hr/>
+              <h4>Beschreibung:</h4>
+              <p class="card-text">{{ project.description }}</p>
+            </div>
+            <div class="col-sm-6">
+              <hr class="hidden-sm hidden-md hidden-lg hidden-xl"/>
+              <h4>Zugewiesene Mitarbeiter:</h4>
+              <ul class="userlist">
+                <li class="row" v-for="user in getUsers(project.id)">
+                  <div class="col-xs-12">{{user.firstname}} {{user.lastname}}</div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </tablistitem>
     </div>
 
@@ -52,7 +60,7 @@ export default {
   data() {
     return {
       projects: [],
-      users: [JSON]
+      users: JSON
     }
   },
   methods:{
@@ -101,4 +109,20 @@ export default {
   padding-right: 5px;
 }
 
+.userlist {
+  list-style-type: none;
+  padding: 0px;
+  max-height: 200px;
+  overflow-y: scroll;
+}
+
+.userlist li {
+  width: 100%;
+}
+
+.userlist .row {
+  padding: 0px;
+  margin: 0px;
+  margin-bottom: 10px;
+}
 </style>
