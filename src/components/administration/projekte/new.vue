@@ -122,12 +122,19 @@ export default {
     removedLinkedUser: function(el) {
       var index = this.findById(this.linkedusers, el.srcElement.getAttribute("value"));
 
-      this.linkedusers.splice(index,1)
+      this.linkedusers.splice(index,1);
     },
     updateManager: function(el) {
       var index = this.findById(this.allusers, el.srcElement.options[el.srcElement.selectedIndex].value);
 
       this.manager = this.allusers[index];
+
+      //remove new manager from linked users
+      var luIndex = this.findById(this.linkedusers, this.manager.id);
+      if (luIndex != -1) {
+
+        this.linkedusers.splice(luIndex,1);
+      }
     },
     sendHTTP: function() {
 
