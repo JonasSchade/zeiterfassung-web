@@ -71,45 +71,62 @@
                 </div>
               </form>
             </div>
-            <!--
-            <div class="float">
-              <div class="progress ">
-                <div>
-                  <div class="row">
-                    <span>Verteilte Stunden</span>
-                    <span>{{addedTime.hours}}:{{addedTime.minutes}} h</span>
-                  </div>
-                  <div class="progress-bar" role="progressbar" style="width: 15%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-                <div>
-                  <div class="row">
-                    <span>Noch zu verteilende Stunden:</span>
-                    <span>{{computedTime.hours}}:{{computedTime.minutes}} h</span>
-                  </div>
-                  <div class="progress-bar" role="progressbar" style="width: 5%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-              </div>
+          </div>
+        </div>
+        <div class="card col-xs-10">
+          <div>
+            <div class="row">
+              <span class="text-left">So viel können sie noch verteilen</span>
+              <span class="text-right">5h</span>
             </div>
-          -->
+            <div class="progress">
+              <div class="progress-bar" style="width:90%"></div>
+            </div>
+          </div>
+          <div>
+            <div class="row">
+              <span class="text-left">So viel haben sie schon verteilt</span>
+              <span class="text-right">5h</span>
+            </div>
+            <div class="progress">
+              <div class="progress-bar" style="width:10%"></div>
+            </div>
           </div>
         </div>
       </div>
-      <!--
+      <div>
+        <p>
+          Tragen sie die Zeiten für die jeweiligen Projekte ein:
+        </p>
+      </div>
+    </div>
+    <div v-for="project in projects" class="inputcontainer">
+      <div class="containerheader">
+        <h2>{{projects.name}}</h2>
+      </div>
       <div>
         <div>
-          <div v-for="project in projects" :key="project.id" :contentid="project.id" :contentname="project.name" class="eingabe">
-            <div>
-              {{project.name}}
-            </div>
-            <p>{{project.firstname}}{{project.lastname}}
-              <p>{{project.description}}</p>
-              <input type="text" :id="project.id+hours" @input="checkTime" placeholder="hh" maxlength="2" size="2">
-              <span>:</span>
-              <input type="text" :id="project.id+minutes" @input="checkTime" placeholder="mm" maxlength="2" size="2">
-              <span>h</span>
-            </div>
+          Beschreibung:
+          <span>
+            {{projects.description}}
+          </span>
+        </div>
+        Projektleiter:
+        <span>
+          {{projects.firstname}} {{projects.lastname}}
+        </span>
+        Gib die Zeit ein:
+        <div class="">
+          <input type="number" :id="project.id" placeholder="hh" maxlength="2" size="2">
+          <span>:</span>
+          <input type="number" :id="project.id" placeholder="mm" maxlength="2" size="2">
+          <div>
+            <button id="btn_new_project">
+              <i class="fa fa-plus" aria-hidden="true"></i>
+              Hinzufügen
+            </button>
           </div>
-        </div>-->
+        </div>
       </div>
     </div>
   </div>
@@ -120,29 +137,17 @@ export default {
   name: 'dashboard-day-detail',
   data: function() {
     return {
-      //projects: ['test'],
+      projects: [],
       computedTime: {
         minutes: "00",
         hours: "00",
-      }/*,
-      addedTime: {
-        minutes: "00",
-        hours: "00",
       },
-      projecttimes: []*/
+      addedTime
     };
   },
   created() {
-    this.$http.get('http://localhost:3000/api/project', {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
+    this.$http.get('http://localhost:3000/api/project/2', {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
       this.projects = response.body;
-
-      for (var i = 0; i < this.projects.length; i++) {
-        this.$http.get('http://localhost:3000/api/project_users/'+this.projects[i].id).then(response => {
-          var id = response.url.replace("http://localhost:3000/api/project_users/","");
-          this.users[id.toString()] = response.body;
-        });
-      }
-
     });
   },
   computed: {
@@ -150,8 +155,8 @@ export default {
       return moment(this.$route.params.day).locale("de").format("DD.MMMM YYYY");
     },
   },
-  methods: {/*
-    checkInput: function(event) {
+  methods: {
+    checkInput: function (event) {
       var elem = event.target;
       var text = elem.value;
 
@@ -171,90 +176,32 @@ export default {
         elem.style.color = "red";
         return;
       }
+      //subtract start time
+      moment1.subtract(readValue("time-start-hours"), 'h')
+      moment1.subtract(readValue("time-start-minutes"), 'm')
+
+      //substract break
+      moment1.subtract(readValue("time-break-hours"), 'h')
+      moment1.subtract(readValue("time-break-minutes"), 'm')
+
+      //add travel time (half of it)
+      moment1.add(readValue("time-travel-hours") / 2, 'h')
+      moment1.add(readValue("time-travel-minutes") / 2, 'm')
 
       //input validated
       elem.style.color = "";
-      this.updateAddedTime();
-    },
-    updateAddedTime: function(){
-      var readValue = function (id) {
-        //check if every input field has valid input
-        for (var id in {"time-start-hours","time-start-minutes","time-stop-hours","time-stop-minutes","time-break-hours","time-break-minutes","time-travel-hours","time-travel-minutes"}) {
-        console.log(id);
-        var dom = document.getElementById(id);
-        if (dom.style.color == "red") {
-        return;
-      }
+      /*
+      //check if every input field has valid input
+      for (var id in {"time-start-hours","time-start-minutes","time-stop-hours","time-stop-minutes","time-break-hours","time-break-minutes","time-travel-hours","time-travel-minutes"}) {
+      console.log(id);
+      var dom = document.getElementById(id);
+      if (dom.style.color == "red") {
+      return;
     }
-
-    this.updateComputedTime();
   }
-}*/
-updateComputedTime: function() {
+  */
 
-  var readValue = function(id) {
-    if (document.getElementById(id).value == "") {
-      return 0;
-    } else {
-      return parseInt(document.getElementById(id).value);
-    }
-  };
-
-  var moment1 = moment("2000-01-01");
-
-  //set stop time
-  moment1.hours(readValue("time-stop-hours"));
-  moment1.minutes(readValue("time-stop-minutes"));
-
-  this.addedTime.minutes = moment1.format("mm");
-  this.addedTime.hours = moment1.format("HH");
-},
-checkInput: function (event) {
-  var elem = event.target;
-  var text = elem.value;
-
-  if (elem.id.search("hours") == -1) {
-    var ceeling = 60;
-  } else {
-    var ceeling = 23;
-  };
-
-  if (text.match("[^0-9]") !== null) {
-    elem.style.color = "red";
-    return;
-  }
-
-  var num = parseInt(text);
-  if (num > ceeling || num < 0) {
-    elem.style.color = "red";
-    return;
-  }
-  //subtract start time
-  moment1.subtract(readValue("time-start-hours"), 'h')
-  moment1.subtract(readValue("time-start-minutes"), 'm')
-
-  //substract break
-  moment1.subtract(readValue("time-break-hours"), 'h')
-  moment1.subtract(readValue("time-break-minutes"), 'm')
-
-  //add travel time (half of it)
-  moment1.add(readValue("time-travel-hours") / 2, 'h')
-  moment1.add(readValue("time-travel-minutes") / 2, 'm')
-
-  //input validated
-  elem.style.color = "";
-  /*
-  //check if every input field has valid input
-  for (var id in {"time-start-hours","time-start-minutes","time-stop-hours","time-stop-minutes","time-break-hours","time-break-minutes","time-travel-hours","time-travel-minutes"}) {
-  console.log(id);
-  var dom = document.getElementById(id);
-  if (dom.style.color == "red") {
-  return;
-}
-}
-*/
-
-this.updateComputedTime();
+  this.updateComputedTime();
 },
 updateComputedTime: function () {
 
@@ -342,6 +289,17 @@ updateComputedTime: function () {
   margin-bottom: 5px;
   margin-left: 0px;
   margin-right: 0px;
+}
+
+.inputcontainer{
+  border: 1px solid black;
+  margin: 10px;
+  padding: 5px;
+}
+
+.containerheader{
+  color: white;
+  background-color: #003452;
 }
 
 h3 {
