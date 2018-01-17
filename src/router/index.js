@@ -44,6 +44,10 @@ function authPromise() {
       }
     }
 
+    xhr.onerror = () => {
+      reject();
+    }
+
     xhr.send();
   });
 }
