@@ -55,17 +55,15 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-xs-6">
-            <button v-on:click="$router.push('/administration/projekte')" class="warning" type="button">
+        <div class="col-sm-offset-3 col-sm-9 text-right">
+            <button v-on:click="$router.push('/administration/projekte')" class="warning" type="button"  style="margin-right:10px;">
               <i class="fa fa-times" aria-hidden="true"></i>
               Abbrechen
             </button>
-        </div>
-        <div class="col-xs-6">
-          <button type="button" v-on:click="sendHTTP()">
-            <i class="fa fa-check" aria-hidden="true"></i>
-            Bestätigen
-          </button>
+            <button type="button" v-on:click="sendHTTP()">
+              <i class="fa fa-check" aria-hidden="true"></i>
+              Bestätigen
+            </button>
         </div>
       </div>
     </form>
