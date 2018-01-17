@@ -3,8 +3,14 @@
   <div class="container">
     <div class="topper">
       <div class="row">
-        <div class="col-sm-12">
+        <div class="col-sm-offset-3 col-sm-6">
           <h3>Projekt bearbeiten</h3>
+        </div>
+        <div class="col-sm-3 text-right">
+          <button class="warning" type="button" v-on:click="deleteProject()">
+            <i class="fa fa-trash" aria-hidden="true"></i>
+            Löschen
+          </button>
         </div>
       </div>
     </div>
@@ -231,6 +237,14 @@ export default {
       return a.filter(au => (
         l.filter(lu => (lu.id == au.id)).length == 0
       ));
+    },
+    deleteProject() {
+      if(! confirm("Sind sie sicher, dass sie das Projekt löschen möchten? \nDieser Vorgang kann nicht rückgänig gemacht werden")) {
+        return;
+      }
+      this.$http.delete("http://localhost:3000/api/project/"+this.$route.params.id, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
+        this.$router.push('/administration/projekte');
+      }).catch(err=>{console.log(err)});
     }
   }
 }
