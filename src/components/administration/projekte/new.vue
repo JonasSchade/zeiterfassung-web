@@ -3,13 +3,7 @@
   <div class="container">
     <div class="topper">
       <div class="row">
-        <div class="col-sm-4 text-left">
-          <button v-on:click="$router.push('/administration/projekte')">
-            <i class="fa fa-chevron-left" aria-hidden="true"></i>
-            Projekte
-          </button>
-        </div>
-        <div class="col-sm-4">
+        <div class="col-sm-12">
           <h3>Neues Projekt</h3>
         </div>
       </div>
@@ -61,10 +55,16 @@
         </div>
       </div>
       <div class="row">
-        <button type="button" v-on:click="sendHTTP()">
-          <i class="fa fa-plus" aria-hidden="true"></i>
-          Projekt hinzufügen
-        </button>
+        <div class="col-sm-offset-3 col-sm-9 text-right">
+            <button v-on:click="$router.push('/administration/projekte')" class="warning" type="button"  style="margin-right:10px;">
+              <i class="fa fa-times" aria-hidden="true"></i>
+              Abbrechen
+            </button>
+            <button type="button" v-on:click="sendHTTP()">
+              <i class="fa fa-check" aria-hidden="true"></i>
+              Bestätigen
+            </button>
+        </div>
       </div>
     </form>
   </div>
@@ -120,12 +120,19 @@ export default {
     removedLinkedUser: function(el) {
       var index = this.findById(this.linkedusers, el.srcElement.getAttribute("value"));
 
-      this.linkedusers.splice(index,1)
+      this.linkedusers.splice(index,1);
     },
     updateManager: function(el) {
       var index = this.findById(this.allusers, el.srcElement.options[el.srcElement.selectedIndex].value);
 
       this.manager = this.allusers[index];
+
+      //remove new manager from linked users
+      var luIndex = this.findById(this.linkedusers, this.manager.id);
+      if (luIndex != -1) {
+
+        this.linkedusers.splice(luIndex,1);
+      }
     },
     sendHTTP: function() {
 
