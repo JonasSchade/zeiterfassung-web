@@ -19,7 +19,6 @@ import sjcl from 'sjcl'
 export default {
   name: 'login',
   created() {
-    console.log(this.$http);
     this.$http.get("http://localhost:3000/api/authenticate", {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
       //api says no
       if (response.body.loggedin) {
