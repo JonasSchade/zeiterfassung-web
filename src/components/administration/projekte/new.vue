@@ -145,7 +145,7 @@ export default {
       this.$http.post("http://localhost:3000/api/project", bodyobj, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
 
         //POST Request to add linked users to newly created project TODO
-        this.$http.post("http://localhost:3000/api/user_project/"+response.body.id, this.linkedusers, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
+        this.$http.post("http://localhost:3000/api/project_users/"+response.body.id, this.linkedusers, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
           //go back to projects
           this.$router.push('/administration/projekte');
         }).catch((err) => {console.log(err);});
