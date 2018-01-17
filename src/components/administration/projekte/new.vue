@@ -3,13 +3,7 @@
   <div class="container">
     <div class="topper">
       <div class="row">
-        <div class="col-sm-4 text-left">
-          <button v-on:click="$router.push('/administration/projekte')">
-            <i class="fa fa-chevron-left" aria-hidden="true"></i>
-            Projekte
-          </button>
-        </div>
-        <div class="col-sm-4">
+        <div class="col-sm-12">
           <h3>Neues Projekt</h3>
         </div>
       </div>
@@ -61,10 +55,18 @@
         </div>
       </div>
       <div class="row">
-        <button type="button" v-on:click="sendHTTP()">
-          <i class="fa fa-plus" aria-hidden="true"></i>
-          Projekt hinzufügen
-        </button>
+        <div class="col-xs-6">
+            <button v-on:click="$router.push('/administration/projekte')" class="warning" type="button">
+              <i class="fa fa-times" aria-hidden="true"></i>
+              Abbrechen
+            </button>
+        </div>
+        <div class="col-xs-6">
+          <button type="button" v-on:click="sendHTTP()">
+            <i class="fa fa-check" aria-hidden="true"></i>
+            Hinzufügen
+          </button>
+        </div>
       </div>
     </form>
   </div>
