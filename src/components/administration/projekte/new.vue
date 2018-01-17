@@ -15,34 +15,34 @@
       </div>
     </div>
 
-    <form class="container-flex" id="newProjectForm">
+    <form class="container-flex">
       <div class="row align-middle">
         <label class="col-sm-offset-1 col-sm-3 text-right">Name:</label>
         <div class="col-sm-9">
-          <input name="name" type="text" class="full-width" />
+          <input name="name" type="text" v-model="name" class="full-width" />
         </div>
       </div>
       <div class="row">
         <label class="col-sm-offset-1 col-sm-3 text-right">Beschreibung:</label>
         <div class="col-sm-9">
-          <textarea name="description" class="full-width" rows="5"></textarea>
+          <textarea name="description" v-model="description" class="full-width" rows="5"></textarea>
         </div>
       </div>
       <div class="row">
         <label class="col-sm-offset-1 col-sm-3 text-right">Manager:</label>
         <div class="col-sm-9">
           <select name="manager" class="full-width" v-on:change="updateManager($event)">
-            <option v-for="user in users" :value="user.id">{{user.firstname}} {{user.lastname}}</option>
+            <option v-for="user in allusers" :value="user.id">{{user.firstname}} {{user.lastname}}</option>
           </select>
         </div>
       </div>
       <div class="row">
         <label class="col-sm-offset-1 col-sm-3 text-right">Zugewiesene Mitarbeiter:</label>
-        <select class="col-sm-6" id="adduser">
-          <option v-for="user in users.filter(user => (!(linkedusers.includes(user)) && (user != manager)))" :value="user.id">{{user.firstname}} {{user.lastname}}</option>
+        <select class="col-sm-6" id="addLinkedUserSelect">
+          <option v-for="user in allusers.filter(user => (!(linkedusers.includes(user)) && (user != manager)))" :value="user.id">{{user.firstname}} {{user.lastname}}</option>
         </select>
         <div class="col-sm-3">
-          <button class="full-width" v-on:click="addUser()">
+          <button  type="button" class="full-width" v-on:click="addLinkedUser($event)">
             <i class="fa fa-plus" aria-hidden="true"></i>
             Hinzufügen
           </button>
@@ -54,7 +54,7 @@
             <li class="row" v-for="user in linkedusers">
               <div class="col-xs-10">{{user.firstname}} {{user.lastname}}</div>
               <div class="col-xs-2">
-                <i class="fa fa-minus" aria-hidden="true" :value="user.id" v-on:click="removeUser($event)"></i>
+                <i class="fa fa-minus" aria-hidden="true" :value="user.id" v-on:click="removedLinkedUser($event)"></i>
               </div>
             </li>
           </ul>
@@ -76,21 +76,23 @@ export default {
   name: 'newproject',
   data() {
     return {
-      users: [],
+      name: "",
+      description: "",
+      manager: {},
+      allusers: [],
       linkedusers: [],
-      manager: Number,
     }
   },
   created() {
 
+    this.$http.get('http://localhost:3000/api/user', {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
+      this.allusers = response.body;
 
-    this.$http.get('http://localhost:3000/api/user', {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}, body: obj}).then(response => {
-      this.users = response.body;
-
-      this.manager = this.users[0];
+      this.manager = this.allusers[0];
     });
   },
   methods: {
+    //find a object (user) with given id in given array
     findById: function(arr, id) {
       for(var i = 0; i < arr.length; i++)
       {
@@ -99,30 +101,31 @@ export default {
           return i;
         };
       };
+      return null;
     },
-    addUser: function() {
+    addLinkedUser: function(el) {
 
-      var userSelect = $("#adduser")[0];
+      var selectedUser = $("#addLinkedUserSelect")[0];
+      selectedUser = selectedUser.options[selectedUser.selectedIndex].value;
 
-      if (userSelect.selectedIndex == -1) {
+      if (selectedUser == -1) {
         return;
       }
 
-      //find user with selected id in users
-      var index = this.findById(this.users, userSelect.options[userSelect.selectedIndex].value);
+      //find user with selected id in allusers
+      var index = this.findById(this.allusers, selectedUser);
 
-      this.linkedusers.push(this.users[index]);
-
+      this.linkedusers.push(this.allusers[index]);
     },
-    removeUser: function(el) {
+    removedLinkedUser: function(el) {
       var index = this.findById(this.linkedusers, el.srcElement.getAttribute("value"));
 
       this.linkedusers.splice(index,1)
     },
     updateManager: function(el) {
-      var index = this.findById(this.users, el.srcElement.options[el.srcElement.selectedIndex].value);
+      var index = this.findById(this.allusers, el.srcElement.options[el.srcElement.selectedIndex].value);
 
-      this.manager = this.users[index];
+      this.manager = this.allusers[index];
     },
     sendHTTP: function() {
 
@@ -132,25 +135,27 @@ export default {
       }
 
       //create json object
-      var formArr = $("#newProjectForm").serializeArray();
-      var obj = new Object();
-      for (var i = 0; i < formArr.length; i++) {
+      var bodyobj = {
+        name: this.name,
+        description: this.description,
+        manager: this.manager.id,
+      };
 
-        obj[formArr[i].name] = formArr[i].value;
-      }
+      //POST Request to add project
+      this.$http.post("http://localhost:3000/api/project", bodyobj, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
 
-      //POST Request
-      this.$http.post("http://localhost:3000/api/project", {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}, body: obj}).then(response => {
-        this.$router.push('/administration/projekte');
-      }).catch((err) => {
-        console.log(err);
-      });
+        //POST Request to add linked users to newly created project TODO
+        this.$http.post("http://localhost:3000/api/user_project/"+response.body.id, this.linkedusers, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
+          //go back to projects
+          this.$router.push('/administration/projekte');
+        }).catch((err) => {console.log(err);});
+      }).catch((err) => {console.log(err);});
+
+
     },
     validate: function() {
-      var formArr = $("#newProjectForm").serializeArray();
-
-      var name = formArr.filter(x => x.name == "name")[0].value;
-      var desc = formArr.filter(x => x.name == "description")[0].value;
+      var name = this.name;
+      var desc = this.description;
 
       if (name == "") {
         alert("Bitte Namen eingeben!");
