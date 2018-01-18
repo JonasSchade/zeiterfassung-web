@@ -9,18 +9,18 @@
     </router-link>
     <div class="form-group">
       <label for="prjname">Projektname:</label>
-      <input type="text" class="full-width" id="prjname" placeholder="Projektname">
+      <input type="text" class="full-width" id="prjname" placeholder="Projektname" v-model="projectname">
     </div>
     <div class="form-group">
       <label for="description">Projektleiter:</label>
-      <input type="text" class="full-width" id="description" placeholder="Projektleiter"">
+      <input type="text" class="full-width" id="description" placeholder="Projektleiter" v-model="manager">
     </div>
     <div class="form-group">
       <label for="description">Beschreibung:</label>
-      <input type="text" class="full-width" id="description" placeholder="Beschreibung"">
+      <input type="text" class="full-width" id="description" placeholder="Beschreibung" v-model="description">
     </div>
     <router-link to="/administration/projekte">
-      <button class="btn_rechts"><i class="fa fa-check" aria-hidden="true"></i> Projekt anlegen</button>
+      <button :disabled='!isComplete()' class="btn_rechts"><i class="fa fa-check" aria-hidden="true"></i> Projekt anlegen</button>
       <button class="btn_rechts"><i class="fa fa-times" aria-hidden="true"></i> Abbrechen</button>
     </router-link>
   </div>
@@ -30,13 +30,25 @@
 <script>
 export default {
   name: 'newProject',
-
+  data: function() {
+    return {
+      projectname: "",
+      manager: "",
+      description: "",
+      users: []
+    }
+  },
   methods: {
 
     newProjectButtonPress: function(event) {
 
     }
+  },
+  computed: {
+  isComplete () {
+    return this.password_alt && this.password_neu && this.password_repeat && this.password_neu == this.password_repeat;
   }
+}
 
 }
 </script>

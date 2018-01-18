@@ -40,7 +40,7 @@
         </div>
         <div class="col-sm-9">
           <router-link to="/administration/abteilungen">
-            <button class="btn_rechts"><i class="fa fa-check" aria-hidden="true" ></i> Abteilung anlegen</button>
+            <button class="btn_rechts" :disabled='!isComplete'><i class="fa fa-check" aria-hidden="true" ></i> Abteilung anlegen</button>
             <button class="btn_rechts"><i class="fa fa-times" aria-hidden="true" ></i> Abbrechen</button>
           </router-link>
         </div>
@@ -66,7 +66,12 @@ export default {
     this.$http.get('http://localhost:3000/api/user', {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
       this.options = response.body;
     });
+  },
+  computed: {
+  isComplete () {
+    return this.abtname && this.selected;
   }
+}
 }
 </script>
 

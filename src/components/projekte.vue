@@ -15,7 +15,6 @@
 
 <script>
 import projectcontainer from '@/components/projects/projectcontainer'
-var anzProjekte = 3;
 export default {
   name: 'projekte',
   components: {projectcontainer},
