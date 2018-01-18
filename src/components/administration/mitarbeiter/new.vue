@@ -94,6 +94,7 @@
             <button type="button" v-on:click="sendHTTP()">
               <i class="fa fa-check" aria-hidden="true"></i>
               Bestätigen
+              <!-- TODO: Validation -->
             </button>
         </div>
       </div>

@@ -249,6 +249,7 @@ export default {
   },
   computed: {
     isComplete () {
+      //TODO: If manager changes this returns false -> can't confirm
       return this.name && this.manager && this.description && this.linkedusers.length>0;
     }
   }

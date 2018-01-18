@@ -10,11 +10,15 @@ import feiertage from '@/components/administration/feiertag/feiertage'
 import laender from '@/components/administration/land/laender'
 import standorte from '@/components/administration/standort/standorte'
 import abteilungen from '@/components/administration/abteilung/abteilungen'
+
 import adprojekte from '@/components/administration/projekte/projekte'
 import adprojektneu from '@/components/administration/projekte/new'
 import adprojektedit from '@/components/administration/projekte/edit'
+
 import admitarbeiter from '@/components/administration/mitarbeiter/mitarbeiter'
 import admitarbeiterneu from '@/components/administration/mitarbeiter/new'
+import admitarbeiteredit from '@/components/administration/mitarbeiter/edit'
+
 import newProject from '@/components/projects/newProject'
 import login from '@/components/login'
 import neueAbteilung from '@/components/administration/abteilung/neueAbteilung'
@@ -59,6 +63,7 @@ async function auth() {
 
 
 function checkIfLoggedIn(to, from, next) {
+  //TODO: administration pages check for admin
   auth().then(result => {
     next();
   }, () => {
@@ -158,6 +163,12 @@ export default new Router({
       path: '/administration/projekte/edit/:id',
       name: 'adprojektedit',
       component: adprojektedit,
+      beforeEnter: checkIfLoggedIn,
+    },
+    {
+      path: '/administration/mitarbeiter/edit/:id',
+      name: 'admitarbeiteredit',
+      component: admitarbeiteredit,
       beforeEnter: checkIfLoggedIn,
     },
     {
