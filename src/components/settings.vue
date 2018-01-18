@@ -46,29 +46,22 @@
         </div>
       </div>
     </form>
-    <router-link to="/dashboard">
-      <button :disabled='!isComplete' class="btn_confirm"><i class="fa fa-check" v-on:click="setPassword()"></i> Passwort ändern</button>
+<!--    <router-link to="/dashboard"> -->
+      <button :disabled='!isComplete' class="btn_confirm" v-on:click="changePassword()"><i class="fa fa-check"></i> Passwort ändern</button>
       <button class="btn_confirm"><i class="fa fa-times"></i> Abbrechen</button>
-    </router-link>
+<!--    </router-link> -->
     {{password_alt}} {{password_neu}} {{password_repeat}}
   </div>
 </div>
 </template>
 
 <script>
+import unorm from 'unorm'
+import sjcl from 'sjcl'
 export default {
   name: 'settings',
   methods: {
-    setPassword: function(){
-      var obj = new Object();
-      obj.username = this.benutzer;
-      obj.password = this.password_neu;
-      obj.userid = this.userId;
 
-      this.$http.put('http://localhost:3000/api/logdata/'+this.userId, obj, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
-
-      });
-    }
   },
   data: function() {
     return {
@@ -76,17 +69,51 @@ export default {
       userId: "",
       password_alt: "",
       password_neu: "",
-      password_repeat: ""
+      password_repeat: "",
+      rounds: 1000,
     }
   },
   created() {
     this.$http.get('http://localhost:3000/api/authenticate', {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
       this.benutzer = response.body.username;
+      this.userId = response.body.id;
     });
   },
   computed: {
   isComplete () {
     return this.password_alt && this.password_neu && this.password_repeat && this.password_neu == this.password_repeat;
+  }
+},
+methods:{
+  encrypt: function(pw_plaintext, username) {
+    pw_plaintext = unorm.nfc(pw_plaintext)
+    username = unorm.nfc(username.trim()).toLowerCase()
+    // Deterministic unique salt: e.g. service name plus username
+    var salt = sjcl.codec.utf8String.toBits("myservice" + username);
+    // Run PBKDF2 computation, return result as hexadecimal encoding
+    var key = sjcl.misc.pbkdf2(pw_plaintext, salt, this.rounds, 32 * 8, function(key) {
+        var hasher = new sjcl.misc.hmac(key, sjcl.hash.sha256);
+        this.encrypt = function () {
+            return hasher.encrypt.apply(hasher, arguments);
+        };
+    });
+    return sjcl.codec.hex.fromBits(key);
+  },
+  changePassword: function() {
+    var pw_old = this.encrypt(this.password_alt, this.benutzer);
+    var pw_new = this.encrypt(this.password_neu, this.benutzer);
+    var obj = {
+      userid: this.userId,
+      username: this.benutzer,
+      password_new: pw_new,
+      password_old: pw_old
+    };
+
+    this.$http.put("http://localhost:3000/api/changepassword", obj, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
+        this.$router.push('/administration/projekte');
+    }).catch((err) => {console.log(err);});
+
+
   }
 }
 }

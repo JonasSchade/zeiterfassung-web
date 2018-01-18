@@ -40,7 +40,7 @@
             <li class="row" v-for="user in linkedusers">
               <div class="col-xs-10">{{user.firstname}} {{user.lastname}}</div>
               <div class="col-xs-2">
-                <i class="fa fa-minus" aria-hidden="true" :value="user.id" v-on:click="removedLinkedUser($event)"></i>
+                <i class="fa fa-minus" aria-hidden="true" :value="user.id" v-on:click="removedLinkedUser(user.id)"></i>
               </div>
             </li>
           </ul>
@@ -61,7 +61,7 @@
               <i class="fa fa-times" aria-hidden="true"></i>
               Abbrechen
             </button>
-            <button type="button" v-on:click="sendHTTP()">
+            <button :disabled='!isComplete' type="button" v-on:click="sendHTTP()">
               <i class="fa fa-check" aria-hidden="true"></i>
               Bestätigen
             </button>
@@ -104,7 +104,7 @@ export default {
       };
       return null;
     },
-    addLinkedUser: function(el) {
+    addLinkedUser: function() {
 
       var selectedUser = $("#addLinkedUserSelect")[0];
 
@@ -128,8 +128,8 @@ export default {
         this.manager = this.linkedusers[0];
       }
     },
-    removedLinkedUser: function(el) {
-      var index = this.findById(this.linkedusers, el.srcElement.getAttribute("value"));
+    removedLinkedUser: function(id) {
+      var index = this.findById(this.linkedusers, id);
 
       //we have to make sure the moving doesn't fuck it all up
       //removing a linkedUser -> array shifts but selectedIndex stays same -> option one above current will be selected
@@ -143,8 +143,8 @@ export default {
         $("#managerSelect")[0].selectedIndex = 0;
       }
     },
-    updateManager: function(el) {
-      var index = this.findById(this.linkedusers, el.srcElement.options[el.srcElement.selectedIndex].value);
+    updateManager: function() {
+      var index = this.findById(this.linkedusers, $("#managerSelect")[0].options[$("#managerSelect")[0].selectedIndex].value);
 
       this.manager = this.linkedusers[index];
     },
@@ -210,7 +210,12 @@ export default {
         l.filter(lu => (lu.id == au.id)).length == 0
       ));
     }
-  }
+  },
+  computed: {
+  isComplete () {
+    return this.name && this.manager && this.description && this.linkedusers.length>0;
+  },
+}
 }
 </script>
 
