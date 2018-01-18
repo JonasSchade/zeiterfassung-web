@@ -29,15 +29,6 @@
         </div>
       </div>
       <div class="row">
-        <label class="col-sm-offset-1 col-sm-3 text-right">Manager:</label>
-        <div class="col-sm-9">
-          <select name="manager" class="full-width" v-on:change="updateManager($event)" id="managerSelect">
-            <option value="" disabled hidden selected>Aus zugewiesenen Mitarbeitern wählen</option>
-            <option v-for="user in linkedusers" :value="user.id">{{user.firstname}} {{user.lastname}}</option>
-          </select>
-        </div>
-      </div>
-      <div class="row">
         <label class="col-sm-offset-1 col-sm-3 text-right">Zugewiesene Mitarbeiter:</label>
         <select class="col-sm-6" id="addLinkedUserSelect">
           <option v-for="user in allMinusLinkedUsers()" :value="user.id">{{user.firstname}} {{user.lastname}}</option>
@@ -49,7 +40,7 @@
           </button>
         </div>
       </div>
-      <div class="row">
+      <div class="row" v-if="linkedusers.length > 0">
         <div id="linkedusers" class="col-sm-6 col-sm-offset-3">
           <ul class="container-flex">
             <li class="row" v-for="user in linkedusers">
@@ -59,6 +50,15 @@
               </div>
             </li>
           </ul>
+        </div>
+      </div>
+      <div class="row">
+        <label class="col-sm-offset-1 col-sm-3 text-right">Manager:</label>
+        <div class="col-sm-9">
+          <select name="manager" class="full-width" v-on:change="updateManager($event)" id="managerSelect">
+            <option value="" disabled hidden selected>Aus zugewiesenen Mitarbeitern wählen</option>
+            <option v-for="user in linkedusers" :value="user.id">{{user.firstname}} {{user.lastname}}</option>
+          </select>
         </div>
       </div>
       <div class="row">
