@@ -68,6 +68,10 @@
                   <div class="col-xs-4 text-left">
                     <span>{{computedTime.hours}}:{{computedTime.minutes}} h</span>
                   </div>
+                  <button id="btn_time" v-on:click="computeWork()">
+                    <i class="fa fa-plus" aria-hidden="true"></i>
+                    Zuteilen
+                  </button>
                 </div>
               </form>
             </div>
@@ -76,20 +80,25 @@
         <div class="card col-xs-10">
           <div>
             <div class="row">
+              <p>{{completeTime}} h</p>
+              <p>{{assignedTime}} h</p>
+              <p>{{unassignedTime}} h</p>
               <span class="text-left">So viel können sie noch verteilen</span>
-              <span class="text-right">5h</span>
+              <span class="text-right">{{unassignedTime}} h</span>
             </div>
             <div class="progress">
-              <div class="progress-bar" style="width:90%"></div>
+              <div class="progress-bar progress-bar-success" role="progressbar" v-bind:aria-valuenow="unassignedTime"
+                   aria-valuemin="0" v-bind:aria-valuemax="{unassignedTime}" v-bind:style="{ width: (unassignedTime/completeTime)*100 + '%' }">{{unassignedTime}} h</div>
             </div>
           </div>
           <div>
             <div class="row">
               <span class="text-left">So viel haben sie schon verteilt</span>
-              <span class="text-right">5h</span>
+              <span class="text-right">{{assignedTime}} h</span>
             </div>
             <div class="progress">
-              <div class="progress-bar" style="width:10%"></div>
+              <div class="progress-bar progress-bar-success" role="progressbar" v-bind:aria-valuenow="assignedTime"
+                   aria-valuemin="0" v-bind:aria-valuemax="{assignedTime}" v-bind:style="{ width: (assignedTime/completeTime)*100 + '%' }">{{assignedTime}} h</div>
             </div>
           </div>
         </div>
@@ -104,24 +113,29 @@
       <div class="containerheader">
         <h2>{{projects.name}}</h2>
       </div>
-      <div>
+      <div class="containerbody">
         <div>
-          Beschreibung:
+          <p>
+            Beschreibung:
+          </p>
           <span>
             {{projects.description}}
           </span>
+          <br>
         </div>
         Projektleiter:
         <span>
           {{projects.firstname}} {{projects.lastname}}
         </span>
+        <br>
         Gib die Zeit ein:
-        <div class="">
-          <input type="number" :id="project.id" placeholder="hh" maxlength="2" size="2">
+        <div>
+          <input type="text" :id="project.id+'minutes'" placeholder="hh" maxlength="2" size="2">
           <span>:</span>
-          <input type="number" :id="project.id" placeholder="mm" maxlength="2" size="2">
+          <input type="text" :id="project.id+'hours'" placeholder="mm" maxlength="2" size="2">
           <div>
-            <button id="btn_new_project">
+            <br>
+            <button id="btn_new_project" v-on:click="addTime(project.id, $(project.id+'minutes').getValue, $(project.id+'hours').getValue)">
               <i class="fa fa-plus" aria-hidden="true"></i>
               Hinzufügen
             </button>
@@ -139,10 +153,13 @@ export default {
     return {
       projects: [],
       computedTime: {
-        minutes: "00",
-        hours: "00",
+        minutes: "45",
+        hours: "9",
       },
-      addedTime
+      projectTimes: [],
+      completeTime: "",
+      assignedTime: "",
+      unassignedTime: ""
     };
   },
   created() {
@@ -156,6 +173,18 @@ export default {
     },
   },
   methods: {
+    addTime: function(id, minutes, hours) {
+      var duration=$(id+'hours').Value+($(id+'minutes').Value/60);
+      this.projectTimes[id] = duration;
+      this.assignedTime = projects.reduce(getSum(assignedTime, duration));
+      this.unassignedTime = this.completeTime-this.assignedTime;
+    },
+    computeWork: function(event){
+      this.completeTime=(Math.round(computedTime.hours+computedTime.minutes/60)*100)/100;
+    },
+    getSum: function(total, num){
+      return total + num;
+    },
     checkInput: function (event) {
       var elem = event.target;
       var text = elem.value;
@@ -176,6 +205,8 @@ export default {
         elem.style.color = "red";
         return;
       }
+      var moment1 = moment("2000-01-01");
+
       //subtract start time
       moment1.subtract(readValue("time-start-hours"), 'h')
       moment1.subtract(readValue("time-start-minutes"), 'm')
