@@ -166,21 +166,23 @@ export default {
     },
     sendHTTP: function() {
 
-      //Make sure all inputs are valid
-      if(! this.validate()) {
-        return;
-      }
-
       //create json object
       var bodyobj = {
         firstname: this.firstname,
         lastname: this.lastname,
-        departmentid: this.department,
-        admin: this.administrator,
+        department: (this.department == -1) ? null : this.department,
+        admin: this.administrator ? 1 : 0,
       };
+
+      this.$http.post("http://localhost:3000/api/user", bodyobj, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
+        this.$http.post("http://localhost:3000/api/user_projects/"+response.body.id, this.linkedprojects, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
+          this.$router.push("/administration/mitarbeiter");
+          //TODO: write logdata in database
+        });
+      });
+
 /*
       //POST Request to add project
-      this.$http.post("http://localhost:3000/api/project", bodyobj, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
 
         //POST Request to add linked users to newly created project
         this.$http.post("http://localhost:3000/api/project_users/"+response.body.id, this.linkedusers, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
@@ -189,35 +191,6 @@ export default {
         }).catch((err) => {console.log(err);});
       }).catch((err) => {console.log(err);});
 */
-
-    },
-    validate: function() {
-      var name = this.name;
-      var desc = this.description;
-
-      if (name == "") {
-        alert("Bitte Namen eingeben!");
-        return false;
-      }
-      if (desc == "") {
-        alert("Bitte Beschreibung eingeben!");
-        return false;
-      }
-      if (name.length < 5) {
-        alert("Der Name muss aus mindestens fünf Buchstaben bestehen.");
-        return false;
-      }
-      if (desc.length < 5) {
-        alert("Die Beschreibung muss aus mindestens fünf Buchstaben bestehen.");
-        return false;
-      }
-
-      if (this.linkedprojects.length == 0) {
-        alert("Dem Mitarbeiter muss mindestens ein MItarbeiter zugeordnet sein.");
-        return false;
-      }
-
-      return true;
     },
   }
 }
