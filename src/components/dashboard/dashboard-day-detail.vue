@@ -69,7 +69,7 @@
                     <span>{{computedTime.hours}}:{{computedTime.minutes}} h</span>
                   </div>
                   <button id="btn_time" v-on:click="computeWork()">
-                    <i class="fa fa-plus" aria-hidden="true"></i>
+                    <i class="fa fa-clock-o" aria-hidden="true"></i>
                     Zuteilen
                   </button>
                 </div>
@@ -77,7 +77,7 @@
             </div>
           </div>
         </div>
-        <div class="card col-xs-10">
+        <div class="card col-xs-10" >
           <div>
             <div class="row">
               <p>{{completeTime}} h</p>
@@ -88,62 +88,69 @@
             </div>
             <div class="progress">
               <div class="progress-bar progress-bar-success" role="progressbar" v-bind:aria-valuenow="unassignedTime"
-                   aria-valuemin="0" v-bind:aria-valuemax="{unassignedTime}" v-bind:style="{ width: (unassignedTime/completeTime)*100 + '%' }">{{unassignedTime}} h</div>
+              aria-valuemin="0" v-bind:aria-valuemax="{unassignedTime}" v-bind:style="{ width: (unassignedTime/completeTime)*100 + '%' }">{{unassignedTime}} h</div>
             </div>
-          </div>
-          <div>
-            <div class="row">
-              <span class="text-left">So viel haben sie schon verteilt</span>
-              <span class="text-right">{{assignedTime}} h</span>
+            <div>
+              <div class="row">
+                <span class="text-left">So viel haben sie schon verteilt</span>
+                <span class="text-right">{{assignedTime}} h</span>
+              </div>
+              <div class="progress">
+                <div class="progress-bar progress-bar-success" role="progressbar" v-bind:aria-valuenow="assignedTime"
+                aria-valuemin="0" v-bind:aria-valuemax="{assignedTime}" v-bind:style="{ width: (assignedTime/completeTime)*100 + '%' }">{{assignedTime}} h
+              </div>
             </div>
-            <div class="progress">
-              <div class="progress-bar progress-bar-success" role="progressbar" v-bind:aria-valuenow="assignedTime"
-                   aria-valuemin="0" v-bind:aria-valuemax="{assignedTime}" v-bind:style="{ width: (assignedTime/completeTime)*100 + '%' }">{{assignedTime}} h</div>
+            <div>
+              <button id="btn_new_project" v-on:click="$router.push('/dashboard/')">
+                <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                Zeiten Speichern
+              </button>
             </div>
-          </div>
-        </div>
-      </div>
-      <div>
-        <p>
-          Tragen sie die Zeiten für die jeweiligen Projekte ein:
-        </p>
-      </div>
-    </div>
-    <div v-for="project in projects" class="inputcontainer">
-      <div class="containerheader">
-        <h2>{{projects.name}}</h2>
-      </div>
-      <div class="containerbody">
-        <div>
-          <p>
-            Beschreibung:
-          </p>
-          <span>
-            {{projects.description}}
-          </span>
-          <br>
-        </div>
-        Projektleiter:
-        <span>
-          {{projects.firstname}} {{projects.lastname}}
-        </span>
-        <br>
-        Gib die Zeit ein:
-        <div>
-          <input type="text" :id="project.id+'minutes'" placeholder="hh" maxlength="2" size="2">
-          <span>:</span>
-          <input type="text" :id="project.id+'hours'" placeholder="mm" maxlength="2" size="2">
-          <div>
-            <br>
-            <button id="btn_new_project" v-on:click="addTime(project.id, $(project.id+'minutes').getValue, $(project.id+'hours').getValue)">
-              <i class="fa fa-plus" aria-hidden="true"></i>
-              Hinzufügen
-            </button>
           </div>
         </div>
       </div>
     </div>
   </div>
+  <div>
+    <p>
+      Tragen sie die Zeiten für die jeweiligen Projekte ein:
+    </p>
+  </div>
+<div v-for="project in projects" class="inputcontainer">
+  <div class="containerheader">
+    <h2>{{projects.name}}</h2>
+  </div>
+  <div class="containerbody">
+    <div>
+      <p>
+        Beschreibung:
+      </p>
+      <span>
+        {{projects.description}}
+      </span>
+      <br>
+    </div>
+    Projektleiter:
+    <span>
+      {{projects.firstname}} {{projects.lastname}}
+    </span>
+    <br>
+    Gib die Zeit ein:
+    <div>
+      <input type="text" :id="project.id+'minutes'" placeholder="hh" maxlength="2" size="2">
+      <span>:</span>
+      <input type="text" :id="project.id+'hours'" placeholder="mm" maxlength="2" size="2">
+      <div>
+        <br>
+        <button id="btn_new_project" v-on:click="addTime(project.id, $(project.id+'minutes').getValue, $(project.id+'hours').getValue)">
+          <i class="fa fa-plus" aria-hidden="true"></i>
+          Hinzufügen
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
 </template>
 
 <script>
@@ -173,6 +180,9 @@ export default {
     },
   },
   methods: {
+    save: function(event){
+      return
+    },
     addTime: function(id, minutes, hours) {
       var duration=$(id+'hours').Value+($(id+'minutes').Value/60);
       this.projectTimes[id] = duration;
