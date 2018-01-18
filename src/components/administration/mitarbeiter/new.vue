@@ -13,13 +13,13 @@
       <div class="row align-middle">
         <label class="col-sm-offset-1 col-sm-3 text-right">Vorname:</label>
         <div class="col-sm-9">
-          <input pattern="([A-Za-z -]|-){2,}" maxlength="40" type="text" v-model="firstname" class="full-width" />
+          <input pattern="[A-Za-z -äÄöÖüÜß]{2,}" maxlength="40" type="text" v-model="firstname" class="full-width" />
         </div>
       </div>
       <div class="row align-middle">
         <label class="col-sm-offset-1 col-sm-3 text-right">Nachname:</label>
         <div class="col-sm-9">
-          <input pattern="([A-Za-z -]|-){2,}" maxlength="40" type="text" v-model="lastname" class="full-width" />
+          <input pattern="([A-Za-z -äÄöÖüÜß]{2,}" maxlength="40" type="text" v-model="lastname" class="full-width" />
         </div>
       </div>
       <hr/>
