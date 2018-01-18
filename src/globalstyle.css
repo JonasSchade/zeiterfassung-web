@@ -82,3 +82,8 @@ textarea:focus {
   padding-right: (@grid-gutter-width / 2);
   margin: 0px;
 }
+
+
+label {
+  line-height: 28px;
+}

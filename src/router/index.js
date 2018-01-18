@@ -14,13 +14,13 @@ import adprojekte from '@/components/administration/projekte/projekte'
 import adprojektneu from '@/components/administration/projekte/new'
 import adprojektedit from '@/components/administration/projekte/edit'
 import admitarbeiter from '@/components/administration/mitarbeiter/mitarbeiter'
+import admitarbeiterneu from '@/components/administration/mitarbeiter/new'
 import newProject from '@/components/projects/newProject'
 import login from '@/components/login'
 import neueAbteilung from '@/components/administration/abteilung/neueAbteilung'
 import neuesLand from '@/components/administration/land/neuesLand'
 import neuerArbeitsplan from '@/components/administration/arbeitsplan/neuerArbeitsplan'
 import neuerFeiertag from '@/components/administration/feiertag/neuerFeiertag'
-import neuerMitarbeiter from '@/components/administration/mitarbeiter/neuerMitarbeiter'
 import neuerStandort from '@/components/administration/standort/neuerStandort'
 import settings from '@/components/settings'
 
@@ -196,9 +196,9 @@ export default new Router({
       beforeEnter: checkIfLoggedIn,
     },
     {
-      path: '/administration/neuerMitarbeiter',
+      path: '/administration/mitarbeiter/new',
       name: 'neuerMitarbeiter',
-      component: neuerMitarbeiter,
+      component: admitarbeiterneu,
       beforeEnter: checkIfLoggedIn,
     },
     {

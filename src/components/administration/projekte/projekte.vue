@@ -22,7 +22,7 @@
 
     <div class="tablist" role="tablist">
       <tablistitem v-for="project in projects" :key="project.id" :contentid="project.id" :contentname="project.name">
-        <div class="conatiner-flex">
+        <div class="container-flex">
           <div class="row">
             <div class="col-sm-6">
               <h4>Manager:</h4>
