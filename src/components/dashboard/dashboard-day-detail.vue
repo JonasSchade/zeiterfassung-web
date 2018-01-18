@@ -116,40 +116,42 @@
       Tragen sie die Zeiten für die jeweiligen Projekte ein:
     </p>
   </div>
-<div v-for="project in projects" class="inputcontainer">
-  <div class="containerheader">
-    <h2>{{projects.name}}</h2>
-  </div>
-  <div class="containerbody">
-    <div>
-      <p>
-        Beschreibung:
-      </p>
+  <div v-for="project in projects" class="inputcontainer">
+    <div class="containerheader">
+      <h2>{{projects.name}}</h2>
+    </div>
+    <div class="containerbody">
+      <div>
+        <p>
+          Beschreibung:
+        </p>
+        <span>
+          {{projects.description}}
+        </span>
+        <br>
+      </div>
+      <br>
+      Projektleiter:
       <span>
-        {{projects.description}}
+        {{projects.firstname}} {{projects.lastname}}
       </span>
       <br>
-    </div>
-    Projektleiter:
-    <span>
-      {{projects.firstname}} {{projects.lastname}}
-    </span>
-    <br>
-    Gib die Zeit ein:
-    <div>
-      <input type="text" :id="project.id+'minutes'" placeholder="hh" maxlength="2" size="2">
-      <span>:</span>
-      <input type="text" :id="project.id+'hours'" placeholder="mm" maxlength="2" size="2">
+      <br>
       <div>
-        <br>
-        <button id="btn_new_project" v-on:click="addTime(project.id, $(project.id+'minutes').getValue, $(project.id+'hours').getValue)">
-          <i class="fa fa-plus" aria-hidden="true"></i>
-          Hinzufügen
-        </button>
+        Gib die Zeit ein:
+        <input type="text" v-bind:id="project.id+'minutes'" placeholder="hh" maxlength="2" size="2">
+        <span>:</span>
+        <input type="text" v-bind:id="project.id+'hours'" placeholder="mm" maxlength="2" size="2">
+        <div>
+          <br>
+          <button id="btn_new_project" v-on:click="addTime(id)">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            Hinzufügen
+          </button>
+        </div>
       </div>
     </div>
   </div>
-</div>
 </div>
 </template>
 
@@ -183,10 +185,10 @@ export default {
     save: function(event){
       return
     },
-    addTime: function(id, minutes, hours) {
-      var duration=$(id+'hours').Value+($(id+'minutes').Value/60);
-      this.projectTimes[id] = duration;
-      this.assignedTime = projects.reduce(getSum(assignedTime, duration));
+    addTime: function(id) {
+      var duration=this.$("#"+this.id+"hours").Value+($("#"+this.id+"minutes").Value/60);
+      this.projectTimes[this.id] = this.duration;
+      this.assignedTime = this.projects.reduce(getSum(this.assignedTime, this.duration));
       this.unassignedTime = this.completeTime-this.assignedTime;
     },
     computeWork: function(event){
