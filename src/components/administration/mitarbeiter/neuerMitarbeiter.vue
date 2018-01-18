@@ -1,16 +1,16 @@
 <template>
-<div class="neuerBenutzer">
+<div class="neuerMitarbeiter">
     <div id="container">
       <div class="topper">
         <div class="row">
           <div class="col-sm-4 text-left">
-            <button v-on:click="$router.push('/administration/benutzer')">
+            <button v-on:click="$router.push('/administration/mitarbeiter')">
               <i class="fa fa-chevron-left" aria-hidden="true"></i>
-              Benutzer
+              Mitarbeiter
             </button>
           </div>
           <div class="col-sm-4">
-            <h3>Neuer Benutzer</h3>
+            <h3>Neuer Mitarbeiter</h3>
           </div>
         </div>
       </div>
@@ -71,8 +71,8 @@
 
         </div>
         <div class="col-sm-9">
-          <button class="btn_rechts" v-on:click="sendHTTP()"><i class="fa fa-check" aria-hidden="true" ></i> Benutzer anlegen</button>
-          <router-link to="/administration/benutzer">
+          <button class="btn_rechts" v-on:click="sendHTTP()"><i class="fa fa-check" aria-hidden="true" ></i> Mitarbeiter anlegen</button>
+          <router-link to="/administration/mitarbeiter">
             <button class="btn_rechts" v-on:click="cancel"><i class="fa fa-times" aria-hidden="true" ></i> Abbrechen</button>
           </router-link>
         </div>
@@ -83,7 +83,7 @@
 
 <script>
 export default {
-  name: 'neuerBenutzer',
+  name: 'neuerMitarbeiter',
   data: function() {
     return {
       firstname: "",
@@ -106,10 +106,10 @@ export default {
   },
   methods: {
     create: function() {
-      alert("Benutzer wird erstellt! Nachname:" + this.benutzername);
+      alert("Mitarbeiter wird erstellt! Nachname:" + this.mitarbeitername);
     },
     cancel: function() {
-      alert("Benutzer wird nicht erstellt!!!");
+      alert("Mitarbeiter wird nicht erstellt!!!");
     },
     sendHTTP: function() {
 
@@ -149,7 +149,7 @@ export default {
       logobj.password = formArr[3].value;
       console.log(logobj);
       this.$http.post("http://localhost:3000/api/logdata", logobj, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
-        this.$router.push('/administration/benutzer')
+        this.$router.push('/administration/mitarbeiter')
       }, function(response) {
         return;
       });
@@ -191,7 +191,7 @@ export default {
 </script>
 
 <style scoped>
-.neuerBenutzer {
+.neuerMitarbeiter {
   width: 100%;
   min-height: 100vh;
   text-align: center;

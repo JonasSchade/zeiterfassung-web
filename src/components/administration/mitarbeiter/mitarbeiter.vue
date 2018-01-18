@@ -1,5 +1,5 @@
 <template>
-  <div class="benutzer">
+  <div class="mitarbeiter">
       <div class="container">
         <div class="topper">
           <div class="row">
@@ -13,7 +13,7 @@
               <h3>Mitarbeiter</h3>
             </div>
             <div class="col-sm-4 text-right">
-              <button id="btn_new_project" v-on:click="$router.push('/administration/neuerbenutzer')">
+              <button id="btn_new_project" v-on:click="$router.push('/administration/neuermitarbeiter')">
                 <i class="fa fa-plus" aria-hidden="true"></i>
                 Neuer Mitarbeiter
                </button>
@@ -48,7 +48,7 @@
 import tablistitem from '@/components/administration/tablistitem'
 
 export default {
-  name: 'benutzer',
+  name: 'mitarbeiter',
   components: { tablistitem },
   data() {
     return {
@@ -84,12 +84,12 @@ created() {
 </script>
 
 <style scoped>
-  .benutzer {
+  .mitarbeiter {
     min-height: 100vh;
     text-align: center;
   }
 
-  #btn_neuer_benutzer {
+  #btn_neuer_mitarbeiter {
     margin: 20px;
   }
 
