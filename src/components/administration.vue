@@ -5,39 +5,41 @@
     <div class="row">
         <div class="col-md-4">
           <div class="box">
-          <div class="header">
-            <i class="fa fa-address-card-o" aria-hidden="true" title="Vertrag"></i>
-            <h4>Vertragsdaten verwalten</h4>
+            <h2>COMING SOON</h2>
+            <div class="header">
+              <i class="fa fa-address-card-o" aria-hidden="true" title="Vertrag"></i>
+              <h4>Vertragsdaten verwalten</h4>
+            </div>
+            <ul>
+              <li><router-link to="arbeitsplaene" append>Arbeitspläne</router-link></li>
+              <li><router-link to="feiertage" append>Feiertage</router-link></li>
+            </ul>
           </div>
-          <ul>
-            <li><router-link to="arbeitsplaene" append>Arbeitspläne</router-link></li>
-            <li><router-link to="feiertage" append>Feiertage</router-link></li>
-          </ul>
+        </div>
+        <div class="col-md-4">
+          <div class="box">
+            <h2>COMING SOON</h2>
+            <div class="header">
+              <i class="fa fa-sitemap " aria-hidden="true" title="Organisation"></i>
+              <h4>Organisationsdaten verwalten</h4>
+            </div>
+            <ul>
+              <li><router-link to="laender" append>Länder</router-link></li>
+              <li><router-link to="standorte" append>Standorte</router-link></li>
+            </ul>
         </div>
         </div>
         <div class="col-md-4">
           <div class="box">
-          <div class="header">
-            <i class="fa fa-sitemap " aria-hidden="true" title="Organisation"></i>
-            <h4>Organisationsdaten verwalten</h4>
-          </div>
-          <ul>
-            <li><router-link to="laender" append>Länder</router-link></li>
-            <li><router-link to="standorte" append>Standorte</router-link></li>
-          </ul>
-        </div>
-        </div>
-        <div class="col-md-4">
-          <div class="box">
-          <div class="header">
-            <i class="fa fa-address-book-o" aria-hidden="true" title="Personal"></i>
-            <h4>Personaldaten verwalten</h4>
-          </div>
-          <ul>
-            <li><router-link to="abteilungen" append>Abteilungen</router-link></li>
-            <li><router-link to="projekte" append>Projekte</router-link></li>
-            <li><router-link to="benutzer" append>Benutzer</router-link></li>
-          </ul>
+            <div class="header">
+              <i class="fa fa-address-book-o" aria-hidden="true" title="Personal"></i>
+              <h4>Personaldaten verwalten</h4>
+            </div>
+            <ul>
+              <li><router-link to="abteilungen" append>Abteilungen</router-link></li>
+              <li><router-link to="projekte" append>Projekte</router-link></li>
+              <li><router-link to="benutzer" append>Benutzer</router-link></li>
+            </ul>
         </div>
         </div>
     </div>
@@ -123,5 +125,17 @@ ul a {
 
 ul a:hover {
   color: grey;
+}
+
+.box h2 {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  right: 0px;
+  margin: 0px;
+  background-color: rgba(255,255,255,0.7);
+  color: grey;
+  line-height: 209px;
 }
 </style>

@@ -63,7 +63,7 @@
       </div>
       <div class="row">
         <div class="col-sm-offset-3 col-sm-9 text-right">
-            <button v-on:click="$router.push('/administration/projekte')" class="warning" type="button"  style="margin-right:10px;">
+            <button v-on:click="$router.push('/administration/projekte')" type="button"  style="margin-right:10px;">
               <i class="fa fa-times" aria-hidden="true"></i>
               Abbrechen
             </button>
@@ -74,6 +74,7 @@
         </div>
       </div>
     </form>
+    <p v-for="user in linkedusers">{{user.firstname}} {{user.lastname}}</p>
   </div>
 </div>
 </template>
@@ -109,7 +110,7 @@ export default {
         this.manager = this.linkedusers[i];
 
         //when changing the selcted option before vue can add the options itself the wrong option will be selected
-        setTimeout(() =>{$("#managerSelect").val(managerId)}, 10);
+        setTimeout(() =>{$("#managerSelect").val(managerId)}, 100);
       });
     });
 
