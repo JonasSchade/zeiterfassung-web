@@ -2,46 +2,80 @@
 <template>
 <div class="administration">
   <div class="container">
+
     <div class="row">
-        <div class="col-md-4">
-          <div class="box">
-            <h2>COMING SOON</h2>
-            <div class="header">
-              <i class="fa fa-address-card-o" aria-hidden="true" title="Vertrag"></i>
-              <h4>Vertragsdaten verwalten</h4>
-            </div>
-            <ul>
-              <li><router-link to="arbeitsplaene" append>Arbeitspläne</router-link></li>
-              <li><router-link to="feiertage" append>Feiertage</router-link></li>
-            </ul>
-          </div>
+      <div class="col-sm-12 text-center">
+        <div class="header">
+          <i class="fa fa-address-book-o" aria-hidden="true" title="Personal"></i>Personaldaten verwalten
         </div>
-        <div class="col-md-4">
-          <div class="box">
-            <h2>COMING SOON</h2>
-            <div class="header">
-              <i class="fa fa-sitemap " aria-hidden="true" title="Organisation"></i>
-              <h4>Organisationsdaten verwalten</h4>
-            </div>
-            <ul>
-              <li><router-link to="laender" append>Länder</router-link></li>
-              <li><router-link to="standorte" append>Standorte</router-link></li>
-            </ul>
+      </div>
+    </div>
+    <div class="row contentRow">
+      <div class="col-sm-12 text-center content">
+        <div class="col-sm-4 text-center">
+          <router-link to="/administration/projekte">
+            <button class="full-width"><i class="fa fa-list-ul" aria-hidden="true"></i>Projekte</button>
+          </router-link>
         </div>
+        <div class="col-sm-4 text-center">
+          <router-link to="/administration/abteilungen">
+          <button class="full-width"><i class="fa fa-users" aria-hidden="true"></i>Abteilungen</button>
+        </router-link>
         </div>
-        <div class="col-md-4">
-          <div class="box">
-            <div class="header">
-              <i class="fa fa-address-book-o" aria-hidden="true" title="Personal"></i>
-              <h4>Personaldaten verwalten</h4>
-            </div>
-            <ul>
-              <li><router-link to="abteilungen" append>Abteilungen</router-link></li>
-              <li><router-link to="projekte" append>Projekte</router-link></li>
-              <li><router-link to="benutzer" append>Benutzer</router-link></li>
-            </ul>
+        <div class="col-sm-4 text-center">
+          <router-link to="/administration/mitarbeiter">
+            <button class="full-width"><i class="fa fa-user" aria-hidden="true"></i>Mitarbeiter</button>
+          </router-link>
         </div>
+      </div>
+    </div>
+
+
+    <div class="row">
+      <div class="col-sm-12 text-center">
+        <div class="header">
+          <i class="fa fa-sitemap " aria-hidden="true" title="Organisation"></i>Organisationsdaten verwalten
         </div>
+      </div>
+    </div>
+    <div class="row contentRow">
+      <div class="col-sm-12 text-center content">
+        <div class="col-sm-offset-1 col-sm-4 text-center">
+          <router-link to="/administration/laender">
+            <button class="full-width"><i class="fa fa-globe" aria-hidden="true"></i>Länder</button>
+          </router-link>
+        </div>
+        <div class="col-sm-offset-2 col-sm-4 text-center">
+          <router-link to="/administration/standorte">
+            <button class="full-width"><i class="fa fa-map-marker" aria-hidden="true"></i>Standorte</button>
+          </router-link>
+        </div>
+        <span class="comingSoon">COMING SOON</span>
+      </div>
+    </div>
+
+
+    <div class="row">
+      <div class="col-sm-12 text-center">
+        <div class="header">
+          <i class="fa fa-address-card-o" aria-hidden="true" title="Vertrag"></i>Vertragsdaten verwalten
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12 text-center content">
+        <div class="col-sm-offset-1 col-sm-4 text-center">
+          <router-link to="/administration/arbeitsplaene">
+            <button class="full-width"><i class="fa fa-list-alt" aria-hidden="true"></i>Arbeitspläne</button>
+          </router-link>
+        </div>
+        <div class="col-sm-offset-2 col-sm-4 text-center">
+          <router-link to="/administration/feiertage">
+            <button class="full-width"><i class="fa fa-calendar-o" aria-hidden="true"></i>Feiertage</button>
+          </router-link>
+        </div>
+        <span class="comingSoon">COMING SOON</span>
+      </div>
     </div>
   </div>
 </div>
@@ -55,87 +89,64 @@ export default {
 
 <style scoped>
 .administration {
-  height: 700px;
+  min-height: 100vh;
   text-align: center;
+  width: 100%;
 }
-
-.header {
-  background-color: #cdd2d8;
-}
-
-.fa {
-  padding-top: 10px;
-  font-size: 40px;
-}
-
-h4 {
-  display: block;
-  background-color: #cdd2d8;
-  padding: 10px;
-  margin: 0px;
-}
-
-/*
 .container {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+  position: relative;
+  max-width: 800px;
+  top: 20px;
+  bottom: 20px;
+  margin-bottom: 30px;
+  padding-left: 5px;
+  padding-right: 5px;
 }
-*/
-
-/*
-.vertrag {
-  grid-column-start: 1;
-  grid-column-end: 2;
-  grid-row-start: 1;
-  grid-row-end: 1;
+.col-sm-12 {
+  padding: 0px;
 }
-.organisation {
-  grid-column-start: 2;
-  grid-column-end: 3;
-  grid-row-start: 1;
-  grid-row-end: 1;
-}
-.personal {
-  grid-column-start: 3;
-  grid-column-end: 4;
-  grid-row-start: 1;
-  grid-row-end: 1;
-} **/
-
-.box {
-  box-shadow: 0 3px 5px -1px rgba(0, 0, 0, .2), 0 6px 10px 0 rgba(0, 0, 0, .14), 0 1px 18px 0 rgba(0, 0, 0, .12);
-  margin: 15px;
-  padding-left: 0px;
-  padding-right: 0px;
+.header {
+  text-align: left;
+  background-color: #003452;
+  padding: 20px;
+  border: none;
+  font-size: 18px;
+  color: white;
+  -webkit-box-shadow: 0px 0px 7px #ccc;
+  box-shadow: 0px 0px 7px #ccc;
 }
 
-ul {
-  list-style-type: none;
-  margin: 0 auto;
-  padding-top: 15px;
-  padding-bottom: 15px;
-  padding-left: 0;
-  height: 90px;
+.content {
+  border-radius: 0px 0px 3px 3px;
+  box-shadow: 0px 5px 7px #ccc;
+  padding: 20px;
 }
 
-ul a {
-  color: black;
-  text-decoration: none;
+.col-sm-4 button {
+  padding-top: 20px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  padding-bottom: 20px;
+  font-size: 17px;
 }
 
-ul a:hover {
-  color: grey;
+.contentRow {
+  margin-bottom: 20px;
 }
 
-.box h2 {
+i {
+  margin-right: 10px;
+}
+
+.comingSoon {
   position: absolute;
   top: 0px;
   left: 0px;
   bottom: 0px;
   right: 0px;
-  margin: 0px;
+  font-size: 50px;
   background-color: rgba(255,255,255,0.7);
-  color: grey;
-  line-height: 209px;
+  line-height: 112px;
+  vertical-align: middle;
 }
 </style>

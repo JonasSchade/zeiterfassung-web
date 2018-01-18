@@ -2,29 +2,27 @@
 <div class="projekte">
   <div class="container">
 
-    <div class="topper">
-      <div class="row">
-        <div class="col-sm-4 text-left">
-          <button v-on:click="$router.push('/administration/')">
-            <i class="fa fa-chevron-left" aria-hidden="true"></i>
-            Administration
-          </button>
-        </div>
-        <div class="col-sm-4">
-          <h3>Projekte</h3>
-        </div>
-        <div class="col-sm-4 text-right">
-          <button id="btn_new_project" v-on:click="$router.push('projekte/new')">
-            <i class="fa fa-plus" aria-hidden="true"></i>
-            Neues Projekt
-           </button>
-         </div>
+    <div class="row topper">
+      <div class="col-sm-4 text-left">
+        <button v-on:click="$router.push('/administration/')">
+          <i class="fa fa-chevron-left" aria-hidden="true"></i>
+          Administration
+        </button>
       </div>
+      <div class="col-sm-4">
+        <h3>Projekte</h3>
+      </div>
+      <div class="col-sm-4 text-right">
+        <button id="btn_new_project" v-on:click="$router.push('projekte/new')">
+          <i class="fa fa-plus" aria-hidden="true"></i>
+          Neues Projekt
+         </button>
+       </div>
     </div>
 
     <div class="tablist" role="tablist">
       <tablistitem v-for="project in projects" :key="project.id" :contentid="project.id" :contentname="project.name">
-        <div class="conatiner-flex">
+        <div class="container-flex">
           <div class="row">
             <div class="col-sm-6">
               <h4>Manager:</h4>
@@ -118,6 +116,10 @@ export default {
 
 .userlist li {
   width: 100%;
+}
+
+.topper div[class^="col-sm"] {
+  padding: 0px;
 }
 
 .userlist .row {

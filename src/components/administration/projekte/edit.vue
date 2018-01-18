@@ -74,7 +74,6 @@
         </div>
       </div>
     </form>
-    <p v-for="user in linkedusers">{{user.firstname}} {{user.lastname}}</p>
   </div>
 </div>
 </template>

@@ -13,14 +13,14 @@ import abteilungen from '@/components/administration/abteilung/abteilungen'
 import adprojekte from '@/components/administration/projekte/projekte'
 import adprojektneu from '@/components/administration/projekte/new'
 import adprojektedit from '@/components/administration/projekte/edit'
-import benutzer from '@/components/administration/benutzer/benutzer'
+import admitarbeiter from '@/components/administration/mitarbeiter/mitarbeiter'
+import admitarbeiterneu from '@/components/administration/mitarbeiter/new'
 import newProject from '@/components/projects/newProject'
 import login from '@/components/login'
 import neueAbteilung from '@/components/administration/abteilung/neueAbteilung'
 import neuesLand from '@/components/administration/land/neuesLand'
 import neuerArbeitsplan from '@/components/administration/arbeitsplan/neuerArbeitsplan'
 import neuerFeiertag from '@/components/administration/feiertag/neuerFeiertag'
-import neuerBenutzer from '@/components/administration/benutzer/neuerBenutzer'
 import neuerStandort from '@/components/administration/standort/neuerStandort'
 import settings from '@/components/settings'
 
@@ -161,9 +161,9 @@ export default new Router({
       beforeEnter: checkIfLoggedIn,
     },
     {
-      path: '/administration/benutzer',
-      name: 'benutzer',
-      component: benutzer,
+      path: '/administration/mitarbeiter',
+      name: 'admitarbeiter',
+      component: admitarbeiter,
       beforeEnter: checkIfLoggedIn,
     },
     {
@@ -196,9 +196,9 @@ export default new Router({
       beforeEnter: checkIfLoggedIn,
     },
     {
-      path: '/administration/neuerBenutzer',
-      name: 'neuesBenutzer',
-      component: neuerBenutzer,
+      path: '/administration/mitarbeiter/new',
+      name: 'neuerMitarbeiter',
+      component: admitarbeiterneu,
       beforeEnter: checkIfLoggedIn,
     },
     {

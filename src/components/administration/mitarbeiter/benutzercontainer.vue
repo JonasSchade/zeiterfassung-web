@@ -1,9 +1,9 @@
 <template>
-  <div class="benutzercontainer center-block">
+  <div class="mitarbeitercontainer center-block">
     <div class="header">
       <div class="left">
-        <h4 id="benutzer_name">{{benutzername}}</h4>
-        Benutzer
+        <h4 id="mitarbeiter_name">{{mitarbeitername}}</h4>
+        Mitarbeiter
       </div>
       <div class="right">
           <i class="fa fa-pencil" aria-hidden="true"></i>
@@ -11,7 +11,7 @@
       </div>
     </div>
     <div class="content">
-      <ul>Benutzerinformationen:
+      <ul>Mitarbeiterinformationen:
         <li>
           Hans Peter
         </li>
@@ -22,8 +22,8 @@
 
 <script>
 export default {
-  name: 'benutzercontainer',
-  props: 'benutzername',
+  name: 'mitarbeitercontainer',
+  props: 'mitarbeitername',
   data: function() {
     return {
     }
@@ -32,7 +32,7 @@ export default {
 </script>
 
 <style scoped>
-.benutzercontainer {
+.mitarbeitercontainer {
   position: relative;
   max-width: 800px;
   top: 20px;
