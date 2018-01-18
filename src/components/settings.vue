@@ -69,12 +69,14 @@ export default {
       userId: "",
       password_alt: "",
       password_neu: "",
-      password_repeat: ""
+      password_repeat: "",
+      rounds: 1000,
     }
   },
   created() {
     this.$http.get('http://localhost:3000/api/authenticate', {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
       this.benutzer = response.body.username;
+      this.userId = response.body.id;
     });
   },
   computed: {
@@ -101,11 +103,11 @@ methods:{
     var pw_old = this.encrypt(this.password_alt, this.benutzer);
     var pw_new = this.encrypt(this.password_neu, this.benutzer);
     var obj = {
-    userid: this.userId,
-    username: this.benutzer,
-    password_new: pw_new,
-    password_old: pw_old
-  };
+      userid: this.userId,
+      username: this.benutzer,
+      password_new: pw_new,
+      password_old: pw_old
+    };
 
     this.$http.put("http://localhost:3000/api/changepassword", obj, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
         this.$router.push('/administration/projekte');
