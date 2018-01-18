@@ -103,6 +103,9 @@
 </template>
 
 <script>
+import unorm from 'unorm'
+import sjcl from 'sjcl'
+
 export default {
   name: 'newemployee',
   data() {
@@ -114,6 +117,8 @@ export default {
       password_repeat: "",
       administrator: false,
       department: -1,
+
+      rounds: 1000,
 
       linkedprojects: [],
       allprojects: [],
@@ -164,6 +169,20 @@ export default {
 
       this.linkedprojects.splice(index,1);
     },
+    encrypt: function(pw_plaintext, username) {
+      pw_plaintext = unorm.nfc(pw_plaintext)
+      username = unorm.nfc(username.trim()).toLowerCase()
+      // Deterministic unique salt: e.g. service name plus username
+      var salt = sjcl.codec.utf8String.toBits("myservice" + username);
+      // Run PBKDF2 computation, return result as hexadecimal encoding
+      var key = sjcl.misc.pbkdf2(pw_plaintext, salt, this.rounds, 32 * 8, function(key) {
+          var hasher = new sjcl.misc.hmac(key, sjcl.hash.sha256);
+          this.encrypt = function () {
+              return hasher.encrypt.apply(hasher, arguments);
+          };
+      });
+      return sjcl.codec.hex.fromBits(key);
+    },
     sendHTTP: function() {
 
       //create json object
@@ -174,23 +193,26 @@ export default {
         admin: this.administrator ? 1 : 0,
       };
 
+      var logdataBody = {
+        username: this.username,
+        password: this.encrypt(this.password, this.username),
+      };
+
       this.$http.post("http://localhost:3000/api/user", bodyobj, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
+        var goBack = 2;
         this.$http.post("http://localhost:3000/api/user_projects/"+response.body.id, this.linkedprojects, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
-          this.$router.push("/administration/mitarbeiter");
-          //TODO: write logdata in database
+          goBack = goBack - 1;
+          if (goBack == 0) {
+            this.$router.push('/administration/mitarbeiter');
+          }
+        });
+        this.$http.post("http://localhost:3000/api/logdata/"+response.body.id, logdataBody, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
+          goBack = goBack - 1;
+          if (goBack == 0) {
+            this.$router.push('/administration/mitarbeiter');
+          }
         });
       });
-
-/*
-      //POST Request to add project
-
-        //POST Request to add linked users to newly created project
-        this.$http.post("http://localhost:3000/api/project_users/"+response.body.id, this.linkedusers, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
-          //go back to projects
-          this.$router.push('/administration/mitarbeiter');
-        }).catch((err) => {console.log(err);});
-      }).catch((err) => {console.log(err);});
-*/
     },
   }
 }
