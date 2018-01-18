@@ -5,10 +5,6 @@ import dashboardDayDetail from '@/components/dashboard/dashboard-day-detail'
 import administration from '@/components/administration'
 import mitarbeiter from '@/components/mitarbeiter'
 import projekte from '@/components/projekte'
-import arbeitsplaene from '@/components/administration/arbeitsplan/arbeitsplaene'
-import feiertage from '@/components/administration/feiertag/feiertage'
-import laender from '@/components/administration/land/laender'
-import standorte from '@/components/administration/standort/standorte'
 import abteilungen from '@/components/administration/abteilung/abteilungen'
 
 import adprojekte from '@/components/administration/projekte/projekte'
@@ -22,10 +18,6 @@ import admitarbeiteredit from '@/components/administration/mitarbeiter/edit'
 import newProject from '@/components/projects/newProject'
 import login from '@/components/login'
 import neueAbteilung from '@/components/administration/abteilung/neueAbteilung'
-import neuesLand from '@/components/administration/land/neuesLand'
-import neuerArbeitsplan from '@/components/administration/arbeitsplan/neuerArbeitsplan'
-import neuerFeiertag from '@/components/administration/feiertag/neuerFeiertag'
-import neuerStandort from '@/components/administration/standort/neuerStandort'
 import settings from '@/components/settings'
 
 
@@ -118,30 +110,6 @@ export default new Router({
       beforeEnter: checkIfLoggedIn,
     },
     {
-      path: '/administration/arbeitsplaene',
-      name: 'arbeitsplaene',
-      component: arbeitsplaene,
-      beforeEnter: checkIfLoggedIn,
-    },
-    {
-      path: '/administration/feiertage',
-      name: 'feiertage',
-      component: feiertage,
-      beforeEnter: checkIfLoggedIn,
-    },
-    {
-      path: '/administration/laender',
-      name: 'laender',
-      component: laender,
-      beforeEnter: checkIfLoggedIn,
-    },
-    {
-      path: '/administration/standorte',
-      name: 'standorte',
-      component: standorte,
-      beforeEnter: checkIfLoggedIn,
-    },
-    {
       path: '/administration/abteilungen',
       name: 'abteilungen',
       component: abteilungen,
@@ -195,33 +163,9 @@ export default new Router({
       beforeEnter: checkIfLoggedIn,
     },
     {
-      path: '/administration/neuesLand',
-      name: 'neuesLand',
-      component: neuesLand,
-      beforeEnter: checkIfLoggedIn,
-    },
-    {
-      path: '/administration/neuerArbeitsplan',
-      name: 'neuerArbeitsplan',
-      component: neuerArbeitsplan,
-      beforeEnter: checkIfLoggedIn,
-    },
-    {
       path: '/administration/mitarbeiter/new',
       name: 'neuerMitarbeiter',
       component: admitarbeiterneu,
-      beforeEnter: checkIfLoggedIn,
-    },
-    {
-      path: '/administration/neuerFeiertag',
-      name: 'neuerFeiertag',
-      component: neuerFeiertag,
-      beforeEnter: checkIfLoggedIn,
-    },
-    {
-      path: '/administration/neuerStandort',
-      name: 'neuerStandort',
-      component: neuerStandort,
       beforeEnter: checkIfLoggedIn,
     },
     {

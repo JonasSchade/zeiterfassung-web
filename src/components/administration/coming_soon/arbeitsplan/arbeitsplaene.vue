@@ -29,7 +29,7 @@ export default {
   #btn_neuer_arbeitsplan {
     margin: 20px;
   }
-  
+
   h1 {
     display: block;
     line-height: 700px;
