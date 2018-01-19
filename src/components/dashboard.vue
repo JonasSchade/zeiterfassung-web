@@ -100,9 +100,9 @@
 <script>
 export default {
   name: 'dashboard',
-  created: function () {
+  created() {
     var component = this;
-    $(document).ready(function() {
+    $(document).ready(() => {
       //init calendar
       $('#calendar').fullCalendar({
         locale: 'de',
@@ -110,13 +110,13 @@ export default {
         height: "auto",
         header: false,
         fixedWeekCount: false,
-        dayRender: function (date,cell) {
+        dayRender: (date,cell) => {
           //background weekends:
           if (($(cell).get(0).className.indexOf("fc-sun") !== -1 || $(cell).get(0).className.indexOf("fc-sat") !== -1) && $(cell).get(0).className.indexOf("fc-today") == -1) {
             cell.css("background-color", "#e3f8fc");
           }
         },
-        dayClick: function(date, jsEvent, view) {
+        dayClick: (date, jsEvent, view) => {
           component.$router.push("/dashboard/day/"+date.format());
         },
       });
@@ -135,7 +135,7 @@ export default {
 
     });
   },
-  data: function () {
+  data() {
     return {
       monthTime: [160,128.7],
       yearTime: [1000,700],
@@ -143,12 +143,12 @@ export default {
   },
   methods: {
     //performs given action of calendar button
-    calendarButtonPress: function(action) {
+    calendarButtonPress(action) {
       $('#calendar').fullCalendar(action);
       this.calendarUpdateControls();
     },
     //changes Date of calendar based on selected values
-    calendarSelectChanged: function() {
+    calendarSelectChanged() {
       var dateString = $("#calendar-select-year")[0].value;
       dateString = dateString.concat("-");
       dateString = dateString.concat(("0" + ($("#calendar-select-month")[0].selectedIndex+1)).slice(-2));
@@ -159,7 +159,7 @@ export default {
       this.calendarUpdateControls();
     },
     //updates buttons (disable/enable) and selects based on current date of calendar
-    calendarUpdateControls: function() {
+    calendarUpdateControls() {
       var month = $("#calendar").fullCalendar("getDate")._d.getMonth();
       var year = $("#calendar").fullCalendar("getDate")._d.getFullYear();
 

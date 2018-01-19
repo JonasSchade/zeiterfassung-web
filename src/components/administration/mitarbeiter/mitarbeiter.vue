@@ -65,10 +65,10 @@ export default {
     };
   },
   methods:{
-    getUsers: function(id) {
+    getUsers(id) {
       return this.users[id.toString()] || [];
     },
-    getProjects: function(id) {
+    getProjects(id) {
       return this.projects[id.toString()] || [];
     }
   },

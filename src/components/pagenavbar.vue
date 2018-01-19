@@ -57,7 +57,7 @@
 <script>
 export default {
   name: 'pagenavbar',
-  data: function () {
+  data() {
     return {
       activePage: 'dashboard',
       userdisplayname: 'Dominik',
@@ -67,7 +67,7 @@ export default {
       departmentmanager: false,
     };
   },
-  created: function () {
+  created() {
     this.activePage= this.$route.fullPath.split("/")[1];
     this.updateRestrictions();
   },
@@ -78,7 +78,7 @@ export default {
     }
   },
   methods: {
-    updateRestrictions: function() {
+    updateRestrictions() {
       this.userdisplayname = 'Dominik';
       this.loggedin = false;
       this.admin = false;
@@ -103,7 +103,7 @@ export default {
 
       });
     },
-    logout: function() {
+    logout() {
       window.sessionStorage.chronosAuthToken = null;
       this.$router.push("/");
     }

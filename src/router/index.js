@@ -18,7 +18,6 @@ import abteilungen from '@/components/administration/abteilung/abteilungen'
 import adabteilungedit from '@/components/administration/abteilung/edit'
 import adabteilungnew from '@/components/administration/abteilung/new'
 
-import newProject from '@/components/projects/newProject'
 import login from '@/components/login'
 import settings from '@/components/settings'
 
@@ -145,12 +144,6 @@ export default new Router({
       path: '/administration/mitarbeiter',
       name: 'admitarbeiter',
       component: admitarbeiter,
-      beforeEnter: checkIfLoggedIn,
-    },
-    {
-      path: '/newProject',
-      name: 'newProject',
-      component: newProject,
       beforeEnter: checkIfLoggedIn,
     },
     {

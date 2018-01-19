@@ -63,7 +63,7 @@ export default {
   methods: {
 
   },
-  data: function() {
+  data() {
     return {
       benutzer: "",
       userId: "",
@@ -85,7 +85,7 @@ export default {
   }
 },
 methods:{
-  encrypt: function(pw_plaintext, username) {
+  encrypt(pw_plaintext, username) {
     pw_plaintext = unorm.nfc(pw_plaintext)
     username = unorm.nfc(username.trim()).toLowerCase()
     // Deterministic unique salt: e.g. service name plus username
@@ -99,7 +99,7 @@ methods:{
     });
     return sjcl.codec.hex.fromBits(key);
   },
-  changePassword: function() {
+  changePassword() {
     var pw_old = this.encrypt(this.password_alt, this.benutzer);
     var pw_new = this.encrypt(this.password_neu, this.benutzer);
     var obj = {

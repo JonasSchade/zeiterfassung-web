@@ -62,7 +62,7 @@ export default {
     }
   },
   methods:{
-    getUsers: function(id){
+    getUsers(id){
       return this.users[id.toString()] || [];
     }
   },

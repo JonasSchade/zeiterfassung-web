@@ -34,8 +34,8 @@ export default {
       error: ""
     }
   },
-  methods:{
-    encrypt: function(pw_plaintext, username) {
+  methods: {
+    encrypt(pw_plaintext, username) {
       pw_plaintext = unorm.nfc(pw_plaintext)
       username = unorm.nfc(username.trim()).toLowerCase()
       // Deterministic unique salt: e.g. service name plus username
@@ -44,12 +44,12 @@ export default {
       var key = sjcl.misc.pbkdf2(pw_plaintext, salt, this.rounds, 32 * 8, function(key) {
           var hasher = new sjcl.misc.hmac(key, sjcl.hash.sha256);
           this.encrypt = function () {
-              return hasher.encrypt.apply(hasher, arguments);
+            return hasher.encrypt.apply(hasher, arguments);
           };
       });
       return sjcl.codec.hex.fromBits(key);
     },
-    submit: function(){
+    submit() {
       this.error = "";
 
       var pw = this.encrypt(this.pw_plaintext, this.username);
