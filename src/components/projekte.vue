@@ -3,69 +3,119 @@
   <router-link to="/newProject">
     <button id="btn_new_project"><i class="fa fa-plus" aria-hidden="true"></i> Neues Projekt</button>
   </router-link>
-  <div id="container">
-    <ul id="example-1">
-      <projectcontainer v-for="item in items" :key="item.name" :project-name="item.name" :project-description="item.beschreibung">
+  <div class="container">
 
-      </projectcontainer>
-    </ul>
+    <div class="tablist" role="tablist">
+      <tablistitem v-for="project in projects" :key="project.id" :contentid="project.id" :contentname="project.name">
+        <div class="container-flex">
+          <div class="row">
+            <div class="col-sm-6">
+              <h4>Manager:</h4>
+              <p class="card-text">{{project.firstname}} {{project.lastname}}</p>
+              <hr/>
+              <h4>Beschreibung:</h4>
+              <p class="card-text">{{ project.description }}</p>
+            </div>
+            <div class="col-sm-6">
+              <hr class="hidden-sm hidden-md hidden-lg hidden-xl"/>
+              <h4>Zugewiesene Mitarbeiter:</h4>
+              <ul class="userlist">
+                <li class="row" v-for="user in getUsers(project.id)">
+                  <div class="col-xs-12">{{user.firstname}} {{user.lastname}}</div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </tablistitem>
+    </div>
+
   </div>
 </div>
 </template>
 
 <script>
-import projectcontainer from '@/components/projects/projectcontainer'
+import tablistitem from '@/components/administration/tablistitem'
 export default {
   name: 'projekte',
-  components: {projectcontainer},
-  methods: {
-
-  },
-  data: function() {
+  components: {tablistitem },
+  data() {
     return {
-      items: [
-        { name: 'Projekt Foo', beschreibung: 'Das ist ein super Projekt' },
-        { name: 'Projekt Baa', beschreibung: 'Das ist ein tolles Projekt' }
-      ],
+      benutzer: "",
+      userId: "",
+      users: [],
+      projects: [],
     }
   },
-  /*
-  mounted() {
-    for (var i = 0; i < anzProjekte; i++) {
-      var box = document.createElement("projectcontainer");
-      document.getElementById("container").appendChild(box);
-      var projName = document.createElement("p");
-      projName.innerHTML = "hallo";
-      box.appendChild(projName);
+  methods: {
+    getUsers: function(id){
+      return this.users[id.toString()];
     }
-    document.getElementById("btn_new_project").style.background = "red";
-  }
-*/
+  },
+  created() {
+    this.$http.get('http://localhost:3000/api/authenticate', {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
+      this.benutzer = response.body.username;
+      this.userId = response.body.id;
+      console.log(this.userId);
+
+      this.$http.get('http://localhost:3000/api/projects_of_manager/'+this.userId, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
+        this.projects = response.body;
+        for (var i = 0; i < this.projects.length; i++) {
+          this.$http.get('http://localhost:3000/api/project_users/'+this.projects[i].id, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
+            var id = response.url.replace("http://localhost:3000/api/project_users/","");
+            this.users[id.toString()] = response.body;
+          });
+        }
+      });
+    });
+  },
 }
 </script>
 
 <style scoped>
 .projekte {
-  height: 700px;
+  min-height: 100vh;
   text-align: center;
+  width: 100%;
 }
 
-#btn_new_project {
-  margin: 20px;
+.topper {
+  margin-bottom: 20px;
 }
 
+.topper h3 {
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
 
-.project_box {
+.container {
+  position: relative;
   max-width: 800px;
-  margin: 0 auto;
-  box-shadow: 0 3px 5px -1px rgba(0, 0, 0, .2), 0 6px 10px 0 rgba(0, 0, 0, .14), 0 1px 18px 0 rgba(0, 0, 0, .12);
-  padding-left: 0px;
-  padding-right: 0px;
-  padding: 20px;
+  top: 20px;
+  bottom: 20px;
+  margin-bottom: 30px;
+  padding-left: 5px;
+  padding-right: 5px;
 }
 
-h1 {
-  display: block;
-  line-height: 100px;
+.userlist {
+  list-style-type: none;
+  padding: 0px;
+  max-height: 200px;
+  overflow-y: scroll;
+}
+
+.userlist li {
+  width: 100%;
+}
+
+.topper div[class^="col-sm"] {
+  padding: 0px;
+}
+
+.userlist .row {
+  padding: 0px;
+  margin: 0px;
+  margin-bottom: 10px;
 }
 </style>
