@@ -19,13 +19,13 @@
       <div class="row align-middle">
         <label class="col-sm-offset-1 col-sm-3 text-right">Vorname:</label>
         <div class="col-sm-9">
-          <input pattern="[A-Za-z -äÄöÖüÜß]{2,}" maxlength="40" type="text" v-model="firstname" class="full-width" />
+          <input pattern="[A-Za-z \-äÄöÖüÜß]{2,}" maxlength="40" type="text" v-model="firstname" class="full-width" />
         </div>
       </div>
       <div class="row align-middle">
         <label class="col-sm-offset-1 col-sm-3 text-right">Nachname:</label>
         <div class="col-sm-9">
-          <input pattern="[A-Za-z -äÄöÖüÜß]{2,}" maxlength="40" type="text" v-model="lastname" class="full-width" />
+          <input pattern="[A-Za-z \-äÄöÖüÜß]{2,}" maxlength="40" type="text" v-model="lastname" class="full-width" />
         </div>
       </div>
       <hr/>
@@ -37,14 +37,15 @@
       </div>
       <div class="row align-middle">
         <label class="col-sm-offset-1 col-sm-3 text-right">Passwort:</label>
+        <!-- TODO: Make button work -->
         <div class="col-sm-9 text-left hidden-xs">
-          <button type="button" v-on:click="">
+          <button type="button" v-on:click="" disabled>
             <i class="fa fa-repeat" aria-hidden="true"></i>
             Passwort zurücksetzen
           </button>
         </div>
         <div class="col-sm-9 hidden-sm hidden-md hidden-lg hidden-xl">
-          <button type="button" v-on:click="">
+          <button type="button" v-on:click="" disabled>
             <i class="fa fa-repeat" aria-hidden="true"></i>
             Passwort zurücksetzen
           </button>
@@ -151,15 +152,11 @@ export default {
       this.username = response.body.username;
       this.department = (response.body.departmentid || -1);
       this.administrator = (response.body.admin == 1);
+      this.username = response.body.username;
     });
 
     this.$http.get('http://localhost:3000/api/user_project/'+this.$route.params.id, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
       this.linkedprojects = response.body;
-    });
-
-    this.$http.get('http://localhost:3000/api/logdata/'+this.$route.params.id, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
-      console.log();
-      this.username = response.body.username;
     });
   },
   methods: {
