@@ -5,7 +5,6 @@ import dashboardDayDetail from '@/components/dashboard/dashboard-day-detail'
 import administration from '@/components/administration'
 import mitarbeiter from '@/components/mitarbeiter'
 import projekte from '@/components/projekte'
-import abteilungen from '@/components/administration/abteilung/abteilungen'
 
 import adprojekte from '@/components/administration/projekte/projekte'
 import adprojektneu from '@/components/administration/projekte/new'
@@ -15,11 +14,12 @@ import admitarbeiter from '@/components/administration/mitarbeiter/mitarbeiter'
 import admitarbeiterneu from '@/components/administration/mitarbeiter/new'
 import admitarbeiteredit from '@/components/administration/mitarbeiter/edit'
 
+import abteilungen from '@/components/administration/abteilung/abteilungen'
 import adabteilungedit from '@/components/administration/abteilung/edit'
+import adabteilungnew from '@/components/administration/abteilung/new'
 
 import newProject from '@/components/projects/newProject'
 import login from '@/components/login'
-import neueAbteilung from '@/components/administration/abteilung/neueAbteilung'
 import settings from '@/components/settings'
 
 
@@ -159,9 +159,9 @@ export default new Router({
       component: login,
     },
     {
-      path: '/administration/neueAbteilung',
-      name: 'neueAbteilung',
-      component: neueAbteilung,
+      path: '/administration/abteilungen/new',
+      name: 'adabteilungnew',
+      component: adabteilungnew,
       beforeEnter: checkIfLoggedIn,
     },
     {
