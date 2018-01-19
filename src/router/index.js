@@ -165,7 +165,7 @@ export default new Router({
       beforeEnter: checkIfLoggedIn,
     },
     {
-      path: '/administration/abteilung/edit/:id',
+      path: '/administration/abteilungen/edit/:id',
       name: 'adabteilungedit',
       component: adabteilungedit,
       beforeEnter: checkIfLoggedIn,

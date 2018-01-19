@@ -73,7 +73,6 @@ export default {
 
     this.$http.get('http://localhost:3000/api/user', {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
       this.employees = response.body;
-      console.log(response.body);
       for (var i = 0; i < this.employees.length; i++) {
         this.$http.get('http://localhost:3000/api/user_project/'+this.employees[i].id, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
           var id = response.url.replace("http://localhost:3000/api/user_project/","");
