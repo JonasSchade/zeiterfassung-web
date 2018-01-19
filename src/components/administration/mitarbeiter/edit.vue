@@ -64,10 +64,11 @@
       <div class="row">
         <label class="col-sm-offset-1 col-sm-3 text-right">Abteilung:</label>
         <div class="col-sm-9">
-          <select name="manager" class="full-width" v-on:change="" v-model="department">
+          <select :disabled="userIsManagerOfSelectedDepartment()" name="manager" class="full-width" v-on:change="" v-model="department">
             <option value="-1" selected>Keine Abteilung</option>
             <option v-for="d in alldepartments" :value="d.id">{{d.name}}</option>
           </select>
+          <div class="warning" v-if="userIsManagerOfSelectedDepartment()"></div>
         </div>
       </div>
       <div class="row">
@@ -88,7 +89,8 @@
             <li class="row" v-for="p in linkedprojects">
               <div class="col-xs-10">{{p.name}}</div>
               <div class="col-xs-2">
-                <i class="fa fa-minus" aria-hidden="true" :value="p.id" v-on:click="removeLinkedProject($event)"></i>
+                <i v-if="p.manager != $route.params.id" class="fa fa-minus" aria-hidden="true" :value="p.id" v-on:click="removeLinkedProject($event)"></i>
+                <i v-if="p.manager == $route.params.id" class="fa fa-minus" aria-hidden="true" style="color:rgba(0,0,0,0.2);"></i>
               </div>
             </li>
           </ul>
@@ -168,7 +170,7 @@ export default {
           return i;
         };
       };
-      return null;
+      return -1;
     },
     addLinkedProject: function(el) {
 
@@ -204,6 +206,16 @@ export default {
           };
       });
       return sjcl.codec.hex.fromBits(key);
+    },
+    userIsManagerOfSelectedDepartment: function() {
+      var all = this.alldepartments;
+      var i = this.findById(all, this.department);
+
+      if (i == -1) {
+        return false;
+      }
+
+      return (all[i].manager == this.$route.params.id);
     },
     sendHTTP: function() {
 
@@ -312,5 +324,15 @@ export default {
     padding: 0px;
     margin: 0px;
     margin-bottom: 10px;
+  }
+
+  div.warning {
+    background-color: rgba(255,255,255,0.5);
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    color: #cc0000;
   }
 </style>
