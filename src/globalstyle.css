@@ -87,3 +87,9 @@ textarea:focus {
 label {
   line-height: 28px;
 }
+
+input[type="text"]:disabled {
+  border-bottom: transparent 1px solid;
+  background-color: transparent;
+  border-top: rgba(0,0,0,0) 1px solid;
+}

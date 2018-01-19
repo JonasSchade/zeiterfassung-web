@@ -41,7 +41,7 @@
         </div>
       </div>
       <div class="row">
-        <label class="col-sm-offset-1 col-sm-3 text-right">Manager:</label>
+        <label class="col-sm-offset-1 col-sm-3 text-right">Abteilungsleiter:</label>
         <div class="col-sm-9">
           <select name="manager" class="full-width" v-on:change="updateManager($event)" id="managerSelect">
             <option value="" disabled hidden selected>Aus zugewiesenen Mitarbeitern wählen</option>
@@ -142,29 +142,19 @@ export default {
     },
     sendHTTP: function() {
 
+      //create json object
+      var bodyobj = {
+        name: this.name,
+        manager: this.manager.id,
+      };
 
-      //TODO: POST instead of put
+      this.$http.post("http://localhost:3000/api/department/", bodyobj, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
+        console.log(response.body.id);
+        this.$http.put("http://localhost:3000/api/department_users/"+response.body.id, this.linkedusers, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
+          this.$router.push('/administration/abteilungen');
+        }).catch((err) => {console.log(err);});
+      }).catch((err) => {console.log(err);});
 
-      // //create json object
-      // var bodyobj = {
-      //   name: this.name,
-      //   manager: this.manager.id,
-      // };
-      //
-      // var goBack = 2;
-      // this.$http.put("http://localhost:3000/api/department/"+this.$route.params.id, bodyobj, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
-      //   goBack = goBack - 1;
-      //   if (goBack == 0) {
-      //     this.$router.push('/administration/abteilungen');
-      //   }
-      // }).catch((err) => {console.log(err);});
-      //
-      // this.$http.put("http://localhost:3000/api/department_users/"+this.$route.params.id, this.linkedusers, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
-      //   goBack = goBack - 1;
-      //   if (goBack == 0) {
-      //     this.$router.push('/administration/abteilungen');
-      //   }
-      // }).catch((err) => {console.log(err);});
 
     },
     allMinusLinkedUsers() {
@@ -174,19 +164,10 @@ export default {
       return a.filter(au => (
         l.filter(lu => (lu.id == au.id)).length == 0
       )).filter(u => u.departmentid == null);
-    },
-    deleteProject() {
-      if(! confirm("Sind sie sicher, dass sie das Projekt löschen möchten? \nDieser Vorgang kann nicht rückgänig gemacht werden")) {
-        return;
-      }
-      this.$http.delete("http://localhost:3000/api/project/"+this.$route.params.id, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
-        this.$router.push('/administration/projekte');
-      }).catch(err=>{console.log(err)});
     }
   },
   computed: {
     isComplete () {
-      //TODO: If manager changes this returns false -> can't confirm
       return this.name && this.manager && this.linkedusers.length>0;
     }
   }

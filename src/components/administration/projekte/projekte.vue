@@ -25,7 +25,7 @@
         <div class="container-flex">
           <div class="row">
             <div class="col-sm-6">
-              <h4>Manager:</h4>
+              <h4>Projektleiter:</h4>
               <p class="card-text">{{ project.firstname }} {{ project.lastname }}</p>
               <hr/>
               <h4>Beschreibung:</h4>

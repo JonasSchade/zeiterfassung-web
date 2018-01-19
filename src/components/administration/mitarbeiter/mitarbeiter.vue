@@ -13,7 +13,7 @@
         <h3>Mitarbeiter</h3>
       </div>
       <div class="col-sm-4 text-right">
-        <button id="btn_new_project" v-on:click="$router.push('mitarbeiter/new')">
+        <button v-on:click="$router.push('mitarbeiter/new')">
           <i class="fa fa-plus" aria-hidden="true"></i>
           Neuer Mitarbeiter
          </button>
@@ -35,6 +35,9 @@
               <hr class="hidden-sm hidden-md hidden-lg hidden-xl"/>
               <h4>Zugewiesene Projekte:</h4>
               <ul class="userlist">
+                <li class="row" v-if="getProjects(employee.id).length == 0">
+                  <div class="col-xs-12">Keinen Projekte zugeordnet</div>
+                </li>
                 <li class="row" v-for="project in getProjects(employee.id)">
                   <div class="col-xs-12">{{ project.name }}</div>
                 </li>

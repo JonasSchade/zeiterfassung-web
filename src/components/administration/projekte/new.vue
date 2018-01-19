@@ -47,7 +47,7 @@
         </div>
       </div>
       <div class="row">
-        <label class="col-sm-offset-1 col-sm-3 text-right">Manager:</label>
+        <label class="col-sm-offset-1 col-sm-3 text-right">Projektleiter:</label>
         <div class="col-sm-9">
           <select name="manager" class="full-width" v-on:change="updateManager($event)" id="managerSelect">
             <option value="" disabled hidden selected>Aus zugewiesenen Mitarbeitern wählen</option>
