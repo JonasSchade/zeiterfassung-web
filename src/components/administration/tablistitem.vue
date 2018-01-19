@@ -8,11 +8,11 @@
       </div>
     </b-card-header>
     <b-card-body class="row">
-      <b-collapse class="col-sm-12" v-bind:id="'conatiner-'+contentid" role="tabpanel" accordion="tablist">
-        <div>
-          <slot></slot>
-        </div>
-      </b-collapse>
+        <b-collapse class="col-sm-12" v-bind:id="'conatiner-'+contentid" role="tabpanel" accordion="tablist">
+          <div class="layout_helper">
+            <slot></slot>
+          </div>
+        </b-collapse>
     </b-card-body>
   </b-card>
 </template>
@@ -69,13 +69,9 @@ export default {
   margin-left: 15px;
 }
 
-.collapse div {
+.layout_helper{
   border-radius: 0px 0px 3px 3px;
   box-shadow: 0px 5px 7px #ccc;
-  padding: 20px;
-}
-
-.card-text{
   padding: 20px;
 }
 </style>

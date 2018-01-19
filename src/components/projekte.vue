@@ -1,8 +1,5 @@
 <template>
 <div class="projekte">
-  <router-link to="/newProject">
-    <button id="btn_new_project"><i class="fa fa-plus" aria-hidden="true"></i> Neues Projekt</button>
-  </router-link>
   <div class="container">
 
     <div class="tablist" role="tablist">
@@ -28,6 +25,9 @@
           </div>
         </div>
       </tablistitem>
+      <line-example>
+      </line-example>
+
     </div>
 
   </div>
@@ -36,9 +36,10 @@
 
 <script>
 import tablistitem from '@/components/administration/tablistitem'
+import LineExample from '@/components/LineChart.js'
 export default {
   name: 'projekte',
-  components: {tablistitem },
+  components: {tablistitem, LineExample},
   data() {
     return {
       benutzer: "",
