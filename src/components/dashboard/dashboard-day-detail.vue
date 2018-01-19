@@ -116,7 +116,7 @@
       Tragen sie die Zeiten für die jeweiligen Projekte ein:
     </p>
   </div>
-  <div v-for="project in this.projects" :key="project.id" class="inputcontainer">
+  <div v-for="project in projects" :key="project.id" class="inputcontainer">
     <div class="containerheader">
       <h2>{{project.name}}</h2>
     </div>
@@ -179,7 +179,6 @@ export default {
           this.projects[i] = res.body[i];
         }
         console.log(this.projects);
-        console.log(this.projects[0]);
       });
     });
   },
