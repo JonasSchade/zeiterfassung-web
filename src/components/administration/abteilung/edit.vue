@@ -7,7 +7,7 @@
           <h3>Abteilung bearbeiten</h3>
         </div>
         <div class="col-sm-3 text-right">
-          <button class="warning" type="button" v-on:click="deleteProject()">
+          <button class="warning" type="button" v-on:click="deleteDepartment()">
             <i class="fa fa-trash" aria-hidden="true"></i>
             Löschen
           </button>
@@ -47,7 +47,7 @@
         </div>
       </div>
       <div class="row">
-        <label class="col-sm-offset-1 col-sm-3 text-right">Manager:</label>
+        <label class="col-sm-offset-1 col-sm-3 text-right">Abteilungsleiter:</label>
         <div class="col-sm-9">
           <select name="manager" class="full-width" v-on:change="updateManager($event)" id="managerSelect">
             <option value="" disabled hidden selected>Aus zugewiesenen Mitarbeitern wählen</option>
@@ -94,9 +94,8 @@ export default {
       this.name = response.body.name;
       var managerId = response.body.manager;
 
-      this.$http.get('http://localhost:3000/api/user_department/'+this.$route.params.id, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
+      this.$http.get('http://localhost:3000/api/department_users/'+this.$route.params.id, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
         this.linkedusers = response.body;
-        console.log(this.linkedusers);
 
         var i = this.findById(this.linkedusers, managerId);
         this.manager = this.linkedusers[i];
@@ -181,7 +180,6 @@ export default {
         }
       }).catch((err) => {console.log(err);});
 
-console.log(this.linkedusers);
       this.$http.put("http://localhost:3000/api/department_users/"+this.$route.params.id, this.linkedusers, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
         goBack = goBack - 1;
         if (goBack == 0) {
@@ -196,20 +194,19 @@ console.log(this.linkedusers);
 
       return a.filter(au => (
         l.filter(lu => (lu.id == au.id)).length == 0
-      ));
+      )).filter(u => u.departmentid == null);
     },
-    deleteProject() {
-      if(! confirm("Sind sie sicher, dass sie das Projekt löschen möchten? \nDieser Vorgang kann nicht rückgänig gemacht werden")) {
+    deleteDepartment() {
+      if(! confirm("Sind sie sicher, dass sie diese Abteilung löschen möchten? \nDieser Vorgang kann nicht rückgänig gemacht werden")) {
         return;
       }
-      this.$http.delete("http://localhost:3000/api/project/"+this.$route.params.id, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
-        this.$router.push('/administration/projekte');
+      this.$http.delete("http://localhost:3000/api/department/"+this.$route.params.id, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
+        this.$router.push('/administration/abteilungen');
       }).catch(err=>{console.log(err)});
     }
   },
   computed: {
     isComplete () {
-      //TODO: If manager changes this returns false -> can't confirm
       return this.name && this.manager && this.linkedusers.length>0;
     }
   }
@@ -217,7 +214,7 @@ console.log(this.linkedusers);
 </script>
 
 <style scoped>
-  .newproject {
+  .editdepartment {
     width: 100%;
     min-height: 100vh;
     text-align: center;

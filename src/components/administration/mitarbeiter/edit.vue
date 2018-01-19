@@ -1,5 +1,5 @@
 <template>
-<div class="newemployee">
+<div class="editemployee">
   <div class="container">
     <div class="topper">
       <div class="row">
@@ -7,7 +7,7 @@
           <h3>Mitarbeiter bearbeiten</h3>
         </div>
         <div class="col-sm-3 text-right">
-          <button class="warning" type="button" v-on:click="deleteEmployee()">
+          <button class="warning" type="button" v-on:click="deleteEmployee()"  :disabled="! canBeDeleted()">
             <i class="fa fa-trash" aria-hidden="true"></i>
             Löschen
           </button>
@@ -32,7 +32,7 @@
       <div class="row align-middle">
         <label class="col-sm-offset-1 col-sm-3 text-right">Username:</label>
         <div class="col-sm-9">
-          <input pattern="([A-Za-z0-9]|-){5,}" maxlength="40" type="text" v-model="username" class="full-width" />
+          <input pattern="([A-Za-z0-9]|-){5,}" maxlength="40" type="text" v-model="username" class="full-width" disabled />
         </div>
       </div>
       <div class="row align-middle">
@@ -119,7 +119,7 @@ import unorm from 'unorm'
 import sjcl from 'sjcl'
 
 export default {
-  name: 'newemployee',
+  name: 'editemployee',
   data() {
     return {
       firstname: "",
@@ -240,8 +240,6 @@ export default {
 
       this.$http.put("http://localhost:3000/api/user_projects/"+this.$route.params.id, this.linkedprojects, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(f1);
 
-      //TODO: PUT Logdata
-
     },
     deleteEmployee() {
       if(! confirm("Sind sie sicher, dass sie diesen Mitarbeiter löschen möchten? \nDieser Vorgang kann nicht rückgänig gemacht werden")) {
@@ -257,6 +255,24 @@ export default {
         this.linkedprojects.filter(lp => (lp.id == ap.id)).length == 0
       ));
     },
+    canBeDeleted() {
+
+      //check if user is a project manager
+      for(var i = 0; i < this.allprojects.length; i++) {
+        if(this.allprojects[i].manager == this.$route.params.id) {
+          return false;
+        };
+      };
+
+      //check if user is a department manager
+      for(var i = 0; i < this.alldepartments.length; i++) {
+        if(this.alldepartments[i].manager == this.$route.params.id) {
+          return false;
+        };
+      };
+
+      return true;
+    }
   },
   computed:{
     isComplete: function(){
@@ -267,7 +283,7 @@ export default {
 </script>
 
 <style scoped>
-  .newemployee {
+  .editemployee {
     width: 100%;
     min-height: 100vh;
     text-align: center;
