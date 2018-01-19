@@ -9,24 +9,26 @@
             <div class="col-sm-6">
               <h4>Manager:</h4>
               <p class="card-text">{{project.firstname}} {{project.lastname}}</p>
-              <hr/>
+            </div>
+            <div class="col-sm-6">
               <h4>Beschreibung:</h4>
               <p class="card-text">{{ project.description }}</p>
             </div>
-            <div class="col-sm-6">
-              <hr class="hidden-sm hidden-md hidden-lg hidden-xl"/>
-              <h4>Zugewiesene Mitarbeiter:</h4>
-              <ul class="userlist">
-                <li class="row" v-for="user in getUsers(project.id)">
-                  <div class="col-xs-12">{{user.firstname}} {{user.lastname}}</div>
-                </li>
-              </ul>
-            </div>
+          </div>
+            <hr/>
+          <div class="row">
+            <hr class="hidden-sm hidden-md hidden-lg hidden-xl"/>
+            <h4>Zugewiesene Mitarbeiter:</h4>
+            <ul class="userlist">
+              <li class="row" v-for="user in getUsers(project.id)">
+                <div class="col-xs-12">{{user.firstname}} {{user.lastname}}</div>
+                <LineExample :labels="labels" :datasets="datasets">
+                </LineExample>
+              </li>
+            </ul>
           </div>
         </div>
       </tablistitem>
-      <line-example>
-      </line-example>
 
     </div>
 
@@ -46,11 +48,25 @@ export default {
       userId: "",
       users: [],
       projects: [],
+      labels:['Januar', 'February', 'March', 'April', 'May', 'June', 'July'],
+      datasets:[{
+        label: 'Data One',
+        backgroundColor: '#FC2525',
+        data: [40, 39, 10, 40, 39, 80, 40]
+      },{
+        label: 'Data Two',
+        backgroundColor: '#05CBE1',
+        data: [60, 55, 32, 10, 2, 12, 53]
+      }],
+      data: []
     }
   },
   methods: {
     getUsers: function(id){
       return this.users[id.toString()];
+    },
+    fillChartwithData: function(){
+
     }
   },
   created() {
@@ -69,7 +85,8 @@ export default {
         }
       });
     });
-  },
+    this.fillChartwithData();
+  }
 }
 </script>
 
