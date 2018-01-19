@@ -96,7 +96,6 @@ export default {
 
       this.$http.get('http://localhost:3000/api/department_users/'+this.$route.params.id, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
         this.linkedusers = response.body;
-        console.log(this.linkedusers);
 
         var i = this.findById(this.linkedusers, managerId);
         this.manager = this.linkedusers[i];
@@ -181,7 +180,6 @@ export default {
         }
       }).catch((err) => {console.log(err);});
 
-console.log(this.linkedusers);
       this.$http.put("http://localhost:3000/api/department_users/"+this.$route.params.id, this.linkedusers, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
         goBack = goBack - 1;
         if (goBack == 0) {
@@ -196,7 +194,7 @@ console.log(this.linkedusers);
 
       return a.filter(au => (
         l.filter(lu => (lu.id == au.id)).length == 0
-      ));
+      )).filter(u => u.departmentid == null);
     },
     deleteProject() {
       if(! confirm("Sind sie sicher, dass sie das Projekt löschen möchten? \nDieser Vorgang kann nicht rückgänig gemacht werden")) {
