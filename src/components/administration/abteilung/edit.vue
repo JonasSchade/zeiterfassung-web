@@ -94,7 +94,7 @@ export default {
       this.name = response.body.name;
       var managerId = response.body.manager;
 
-      this.$http.get('http://localhost:3000/api/user_department/'+this.$route.params.id, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
+      this.$http.get('http://localhost:3000/api/department_users/'+this.$route.params.id, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
         this.linkedusers = response.body;
         console.log(this.linkedusers);
 
