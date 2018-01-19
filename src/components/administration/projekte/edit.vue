@@ -168,7 +168,7 @@ export default {
       }
     },
     updateManager: function() {
-      var index = this.findById(this.linkedusers, $('#managerSelect')[0].selectedIndex.value);
+      var index = this.findById(this.linkedusers, $("#managerSelect")[0].options[$("#managerSelect")[0].selectedIndex].value);
 
       this.manager = this.linkedusers[index];
     },
