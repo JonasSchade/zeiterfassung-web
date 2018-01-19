@@ -149,7 +149,6 @@ export default {
       };
 
       this.$http.post("http://localhost:3000/api/department/", bodyobj, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
-        console.log(response.body.id);
         this.$http.put("http://localhost:3000/api/department_users/"+response.body.id, this.linkedusers, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
           this.$router.push('/administration/abteilungen');
         }).catch((err) => {console.log(err);});
