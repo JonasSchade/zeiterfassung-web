@@ -1,5 +1,5 @@
 <template>
-<div class="newproject">
+<div class="editdepartment">
   <div class="container">
     <div class="topper">
       <div class="row">
@@ -74,7 +74,7 @@
 
 <script>
 export default {
-  name: 'edit',
+  name: 'editdepartment',
   data() {
     return {
       name: "",
@@ -89,13 +89,14 @@ export default {
       this.allusers = response.body;
     });
 
-    //get all values from db for current project
+    //get all values from db for current department
     this.$http.get('http://localhost:3000/api/department/'+this.$route.params.id, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
       this.name = response.body.name;
       var managerId = response.body.manager;
 
-      this.$http.get('http://localhost:3000/api/project_users/'+this.$route.params.id, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
+      this.$http.get('http://localhost:3000/api/user_department/'+this.$route.params.id, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
         this.linkedusers = response.body;
+        console.log(this.linkedusers);
 
         var i = this.findById(this.linkedusers, managerId);
         this.manager = this.linkedusers[i];
@@ -160,67 +161,34 @@ export default {
       }
     },
     updateManager: function() {
-      var index = this.findById(this.linkedusers, $('#managerSelect')[0].selectedIndex.value);
+      var index = this.findById(this.linkedusers, $("#managerSelect")[0].options[$("#managerSelect")[0].selectedIndex].value);
 
       this.manager = this.linkedusers[index];
     },
     sendHTTP: function() {
 
-      //Make sure all inputs are valid
-      if(! this.validate()) {
-        return;
-      }
-
       //create json object
       var bodyobj = {
         name: this.name,
-        description: this.description,
         manager: this.manager.id,
       };
 
       var goBack = 2;
-      this.$http.put("http://localhost:3000/api/project/"+this.$route.params.id, bodyobj, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
+      this.$http.put("http://localhost:3000/api/department/"+this.$route.params.id, bodyobj, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
         goBack = goBack - 1;
         if (goBack == 0) {
-          this.$router.push('/administration/projekte');
+          this.$router.push('/administration/abteilungen');
         }
       }).catch((err) => {console.log(err);});
 
-      this.$http.put("http://localhost:3000/api/project_users/"+this.$route.params.id, this.linkedusers, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
+console.log(this.linkedusers);
+      this.$http.put("http://localhost:3000/api/department_users/"+this.$route.params.id, this.linkedusers, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
         goBack = goBack - 1;
         if (goBack == 0) {
-          this.$router.push('/administration/projekte');
+          this.$router.push('/administration/abteilungen');
         }
       }).catch((err) => {console.log(err);});
 
-    },
-    validate: function() {
-      var name = this.name;
-      var desc = this.description;
-
-      if (name == "") {
-        alert("Bitte Namen eingeben!");
-        return false;
-      }
-      if (desc == "") {
-        alert("Bitte Beschreibung eingeben!");
-        return false;
-      }
-      if (name.length < 5) {
-        alert("Der Name muss aus mindestens fünf Buchstaben bestehen.");
-        return false;
-      }
-      if (desc.length < 5) {
-        alert("Die Beschreibung muss aus mindestens fünf Buchstaben bestehen.");
-        return false;
-      }
-
-      if (this.linkedusers.length == 0) {
-        alert("Dem Projekt muss mindestens ein MItarbeiter zugeordnet sein.");
-        return false;
-      }
-
-      return true;
     },
     allMinusLinkedUsers() {
       var a = this.allusers;
@@ -242,7 +210,7 @@ export default {
   computed: {
     isComplete () {
       //TODO: If manager changes this returns false -> can't confirm
-      return this.name && this.manager && this.description && this.linkedusers.length>0;
+      return this.name && this.manager && this.linkedusers.length>0;
     }
   }
 }

@@ -60,24 +60,14 @@ export default {
   },
   created() {
 
-    this.$http.get('http://localhost:3000/api/department', {
-      headers: {
-        Authorization: ('bearer ' + window.sessionStorage.chronosAuthToken)
-      }
-    }).then(response => {
+    this.$http.get('http://localhost:3000/api/department', {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
       this.abteilungen = response.body;
-
       for (var i = 0; i < this.abteilungen.length; i++) {
-        this.$http.get('http://localhost:3000/api/user_department/'+this.abteilungen[i].id, {
-          headers: {
-            Authorization: ('bearer ' + window.sessionStorage.chronosAuthToken)
-          }
-        }).then(response => {
-          var id = response.url.replace("http://localhost:3000/api/user_department/", "");
+        this.$http.get('http://localhost:3000/api/user_department/'+this.abteilungen[i].id, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
+          var id = response.url.replace("http://localhost:3000/api/user_department/","");
           this.users[id.toString()] = response.body;
         });
       }
-
     });
 
   },

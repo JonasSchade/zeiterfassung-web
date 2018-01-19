@@ -6,7 +6,7 @@
         <p>{{error}}</p>
         <input type="text" v-model="username" placeholder="Username">
         <input type="password"  v-model="pw_plaintext" placeholder="Password">
-        <button v-on:click="submit(pw_plaintext, username)">Login</button>
+        <button type="button" v-on:click="submit(pw_plaintext, username)">Login</button>
     </form>
   </div>
 </div>
