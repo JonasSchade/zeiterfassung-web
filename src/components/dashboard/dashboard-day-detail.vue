@@ -24,18 +24,18 @@
                 <div class="row">
                   <label class="col-xs-2 text-left">Von:</label>
                   <div class="col-xs-10 text-left">
-                    <input type="text" id="time-start-hours" @input="checkInput" placeholder="hh" maxlength="2" size="2">
+                    <input type="text" id="time-start-hours" @input="checkDayInput" placeholder="hh" maxlength="2" size="2">
                     <span>:</span>
-                    <input type="text" id="time-start-minutes" @input="checkInput" placeholder="mm" maxlength="2" size="2">
+                    <input type="text" id="time-start-minutes" @input="checkDayInput" placeholder="mm" maxlength="2" size="2">
                     <span>Uhr</span>
                   </div>
                 </div>
                 <div class="row">
                   <label class="col-xs-2 text-left">Bis:</label>
                   <div class="col-xs-10 text-left">
-                    <input type="text" id="time-stop-hours" @input="checkInput" placeholder="hh" maxlength="2" size="2">
+                    <input type="text" id="time-stop-hours" @input="checkDayInput" placeholder="hh" maxlength="2" size="2">
                     <span>:</span>
-                    <input type="text" id="time-stop-minutes" @input="checkInput" placeholder="mm" maxlength="2" size="2">
+                    <input type="text" id="time-stop-minutes" @input="checkDayInput" placeholder="mm" maxlength="2" size="2">
                     <span>Uhr</span>
                   </div>
                 </div>
@@ -45,18 +45,18 @@
                 <div class="row">
                   <label class="col-xs-2 text-left">Pause:</label>
                   <div class="col-xs-10 text-left">
-                    <input type="text" id="time-break-hours" @input="checkInput" placeholder="hh" maxlength="2" size="2">
+                    <input type="text" id="time-break-hours" @input="checkDayInput" placeholder="hh" maxlength="2" size="2">
                     <span>:</span>
-                    <input type="text" id="time-break-minutes" @input="checkInput" placeholder="mm" maxlength="2" size="2">
+                    <input type="text" id="time-break-minutes" @input="checkDayInput" placeholder="mm" maxlength="2" size="2">
                     <span>h</span>
                   </div>
                 </div>
                 <div class="row">
                   <label class="col-xs-2 text-left">Reise:</label>
                   <div class="col-xs-10 text-left">
-                    <input type="text" id="time-travel-hours" @input="checkInput" placeholder="hh" maxlength="2" size="2">
+                    <input type="text" id="time-travel-hours" @input="checkDayInput" placeholder="hh" maxlength="2" size="2">
                     <span>:</span>
-                    <input type="text" id="time-travel-minutes" @input="checkInput" placeholder="mm" maxlength="2" size="2">
+                    <input type="text" id="time-travel-minutes" @input="checkDayInput" placeholder="mm" maxlength="2" size="2">
                     <span>h</span>
                   </div>
                 </div>
@@ -116,9 +116,9 @@
       Tragen sie die Zeiten für die jeweiligen Projekte ein:
     </p>
   </div>
-  <div v-for="project in projects" class="inputcontainer">
+  <div v-for="project in this.projects" :key="project.id" class="inputcontainer">
     <div class="containerheader">
-      <h2>{{projects.name}}</h2>
+      <h2>{{project.name}}</h2>
     </div>
     <div class="containerbody">
       <div>
@@ -126,26 +126,21 @@
           Beschreibung:
         </p>
         <span>
-          {{projects.description}}
+          {{project.description}}
         </span>
         <br>
       </div>
       <br>
-      Projektleiter:
-      <span>
-        {{projects.firstname}} {{projects.lastname}}
-      </span>
-      <br>
       <br>
       <div>
         Gib die Zeit ein:
-        <input type="text" v-bind:id="project.id+'minutes'"  placeholder="hh" maxlength="2" size="2">
+        <input type="text" v-bind:id="this.project.id+'minutes'" @input="checkDayInput" placeholder="hh" maxlength="2" size="2">
         <span>:</span>
-        <input type="text" v-bind:id="project.id+'hours'" placeholder="mm" maxlength="2" size="2">
+        <input type="text" v-bind:id="this.project.id+'hours'" @input="checkDayInput" placeholder="mm" maxlength="2" size="2">
         <p></p>
         <div>
           <br>
-          <button id="btn_new_project" v-on:click="addTime(id)">
+          <button id="btn_new_project" v-on:click="addTime(this.project.id)">
             <i class="fa fa-plus" aria-hidden="true"></i>
             Hinzufügen
           </button>
@@ -161,20 +156,31 @@ export default {
   name: 'dashboard-day-detail',
   data: function() {
     return {
+      userid: "",
       projects: [],
       computedTime: {
         minutes: "",
         hours: "",
       },
-      projectTimes: [],
       completeTime: "",
       assignedTime: "",
-      unassignedTime: ""
+      unassignedTime: "",
+      projectTimes: [],
     };
   },
   created() {
-    this.$http.get('http://localhost:3000/api/project/2', {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
-      this.projects = response.body;
+    this.$http.get('http://localhost:3000/api/authenticate', {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
+
+      this.userid = response.body.id;
+      console.log(this.userid);
+
+      this.$http.get('http://localhost:3000/api/user_project/'+this.userid, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(res => {
+        for(var i = 0; i < res.body.length; i++) {
+          this.projects[i] = res.body[i];
+        }
+        console.log(this.projects);
+        console.log(this.projects[0]);
+      });
     });
   },
   computed: {
@@ -184,27 +190,55 @@ export default {
   },
   methods: {
     save: function(event){
-      return
+      return;
+    },
+    updateTimes: function(event){
+      this.unassignedTime = this.unassignedTime;
+      this.assignedTime= this.assignedTime;
     },
     addTime: function(event, id) {
       var getSum = function(total, num){
         return total + num;
       };
 
-      var duration = parseInt($("#"+id+"hours").val())+parseInt(($("#"+this.id+"minutes").val())/60);
+      var duration = parseInt($("#"+this.id+"hours").val())+parseInt(($("#"+this.id+"minutes").val())/60);
       this.projectTimes[this.id] = this.duration;
-      updateTimes();
+      this.updateTimes();
     },
     updateTimesFirst: function(event){
       this.completeTime = parseInt(this.computedTime.hours)+parseInt(this.computedTime.minutes)/60;
       this.unassignedTime = this.completeTime;
       this.assignedTime = this.completeTime-this.unassignedTime;
     },
-    updateTimes: function(event){
-      this.unassignedTime = this.unassignedTime;
-      this.assignedTime= this.assignedTime;
+    checkProjectInput: function (event) {
+      var elem = event.target;
+      var text = elem.value;
+
+      if (elem.id.search("hours") == -1) {
+        var ceeling = 60;
+      } else {
+        var ceeling = 23;
+      };
+
+      if (text.match("[^0-9]") !== null) {
+        elem.style.color = "red";
+        return;
+      }
+
+      var num = parseInt(text);
+      if (num > ceeling || num < 0) {
+        elem.style.color = "red";
+        return;
+      }
+
+      if (assignedTime > completeTime) {
+        elem.style.color = "red";
+        return;
+      }
+      //input validated
+      elem.style.color = "";
     },
-    checkInput: function (event) {
+    checkDayInput: function (event) {
       var elem = event.target;
       var text = elem.value;
 
