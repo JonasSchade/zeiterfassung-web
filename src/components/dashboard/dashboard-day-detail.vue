@@ -68,7 +68,7 @@
                   <div class="col-xs-4 text-left">
                     <span>{{computedTime.hours}}:{{computedTime.minutes}} h</span>
                   </div>
-                  <button id="btn_time" v-on:click="computeWork()">
+                  <button id="btn_time" v-on:click="updateTimesFirst()">
                     <i class="fa fa-clock-o" aria-hidden="true"></i>
                     Zuteilen
                   </button>
@@ -101,7 +101,7 @@
               </div>
             </div>
             <div>
-              <button id="btn_new_project" v-on:click="$router.push('/dashboard/')">
+              <button id="btn_new_project">
                 <i class="fa fa-floppy-o" aria-hidden="true"></i>
                 Zeiten Speichern
               </button>
@@ -139,9 +139,10 @@
       <br>
       <div>
         Gib die Zeit ein:
-        <input type="text" v-bind:id="project.id+'minutes'" placeholder="hh" maxlength="2" size="2">
+        <input type="text" v-bind:id="project.id+'minutes'"  placeholder="hh" maxlength="2" size="2">
         <span>:</span>
         <input type="text" v-bind:id="project.id+'hours'" placeholder="mm" maxlength="2" size="2">
+        <p></p>
         <div>
           <br>
           <button id="btn_new_project" v-on:click="addTime(id)">
@@ -162,8 +163,8 @@ export default {
     return {
       projects: [],
       computedTime: {
-        minutes: "45",
-        hours: "9",
+        minutes: "",
+        hours: "",
       },
       projectTimes: [],
       completeTime: "",
@@ -185,17 +186,23 @@ export default {
     save: function(event){
       return
     },
-    addTime: function(id) {
-      var duration=this.$("#"+this.id+"hours").Value+($("#"+this.id+"minutes").Value/60);
+    addTime: function(event, id) {
+      var getSum = function(total, num){
+        return total + num;
+      };
+
+      var duration = parseInt($("#"+id+"hours").val())+parseInt(($("#"+this.id+"minutes").val())/60);
       this.projectTimes[this.id] = this.duration;
-      this.assignedTime = this.projects.reduce(getSum(this.assignedTime, this.duration));
-      this.unassignedTime = this.completeTime-this.assignedTime;
+      updateTimes();
     },
-    computeWork: function(event){
-      this.completeTime=(Math.round(computedTime.hours+computedTime.minutes/60)*100)/100;
+    updateTimesFirst: function(event){
+      this.completeTime = parseInt(this.computedTime.hours)+parseInt(this.computedTime.minutes)/60;
+      this.unassignedTime = this.completeTime;
+      this.assignedTime = this.completeTime-this.unassignedTime;
     },
-    getSum: function(total, num){
-      return total + num;
+    updateTimes: function(event){
+      this.unassignedTime = this.unassignedTime;
+      this.assignedTime= this.assignedTime;
     },
     checkInput: function (event) {
       var elem = event.target;
@@ -217,19 +224,6 @@ export default {
         elem.style.color = "red";
         return;
       }
-      var moment1 = moment("2000-01-01");
-
-      //subtract start time
-      moment1.subtract(readValue("time-start-hours"), 'h')
-      moment1.subtract(readValue("time-start-minutes"), 'm')
-
-      //substract break
-      moment1.subtract(readValue("time-break-hours"), 'h')
-      moment1.subtract(readValue("time-break-minutes"), 'm')
-
-      //add travel time (half of it)
-      moment1.add(readValue("time-travel-hours") / 2, 'h')
-      moment1.add(readValue("time-travel-minutes") / 2, 'm')
 
       //input validated
       elem.style.color = "";
@@ -244,9 +238,9 @@ export default {
   }
   */
 
-  this.updateComputedTime();
-},
-updateComputedTime: function () {
+    this.updateComputedTime();
+  },
+  updateComputedTime: function () {
 
   var readValue = function (id) {
     if (document.getElementById(id).value == "") {
