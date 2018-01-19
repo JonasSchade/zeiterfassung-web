@@ -15,6 +15,8 @@ import admitarbeiter from '@/components/administration/mitarbeiter/mitarbeiter'
 import admitarbeiterneu from '@/components/administration/mitarbeiter/new'
 import admitarbeiteredit from '@/components/administration/mitarbeiter/edit'
 
+import adabteilungedit from '@/components/administration/abteilung/edit'
+
 import newProject from '@/components/projects/newProject'
 import login from '@/components/login'
 import neueAbteilung from '@/components/administration/abteilung/neueAbteilung'
@@ -160,6 +162,12 @@ export default new Router({
       path: '/administration/neueAbteilung',
       name: 'neueAbteilung',
       component: neueAbteilung,
+      beforeEnter: checkIfLoggedIn,
+    },
+    {
+      path: '/administration/abteilung/edit/:id',
+      name: 'adabteilungedit',
+      component: adabteilungedit,
       beforeEnter: checkIfLoggedIn,
     },
     {

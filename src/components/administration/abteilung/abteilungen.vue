@@ -68,7 +68,7 @@ export default {
       this.abteilungen = response.body;
 
       for (var i = 0; i < this.abteilungen.length; i++) {
-        this.$http.get('http://localhost:3000/api/user_department/' + this.abteilungen[i].id, {
+        this.$http.get('http://localhost:3000/api/user_department/'+this.abteilungen[i].id, {
           headers: {
             Authorization: ('bearer ' + window.sessionStorage.chronosAuthToken)
           }

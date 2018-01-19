@@ -101,7 +101,7 @@
               <i class="fa fa-times" aria-hidden="true"></i>
               Abbrechen
             </button>
-            <button type="button" v-on:click="sendHTTP()">
+            <button :disabled='!isComplete' type="button" v-on:click="sendHTTP()">
               <i class="fa fa-check" aria-hidden="true"></i>
               Bestätigen
               <!-- TODO: Validation -->
@@ -246,6 +246,11 @@ export default {
         this.linkedprojects.filter(lp => (lp.id == ap.id)).length == 0
       ));
     },
+  },
+  computed:{
+    isComplete: function(){
+      return this.firstname && this.lastname && this.username;  
+    }
   }
 }
 </script>

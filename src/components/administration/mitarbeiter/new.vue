@@ -39,6 +39,7 @@
         <label class="col-sm-offset-1 col-sm-3 text-right">Passwort wiederholen:</label>
         <div class="col-sm-9">
           <input pattern=".{3,}" maxlength="40" type="password" v-model="password_repeat" class="full-width" />
+          <span id="warning" v-if="(password != password_repeat) && (password_repeat.length>2)">Stimmt nicht mit Passwort überein!</span>
         </div>
       </div>
       <div class="row align-middle">
@@ -91,10 +92,9 @@
               <i class="fa fa-times" aria-hidden="true"></i>
               Abbrechen
             </button>
-            <button type="button" v-on:click="sendHTTP()">
+            <button :disabled='!isComplete' type="button" v-on:click="sendHTTP()">
               <i class="fa fa-check" aria-hidden="true"></i>
               Bestätigen
-              <!-- TODO: Validation -->
             </button>
         </div>
       </div>
@@ -215,6 +215,11 @@ export default {
         });
       });
     },
+  },
+  computed:{
+    isComplete: function(){
+      return this.firstname && this.lastname && this.username && this.password && this.password == this.password_repeat;
+    }
   }
 }
 </script>
@@ -270,12 +275,21 @@ export default {
     max-height: 200px;
     overflow-y: scroll;
   }
+
   #linkedprojects li {
     width: 100%;
   }
+
   #linkedprojects .row {
     padding: 0px;
     margin: 0px;
     margin-bottom: 10px;
+  }
+
+  #warning{
+    font-weight: lighter;
+    font-size: 10px;
+    color: red;
+    float: left;
   }
 </style>
