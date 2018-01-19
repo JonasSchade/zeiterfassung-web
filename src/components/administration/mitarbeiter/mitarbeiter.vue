@@ -22,21 +22,26 @@
 
     <div class="tablist" role="tablist">
       <tablistitem v-for="employee in employees" :key="employee.id" :contentid="employee.id" :contentname="employee.firstname+' '+employee.lastname">
-        <p class="card-text">
-          {{ employee.firstname }} {{ employee.lastname }}
-        </p>
-        <p class="card-text">
-          Abteilung: {{ employee.departmentid }}
-        </p>
-        <p class="card-text">
-          Username: {{ employee.username }}
-        </p>
-        <p>Projekte:</p>
-        <ul>
-          <li v-for="project in getProjects(employee.id)">
-            {{ project.name }}
-          </li>
-        </ul>
+        <div class="container-flex">
+          <div class="row">
+            <div class="col-sm-6">
+              <h4>Abteilung:</h4>
+              <p class="card-text">{{ employee.name }}</p>
+              <hr/>
+              <h4>Username:</h4>
+              <p class="card-text">{{ employee.username }}</p>
+            </div>
+            <div class="col-sm-6">
+              <hr class="hidden-sm hidden-md hidden-lg hidden-xl"/>
+              <h4>Zugewiesene Projekte:</h4>
+              <ul class="userlist">
+                <li class="row" v-for="project in getProjects(employee.id)">
+                  <div class="col-xs-12">{{ project.name }}</div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </tablistitem>
     </div>
 
@@ -68,7 +73,7 @@ export default {
 
     this.$http.get('http://localhost:3000/api/user', {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
       this.employees = response.body;
-
+      console.log(response.body);
       for (var i = 0; i < this.employees.length; i++) {
         this.$http.get('http://localhost:3000/api/user_project/'+this.employees[i].id, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
           var id = response.url.replace("http://localhost:3000/api/user_project/","");
