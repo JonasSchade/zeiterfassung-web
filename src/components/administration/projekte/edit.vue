@@ -1,5 +1,5 @@
 <template>
-<div class="newproject">
+<div class="editproject">
   <div class="container">
     <div class="topper">
       <div class="row">
@@ -80,7 +80,7 @@
 
 <script>
 export default {
-  name: 'newproject',
+  name: 'editproject',
   data() {
     return {
       name: "",
