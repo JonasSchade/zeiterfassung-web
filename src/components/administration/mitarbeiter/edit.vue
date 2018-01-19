@@ -104,7 +104,6 @@
             <button :disabled='!isComplete' type="button" v-on:click="sendHTTP()">
               <i class="fa fa-check" aria-hidden="true"></i>
               Bestätigen
-              <!-- TODO: Validation -->
             </button>
         </div>
       </div>
@@ -249,7 +248,7 @@ export default {
   },
   computed:{
     isComplete: function(){
-      return this.firstname && this.lastname && this.username;  
+      return this.firstname && this.lastname && this.username;
     }
   }
 }

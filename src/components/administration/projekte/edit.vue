@@ -19,7 +19,7 @@
       <div class="row align-middle">
         <label class="col-sm-offset-1 col-sm-3 text-right">Name:</label>
         <div class="col-sm-9">
-          <input pattern="([A-Za-z0-9_. ]|-){5,}" maxlength="40" type="text" v-model="name" class="full-width" />
+          <input pattern="[A-Za-z \-äÄöÖüÜß]{5,}" maxlength="40" type="text" v-model="name" class="full-width" />
         </div>
       </div>
       <div class="row">
@@ -249,7 +249,6 @@ export default {
   },
   computed: {
     isComplete () {
-      //TODO: If manager changes this returns false -> can't confirm
       return this.name && this.manager && this.description && this.linkedusers.length>0;
     }
   }
