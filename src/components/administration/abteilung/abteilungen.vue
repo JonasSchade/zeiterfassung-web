@@ -12,7 +12,7 @@
         <h3>Abteilungen</h3>
       </div>
       <div class="col-sm-4 text-right">
-        <button id="btn_new_project" v-on:click="$router.push('/administration/neueAbteilung')">
+        <button id="btn_new_project" v-on:click="$router.push('/administration/abteilungen/new')">
           <i class="fa fa-plus" aria-hidden="true"></i>
           Neue Abteilung
          </button>
