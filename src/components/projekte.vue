@@ -17,19 +17,25 @@
           </div>
             <hr/>
           <div class="row">
-            <hr class="hidden-sm hidden-md hidden-lg hidden-xl"/>
-            <h4>Zugewiesene Mitarbeiter:</h4>
-            <ul class="userlist">
-              <li class="row" v-for="user in getUsers(project.id)">
-                <div class="col-xs-12">{{user.firstname}} {{user.lastname}}</div>
+            <div class="col-xs-4">
+              <h4>Zugewiesene Mitarbeiter:</h4>
+              <ul class="userlist">
+                <li class="row" v-for="user in getUsers(project.id)">
+                  <div>{{user.firstname}} {{user.lastname}}</div>
+                </li>
+              </ul>
+            </div>
+            <div class="col-xs-8">
+              <div>
                 <LineExample :labels="labels" :datasets="datasets">
                 </LineExample>
-              </li>
-            </ul>
+              </div>
+            </div>
           </div>
         </div>
       </tablistitem>
-
+      <LineExample :labels="labels" :datasets="datasets">
+      </LineExample>
     </div>
 
   </div>
