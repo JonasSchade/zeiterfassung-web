@@ -162,7 +162,7 @@ export default {
   },
   methods: {
     //find a object (user) with given id in given array
-    findById: function(arr, id) {
+    findById(arr, id) {
       for(var i = 0; i < arr.length; i++)
       {
         if(arr[i].id == id)
@@ -172,7 +172,7 @@ export default {
       };
       return -1;
     },
-    addLinkedProject: function(el) {
+    addLinkedProject(el) {
 
       var selectedproject = $("#addLinkedProjectSelect")[0];
 
@@ -188,26 +188,26 @@ export default {
       this.linkedprojects.push(this.allprojects[index]);
 
     },
-    removeLinkedProject: function(el) {
+    removeLinkedProject(el) {
       var index = this.findById(this.linkedprojects, el.srcElement.getAttribute("value"));
 
       this.linkedprojects.splice(index,1);
     },
-    encrypt: function(pw_plaintext, username) {
+    encrypt(pw_plaintext, username) {
       pw_plaintext = unorm.nfc(pw_plaintext)
       username = unorm.nfc(username.trim()).toLowerCase()
       // Deterministic unique salt: e.g. service name plus username
       var salt = sjcl.codec.utf8String.toBits("myservice" + username);
       // Run PBKDF2 computation, return result as hexadecimal encoding
-      var key = sjcl.misc.pbkdf2(pw_plaintext, salt, this.rounds, 32 * 8, function(key) {
+      var key = sjcl.misc.pbkdf2(pw_plaintext, salt, this.rounds, 32 * 8, (key) => {
           var hasher = new sjcl.misc.hmac(key, sjcl.hash.sha256);
-          this.encrypt = function () {
+          this.encrypt = () => {
               return hasher.encrypt.apply(hasher, arguments);
           };
       });
       return sjcl.codec.hex.fromBits(key);
     },
-    userIsManagerOfSelectedDepartment: function() {
+    userIsManagerOfSelectedDepartment() {
       var all = this.alldepartments;
       var i = this.findById(all, this.department);
 
@@ -217,7 +217,7 @@ export default {
 
       return (all[i].manager == this.$route.params.id);
     },
-    sendHTTP: function() {
+    sendHTTP() {
 
       //create json object
       var bodyobj = {
@@ -275,7 +275,7 @@ export default {
     }
   },
   computed:{
-    isComplete: function(){
+    isComplete(){
       return this.firstname && this.lastname && this.username;
     }
   }

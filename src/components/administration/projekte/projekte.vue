@@ -62,8 +62,8 @@ export default {
     }
   },
   methods:{
-    getUsers: function(id){
-      return this.users[id.toString()];
+    getUsers(id){
+      return this.users[id.toString()] || [];
     }
   },
   created() {

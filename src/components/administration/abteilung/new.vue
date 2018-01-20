@@ -85,7 +85,7 @@ export default {
   },
   methods: {
     //find a object (user) with given id in given array
-    findById: function(arr, id) {
+    findById(arr, id) {
       for(var i = 0; i < arr.length; i++)
       {
         if(arr[i].id == id)
@@ -95,7 +95,7 @@ export default {
       };
       return null;
     },
-    addLinkedUser: function() {
+    addLinkedUser() {
 
       var selectedUser = $("#addLinkedUserSelect")[0];
 
@@ -119,7 +119,7 @@ export default {
         $("#managerSelect").val(this.manager.id);
       }
     },
-    removedLinkedUser: function(id) {
+    removedLinkedUser(id) {
       var index = this.findById(this.linkedusers, id);
 
       //we have to make sure the moving doesn't fuck it all up
@@ -135,12 +135,12 @@ export default {
         $("#managerSelect")[0].selectedIndex = 0;
       }
     },
-    updateManager: function() {
+    updateManager() {
       var index = this.findById(this.linkedusers, $("#managerSelect")[0].options[$("#managerSelect")[0].selectedIndex].value);
 
       this.manager = this.linkedusers[index];
     },
-    sendHTTP: function() {
+    sendHTTP() {
 
       //create json object
       var bodyobj = {
@@ -149,7 +149,6 @@ export default {
       };
 
       this.$http.post("http://localhost:3000/api/department/", bodyobj, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
-        console.log(response.body.id);
         this.$http.put("http://localhost:3000/api/department_users/"+response.body.id, this.linkedusers, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
           this.$router.push('/administration/abteilungen');
         }).catch((err) => {console.log(err);});
@@ -167,7 +166,7 @@ export default {
     }
   },
   computed: {
-    isComplete () {
+    isComplete() {
       return this.name && this.manager && this.linkedusers.length>0;
     }
   }

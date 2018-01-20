@@ -57,7 +57,7 @@
       </div>
       <div class="row">
         <div class="col-sm-offset-3 col-sm-9 text-right">
-            <button v-on:click="$router.push('/administration/projekte')" type="button"  style="margin-right:10px;">
+            <button v-on:click="$router.push('/administration/projekte')" type="button" style="margin-right:10px;">
               <i class="fa fa-times" aria-hidden="true"></i>
               Abbrechen
             </button>
@@ -94,7 +94,7 @@ export default {
   },
   methods: {
     //find a object (user) with given id in given array
-    findById: function(arr, id) {
+    findById(arr, id) {
       for(var i = 0; i < arr.length; i++)
       {
         if(arr[i].id == id)
@@ -104,7 +104,7 @@ export default {
       };
       return null;
     },
-    addLinkedUser: function() {
+    addLinkedUser() {
 
       var selectedUser = $("#addLinkedUserSelect")[0];
 
@@ -128,7 +128,7 @@ export default {
         this.manager = this.linkedusers[0];
       }
     },
-    removedLinkedUser: function(id) {
+    removedLinkedUser(id) {
       var index = this.findById(this.linkedusers, id);
 
       //we have to make sure the moving doesn't fuck it all up
@@ -143,17 +143,12 @@ export default {
         $("#managerSelect")[0].selectedIndex = 0;
       }
     },
-    updateManager: function() {
+    updateManager() {
       var index = this.findById(this.linkedusers, $("#managerSelect")[0].options[$("#managerSelect")[0].selectedIndex].value);
 
       this.manager = this.linkedusers[index];
     },
-    sendHTTP: function() {
-
-      //Make sure all inputs are valid
-      if(! this.validate()) {
-        return;
-      }
+    sendHTTP() {
 
       //create json object
       var bodyobj = {
@@ -173,34 +168,6 @@ export default {
       }).catch((err) => {console.log(err);});
 
 
-    },
-    validate: function() {
-      var name = this.name;
-      var desc = this.description;
-
-      if (name == "") {
-        alert("Bitte Namen eingeben!");
-        return false;
-      }
-      if (desc == "") {
-        alert("Bitte Beschreibung eingeben!");
-        return false;
-      }
-      if (name.length < 5) {
-        alert("Der Name muss aus mindestens fünf Buchstaben bestehen.");
-        return false;
-      }
-      if (desc.length < 5) {
-        alert("Die Beschreibung muss aus mindestens fünf Buchstaben bestehen.");
-        return false;
-      }
-
-      if (this.linkedusers.length == 0) {
-        alert("Dem Projekt muss mindestens ein MItarbeiter zugeordnet sein.");
-        return false;
-      }
-
-      return true;
     },
     allMinusLinkedUsers() {
       var a = this.allusers;

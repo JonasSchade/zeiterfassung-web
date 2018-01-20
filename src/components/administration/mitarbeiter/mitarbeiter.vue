@@ -65,11 +65,11 @@ export default {
     };
   },
   methods:{
-    getUsers: function(id) {
-      return this.users[id.toString()];
+    getUsers(id) {
+      return this.users[id.toString()] || [];
     },
-    getProjects: function(id) {
-      return this.projects[id.toString()];
+    getProjects(id) {
+      return this.projects[id.toString()] || [];
     }
   },
   created() {

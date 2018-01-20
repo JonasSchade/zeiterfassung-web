@@ -52,7 +52,7 @@ export default {
   methods: {
 
   },
-  data: function() {
+  data() {
     return {
       abteilungen: [],
       users: []
@@ -72,8 +72,8 @@ export default {
 
   },
   methods: {
-    getUsers: function(id) {
-      return this.users[id.toString()];
+    getUsers(id) {
+      return this.users[id.toString()] || [];
     }
   }
 }
