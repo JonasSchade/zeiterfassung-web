@@ -35,7 +35,7 @@
           </div>
         </div>
       </tablistitem>
-      <LineExample :labels="labels" :datasets="datasets">
+      <LineExample id="time_chart" :labels="labels" :datasets="datasets">
       </LineExample>
     </div>
 
@@ -56,6 +56,7 @@ export default {
       users: [],
       projects: [],
       clickeduser: "",
+      time_array: [],
       labels:['Januar', 'February', 'March', 'April', 'May', 'June', 'July'],
       datasets:[{
         label: 'Data One',
@@ -68,8 +69,8 @@ export default {
     getUsers: function(id){
       return this.users[id.toString()];
     },
+    //WICHTIG! Wird im Moment nur aufgerufen bei Projekt "Datenbank" bei KLick auf Timm Werner
     fillChartwithData: function(projectid, userid){
-      this.datasets[0].label = userid;
       var options = { year: 'numeric', month: 'long', day: 'numeric' };
       var today = new Date();
       this.labels[6] = today.toLocaleString('de-DE', options);
@@ -84,12 +85,21 @@ export default {
         var todayISO = year+'-'+month+'-'+day
 
         this.$http.get('http://localhost:3000/api/project_time/'+userid+'/'+todayISO+'/'+projectid, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
-          var time = response.body;
-          this.datasets[0].data[j] = response.body[0].duration;
+          this.time_array[0] = response.body[0].duration;
           console.log(response.body[0].duration);
           console.log(response.body[0].name);
         });
       }
+      console.log("Labels: "+this.labels)
+      console.log("Time_array: "+this.time_array)
+      var dataset = {
+        label: userid,
+        borderColor: 'green',
+        data: this.time_array
+      }
+      this.datasets.push(dataset);
+    //  this.addData($('#time_chart'),this.labels, time_array);
+      console.log("datasets: "+this.datasets)
 
 
     },
@@ -101,7 +111,14 @@ export default {
         }
       }
       this.fillChartwithData(projectid, userid);
-    }
+    },
+    // addData: function(chart, label, data) {
+    // chart.data.labels.push(label);
+    // chart.data.datasets.forEach((dataset) => {
+    //     dataset.data.push(data);
+    // });
+    // chart.update();
+    // }
   },
   created() {
     this.$http.get('http://localhost:3000/api/authenticate', {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
