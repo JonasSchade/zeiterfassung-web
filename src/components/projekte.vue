@@ -21,7 +21,8 @@
               <h4>Zugewiesene Mitarbeiter:</h4>
               <ul class="userlist">
                 <li class="row" v-for="user in getUsers(project.id)">
-                  <div>{{user.firstname}} {{user.lastname}}</div>
+                  <div v-on:click="clickuser(project.id, user.id)">{{user.firstname}} {{user.lastname}}</div>
+                  <span>{{clickeduser.firstname}}</span>
                 </li>
               </ul>
             </div>
@@ -54,32 +55,58 @@ export default {
       userId: "",
       users: [],
       projects: [],
+      clickeduser: "",
       labels:['Januar', 'February', 'March', 'April', 'May', 'June', 'July'],
       datasets:[{
         label: 'Data One',
-        backgroundColor: '#FC2525',
+        borderColor: '#FC2525',
         data: [40, 39, 10, 40, 39, 80, 40]
-      },{
-        label: 'Data Two',
-        backgroundColor: '#05CBE1',
-        data: [60, 55, 32, 10, 2, 12, 53]
-      }],
-      data: []
+      }]
     }
   },
   methods: {
     getUsers: function(id){
       return this.users[id.toString()];
     },
-    fillChartwithData: function(){
+    fillChartwithData: function(projectid, userid){
+      this.datasets[0].label = userid;
+      var options = { year: 'numeric', month: 'long', day: 'numeric' };
+      var today = new Date();
+      this.labels[6] = today.toLocaleString('de-DE', options);
+      for(var j = 5; j>=0; j--){
+        today.setDate(today.getDate() - 1);
+        this.labels[j] = today.toLocaleString('de-DE', options);
 
+        //parse today into the dateformat the api reqires
+        var month = ("0" + (today.getMonth() + 1)).slice(-2); // month (in integer 0-11)
+        var year = today.getFullYear();
+        var day = today.getUTCDate();
+        var todayISO = year+'-'+month+'-'+day
+
+        this.$http.get('http://localhost:3000/api/project_time/'+userid+'/'+todayISO+'/'+projectid, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
+          var time = response.body;
+          this.datasets[0].data[j] = response.body[0].duration;
+          console.log(response.body[0].duration);
+          console.log(response.body[0].name);
+        });
+      }
+
+
+    },
+    clickuser: function(projectid, userid){
+      var array = this.users[projectid];
+      for (var i = 0; i<array.length; i++){
+        if(array[i].id==userid){
+          this.clickeduser = array[i];
+        }
+      }
+      this.fillChartwithData(projectid, userid);
     }
   },
   created() {
     this.$http.get('http://localhost:3000/api/authenticate', {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
       this.benutzer = response.body.username;
       this.userId = response.body.id;
-      console.log(this.userId);
 
       this.$http.get('http://localhost:3000/api/projects_of_manager/'+this.userId, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
         this.projects = response.body;
@@ -91,7 +118,7 @@ export default {
         }
       });
     });
-    this.fillChartwithData();
+    //this.fillChartwithData();
   }
 }
 </script>
