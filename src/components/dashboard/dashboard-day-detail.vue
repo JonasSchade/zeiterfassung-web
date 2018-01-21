@@ -134,13 +134,13 @@
       <br>
       <div>
         Gib die Zeit ein:
-        <input type="text" v-bind:id="this.project.id+'minutes'" @input="checkDayInput" placeholder="hh" maxlength="2" size="2">
+        <input type="text" v-bind:id="project.id+'minutes'" @input="checkDayInput" placeholder="hh" maxlength="2" size="2">
         <span>:</span>
-        <input type="text" v-bind:id="this.project.id+'hours'" @input="checkDayInput" placeholder="mm" maxlength="2" size="2">
+        <input type="text" v-bind:id="project.id+'hours'" @input="checkDayInput" placeholder="mm" maxlength="2" size="2">
         <p></p>
         <div>
           <br>
-          <button id="btn_new_project" v-on:click="addTime(this.project.id)">
+          <button id="btn_new_project" v-on:click="addTime(project.id)">
             <i class="fa fa-plus" aria-hidden="true"></i>
             Hinzufügen
           </button>
@@ -175,10 +175,7 @@ export default {
       console.log(this.userid);
 
       this.$http.get('http://localhost:3000/api/user_project/'+this.userid, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(res => {
-        for(var i = 0; i < res.body.length; i++) {
-          this.projects[i] = res.body[i];
-        }
-        console.log(this.projects);
+        this.projects = res.body;
       });
     });
   },
