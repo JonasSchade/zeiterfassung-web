@@ -80,9 +80,6 @@
         <div class="card col-xs-10" >
           <div>
             <div class="row">
-              <p>{{completeTime}} h</p>
-              <p>{{assignedTime}} h</p>
-              <p>{{unassignedTime}} h</p>
               <span class="text-left">So viel können sie noch verteilen</span>
               <span class="text-right">{{unassignedTime}} h</span>
             </div>
@@ -93,16 +90,16 @@
             <div>
               <div class="row">
                 <span class="text-left">So viel haben sie schon verteilt</span>
-                <span class="text-right">{{assignedTime}} h</span>
+                <span class="text-right">{{projectTime}} h</span>
               </div>
               <div class="progress">
-                <div class="progress-bar progress-bar-success" role="progressbar" v-bind:aria-valuenow="assignedTime"
-                aria-valuemin="0" v-bind:aria-valuemax="{assignedTime}" v-bind:style="{ width: (assignedTime/completeTime)*100 + '%' }">{{assignedTime}} h
+                <div class="progress-bar progress-bar-success" role="progressbar" v-bind:aria-valuenow="projectTime"
+                aria-valuemin="0" v-bind:aria-valuemax="{completeTime}" v-bind:style="{ width: (projectTime/completeTime)*100 + '%' }">{{projectTime}} h
               </div>
             </div>
             <div>
-              <button id="btn_new_project">
-                <i class="fa fa-floppy-o" aria-hidden="true"></i>
+              <button id="btn_new_project" v-on:click="save()">
+                <i class="fa fa-floppy-o" aria-hidden="true" ></i>
                 Zeiten Speichern
               </button>
             </div>
@@ -134,9 +131,9 @@
       <br>
       <div>
         Gib die Zeit ein:
-        <input type="text" v-bind:id="project.id+'minutes'" @input="checkDayInput" placeholder="hh" maxlength="2" size="2">
+        <input type="number" v-bind:id="project.id+'hours'" @input="checkProjectInput" placeholder="hh" maxlength="2" size="2">
         <span>:</span>
-        <input type="text" v-bind:id="project.id+'hours'" @input="checkDayInput" placeholder="mm" maxlength="2" size="2">
+        <input type="number" v-bind:id="project.id+'minutes'" @input="checkProjectInput" placeholder="mm" maxlength="2" size="2">
         <p></p>
         <div>
           <br>
@@ -162,19 +159,23 @@ export default {
         minutes: "",
         hours: "",
       },
-      completeTime: "",
-      assignedTime: "",
-      unassignedTime: "",
+      completeTime: 0.0,
+      date: this.$route.params.day,
+      unassignedTime: 0.0,
+      projectTime: 0.0,
       projectTimes: [],
+      startingtime: "",
+      endtime: "",
+      pause: "",
+      travel: ""
     };
   },
   created() {
     this.$http.get('http://localhost:3000/api/authenticate', {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
 
       this.userid = response.body.id;
-      console.log(this.userid);
 
-      this.$http.get('http://localhost:3000/api/user_project/'+this.userid, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(res => {
+      this.$http.get('http://localhost:3000/api/user_projects/'+this.userid, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(res => {
         this.projects = res.body;
       });
     });
@@ -186,25 +187,68 @@ export default {
   },
   methods: {
     save: function(event){
-      return;
-    },
-    updateTimes: function(event){
-      this.unassignedTime = this.unassignedTime;
-      this.assignedTime= this.assignedTime;
-    },
-    addTime: function(event, id) {
-      var getSum = function(total, num){
-        return total + num;
+      var datebody={
+        date: this.date,
+        userid: this.userid,
+        comming_time: this.startingtime,
+        leaving_time: this.endtime,
+        pause: this.pause,
+        travel: this.travel,
       };
 
-      var duration = parseInt($("#"+this.id+"hours").val())+parseInt(($("#"+this.id+"minutes").val())/60);
-      this.projectTimes[this.id] = this.duration;
+      this.$http.post("http://localhost:3000/api/time/", datebody, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}})
+
+      .then(response => {
+        for(var i=0; i< this.projects.length; i++){
+          if(this.projectTimes[i] != null){
+            var projectbody={
+              date: this.date,
+              userid: this.userid,
+              projectid: i,
+              duration: this.projectTimes[i],
+            };
+            console.log(projectbody);
+            this.$http.post("http://localhost:3000/api/project_time/", projectbody, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}});
+          }
+        }
+      });
+    },
+    rounding(input){
+      return Math.round(input*100)/100;
+    },
+    updateTimes: function(event){
+      this.projectTime=0.0;
+      this.unassignedTime=0.0;
+      for(var i=0; i < this.projectTimes.length; i++){
+        if(this.projectTimes[i] != null || !isNaN(this.projectTimes[i])){
+          this.projectTime= this.projectTime+this.projectTimes[i];
+        }
+      }
+      this.unassignedTime = this.completeTime-this.projectTime;
+    },
+    addTime: function(id) {
+      var h = parseInt($("#"+id+"hours").val());
+      var min;
+      if($("#"+id+"minutes").val()==null){
+        min = 0;
+      }else{
+        min = $("#"+id+"minutes").val();
+      }
+      min = min/60.0;
+      min = parseFloat(min);
+      var duration = parseFloat(min+h);
+      this.projectTimes[id] = duration;
+
       this.updateTimes();
     },
     updateTimesFirst: function(event){
-      this.completeTime = parseInt(this.computedTime.hours)+parseInt(this.computedTime.minutes)/60;
-      this.unassignedTime = this.completeTime;
-      this.assignedTime = this.completeTime-this.unassignedTime;
+      this.completeTime = parseFloat(this.computedTime.hours)+parseFloat(this.computedTime.minutes/60.0);
+      this.unassignedTime = parseFloat(this.completeTime);
+
+      this.startingtime = this.date + " " + $("#time-start-hours").val() + ":" + $("#time-start-minutes").val()+":00";
+      this.endtime = this.date + " " + $("#time-stop-hours").val() + ":" + $("#time-stop-minutes").val()+":00";
+      this.pause = $("#time-break-hours").val()+($("#time-break-minutes").val()/60.0);
+      this.travel = $("#time-travel-hours").val()+($("#time-travel-minutes").val()/60.0);
     },
     checkProjectInput: function (event) {
       var elem = event.target;
@@ -227,7 +271,12 @@ export default {
         return;
       }
 
-      if (assignedTime > completeTime) {
+      if (this.projectTime > this.completeTime) {
+        elem.style.color = "red";
+        return;
+      }
+
+      if (this.projectTime > this.completeTime) {
         elem.style.color = "red";
         return;
       }
