@@ -80,7 +80,6 @@ export default {
       return this.users[id.toString()];
     },
     getTimeforUser: function(projectid, userid) {
-      console.log("zgzjjgetTimeforUser: ");
       return this.time_array[projectid.toString()][userid.toString()];
     },
     // //WICHTIG! Wird im Moment nur aufgerufen bei Projekt "Datenbank" bei KLick auf Timm Werner
@@ -159,15 +158,12 @@ export default {
         var day = today.getUTCDate();
         var todayISO = year + '-' + month + '-' + day
 
-        console.log("projektid: "+projectid);
-        console.log("user des projects: "+this.getUsers(projectid));
         this.getUsers(projectid).forEach((e) => {
           this.$http.get('http://localhost:3000/api/project_time/' + e.id + '/' + todayISO + '/' + projectid, {
             headers: {
               Authorization: ('bearer ' + window.sessionStorage.chronosAuthToken)
             }
           }).then(response => {
-            console.log(e.userid+"Gearbeitet: "+response.body[0]);
             this.time_array[projectid][e.id].push({dur: response.body[0].duration, name: response.body[0].userid });
           });
         });
@@ -190,7 +186,6 @@ export default {
       }).then(response => {
         this.projects = response.body;
         for (var i = 0; i < this.projects.length; i++) {
-          console.log("Nochmal Projectid: "+this.projects[i].id);
           this.$http.get('http://localhost:3000/api/project_users/' + this.projects[i].id, {
             headers: {
               Authorization: ('bearer ' + window.sessionStorage.chronosAuthToken)
@@ -198,17 +193,13 @@ export default {
           }).then(response => {
             var id = response.url.replace("http://localhost:3000/api/project_users/", "");
             this.users[id.toString()] = response.body;
-            console.log("Response body: "+response.body);
             for(var j = 0; j<response.body.length; j++){
               if (this.time_array[id] == null) {
                 this.time_array[id] = [];
               }
               this.time_array[id][response.body[j].id] = [];
             }
-              console.log(this.time_array);
-
             this.fillChartwithData2(id);
-            console.log("Nach fill: "+this.time_array)
           });
         }
       });
