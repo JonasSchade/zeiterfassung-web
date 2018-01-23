@@ -3,7 +3,7 @@
     <b-card-header header-tag="header" class="row" role="tab">
       <div class="col-sm-12">
         <div class="expandbutton" block v-b-toggle="'conatiner-'+contentid">{{contentname}}
-          <i class="fa fa-pencil-square-o " v-on:click="$router.push({path:($router.history.current.fullPath+'/edit/'+contentid) })" aria-hidden="true"></i>
+          <i v-if="showEditBtn" class="fa fa-pencil-square-o " v-on:click="$router.push({path:($router.history.current.fullPath+'/edit/'+contentid) })" aria-hidden="true"></i>
         </div>
       </div>
     </b-card-header>
@@ -24,6 +24,10 @@ export default {
   props: {
     contentid: Number,
     contentname: String,
+    showEditBtn: {
+      type: Boolean,
+      default: true,
+    }
   },
 }
 </script>

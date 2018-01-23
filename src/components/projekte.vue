@@ -1,9 +1,11 @@
 <template>
 <div class="projekte">
   <div class="container">
-
+    <div class="row topper">
+      <h3>Projekte</h3>
+    </div>
     <div class="tablist" role="tablist">
-      <tablistitem v-for="project in projects" :key="project.id" :contentid="project.id" :contentname="project.name">
+      <tablistitem v-for="project in projects" :key="project.id" :contentid="project.id" :contentname="project.name" :show-edit-btn="false">
         <div class="container-flex">
           <div class="row">
             <div class="col-sm-6">
@@ -25,25 +27,21 @@
           </div>
           <hr/>
           <div class="row">
-            <div>
-              <div>
-                <table id="arbeitszeiten">
-                  <tr>
-                    <th>Mitarbeiter</th>
-                    <th v-for="day in labels">{{day}}</th>
-                  </tr>
-                  <tr v-for="user in getUsers(project.id)">
-                    <td>{{user.firstname}} {{user.lastname}}</td>
-                    <td v-for="time in getTimeforUser(project.id, user.id)">{{time.dur}} Std.</td>
-                  </tr>
-                </table>
-              </div>
+            <div style="overflow-x: scroll">
+              <table id="arbeitszeiten">
+                <tr>
+                  <th>Mitarbeiter</th>
+                  <th v-for="day in labels">{{day}}</th>
+                </tr>
+                <tr v-for="user in getUsers(project.id)">
+                  <td>{{user.firstname}} {{user.lastname}}</td>
+                  <td v-for="time in getTimeforUser(project.id, user.id)">{{time.dur}} Std.</td>
+                </tr>
+              </table>
             </div>
           </div>
         </div>
       </tablistitem>
-      <LineExample id="time_chart" :labels="labels" :datasets="datasets">
-      </LineExample>
     </div>
 
   </div>
@@ -82,52 +80,6 @@ export default {
     getTimeforUser: function(projectid, userid) {
       return this.time_array[projectid.toString()][userid.toString()];
     },
-    // //WICHTIG! Wird im Moment nur aufgerufen bei Projekt "Datenbank" bei KLick auf Timm Werner
-    // fillChartwithData: function(projectid, userid) {
-    //   var options = {
-    //     year: 'numeric',
-    //     month: 'numeric',
-    //     day: 'numeric'
-    //   };
-    //   var today = new Date();
-    //   for (var j = 6; j >= 0; j--) {
-    //     if (j == 6) {
-    //       this.labels[6] = today.toLocaleString('de-DE', options);
-    //     } else {
-    //       today.setDate(today.getDate() - 1);
-    //       this.labels[j] = today.toLocaleString('de-DE', options);
-    //     }
-    //
-    //     //parse today into the dateformat the api reqires
-    //     var month = ("0" + (today.getMonth() + 1)).slice(-2); // month (in integer 0-11)
-    //     var year = today.getFullYear();
-    //     var day = today.getUTCDate();
-    //     var todayISO = year + '-' + month + '-' + day
-    //
-    //     this.$http.get('http://localhost:3000/api/project_time/' + userid + '/' + todayISO + '/' + projectid, {
-    //       headers: {
-    //         Authorization: ('bearer ' + window.sessionStorage.chronosAuthToken)
-    //       }
-    //     }).then(response => {
-    //       this.time_array.push(response.body[0].duration);
-    //     }).then(response => {
-    //       if (j <= 0) {
-    //         var dataset = {
-    //           label: userid,
-    //           borderColor: 'green',
-    //           data: this.time_array
-    //         };
-    //         this.datasets.push(dataset);
-    //       }
-    //     });
-    //   }
-    //   console.log("Labels: " + this.labels)
-    //
-    //   //  this.addData($('#time_chart'),this.labels, time_array);
-    //
-    //
-    //
-    // },
     clickuser: function(projectid, userid) {
       var array = this.users[projectid];
       for (var i = 0; i < array.length; i++) {
@@ -135,9 +87,8 @@ export default {
           this.clickeduser = array[i];
         }
       }
-      //this.fillChartwithData(projectid, userid);
     },
-    fillChartwithData2: function(projectid) {
+    fillchartwithdata: function(projectid) {
       var options = {
         year: 'numeric',
         month: 'numeric',
@@ -164,7 +115,10 @@ export default {
               Authorization: ('bearer ' + window.sessionStorage.chronosAuthToken)
             }
           }).then(response => {
-            this.time_array[projectid][e.id].push({dur: response.body[0].duration, name: response.body[0].userid });
+            this.time_array[projectid][e.id].push({
+              dur: response.body[0].duration,
+              name: response.body[0].userid
+            });
           });
         });
       }
@@ -193,13 +147,13 @@ export default {
           }).then(response => {
             var id = response.url.replace("http://localhost:3000/api/project_users/", "");
             this.users[id.toString()] = response.body;
-            for(var j = 0; j<response.body.length; j++){
+            for (var j = 0; j < response.body.length; j++) {
               if (this.time_array[id] == null) {
                 this.time_array[id] = [];
               }
               this.time_array[id][response.body[j].id] = [];
             }
-            this.fillChartwithData2(id);
+            this.fillchartwithdata(id);
           });
         }
       });
