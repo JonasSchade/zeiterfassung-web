@@ -339,7 +339,7 @@ export default {
         min = 0;
       }
       min = parseFloat(min/60.0);
-      var duration = parseFloat(min+h);
+      var duration = Math.round(parseFloat(min+h)*100)/100;
 
       this.projectTimes[id] = duration;
 
