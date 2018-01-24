@@ -248,10 +248,22 @@ export default {
       this.setCurrentYear(year);
     },
     setCurrentMonth(month, year) {
-      var DaysOfCurrentMonth = moment(month).daysInMonth();
-      var workedTime = 0.0;
 
-      this.monthTime= DaysOfCurrentMonth*8;
+      var date = moment().year(year).month(month).date(1);
+
+      var cur = date.clone().startOf('month');
+      var last = date.clone().endOf('month');
+
+      var workdays = 0;
+
+      while (cur.isSameOrBefore(last)) {
+        if (cur.weekday() != 0 && cur.weekday() != 6){
+          workdays = workdays+1;
+        }
+        cur.add(1,"days");
+      }
+
+      this.monthTime= workdays*8;
     },
     setCurrentYear(year) {
       var workedTime = 0.0;
