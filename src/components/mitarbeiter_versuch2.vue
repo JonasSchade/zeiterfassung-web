@@ -1,16 +1,17 @@
 <template>
-<div class="mitarbeiter">
+<div class="projekte">
   <div class="container">
     <div class="row topper">
       <h3>Mitarbeiter</h3>
     </div>
     <div class="tablist" role="tablist">
-      <tablistitem :key="logged_in_user.department" :contentid="1" :contentname="department_name" :show-edit-btn="false">
+      <tablistitem :key="logged_in_user.departmentid" :contentid="logged_in_user.departmentid" :contentname="logged_in_user.name" :show-edit-btn="false">
         <div class="container-flex">
           <div class="row">
             <div class="col-sm-6">
-              <h4>Abteilungsleiter:</h4>
+              <h4>Manager:</h4>
               <p class="card-text">{{logged_in_user.firstname}} {{logged_in_user.lastname}}</p>
+              <hr />
             </div>
             <div class="col-sm-6">
               <h4>Zugewiesene Mitarbeiter:</h4>
@@ -20,6 +21,7 @@
                 </li>
               </ul>
             </div>
+            <!--
           </div>
           <hr/>
           <div class="row">
@@ -29,19 +31,16 @@
                   <th>Mitarbeiter</th>
                   <th v-for="day in labels">{{day}}</th>
                 </tr>
-                <tr v-for="user in users_of_dep">
+                <tr v-for="user in getUsers(project.id)">
                   <td>{{user.firstname}} {{user.lastname}}</td>
-                  {{getTimeforUser(user.id)}}
-                  <td v-for="time in getTimeforUser(user.id)">{{time}} Std.</td>
+                  <td v-for="time in getTimeforUser(project.id, user.id)">{{time}} Std.</td>
                 </tr>
               </table>
             </div>
+          -->
           </div>
         </div>
       </tablistitem>
-      <p>
-        {{this.timeArray}}
-      </p>
     </div>
 
   </div>
@@ -52,68 +51,67 @@
 import tablistitem from '@/components/administration/tablistitem'
 import LineExample from '@/components/LineChart.js'
 export default {
-  name: 'mitarbeiter',
+  name: 'projekte',
   components: {
     tablistitem,
     LineExample
   },
   data() {
     return {
-      department_name: "",
-      logged_in_user: [],
+      logged_in_user: "",
       users_of_dep: [],
-      projects: [],
-      timeArray: [],
+      users: [],
+      time_array: [],
       labels: ['Januar', 'February', 'March', 'April', 'May', 'June', 'July'],
-      datasets: [{
-        label: 'Data One',
-        borderColor: '#FC2525',
-        data: [40, 39, 10, 40, 39, 80, 40]
-      }]
     }
   },
   methods: {
     getTimeforUser: function(userid) {
-      return this.timeArray[userid.toString()];
+      return this.time_array[userid.toString()];
     },
     filltablewithdata: function() {
+
+      var options = {
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric'
+      };
+      var today = new Date();
       for (var j = 6; j >= 0; j--) {
-        var date = moment().subtract(j, 'day')
-        this.labels[6-j] = date.format("DD.MM.YYYY");
+        if (j == 6) {
+          this.labels[6] = today.toLocaleString('de-DE', options);
+        } else {
+          today.setDate(today.getDate() - 1);
+          this.labels[j] = today.toLocaleString('de-DE', options);
+        }
 
-        var todayISO = date.format("YYYY-MM-DD");
+        //parse today into the dateformat the api reqires
+        var month = ("0" + (today.getMonth() + 1)).slice(-2); // month (in integer 0-11)
+        var year = today.getFullYear();
+        var day = today.getUTCDate();
+        var todayISO = year + '-' + month + '-' + day
 
-        for (var i = 0; i < this.users_of_dep.length; i++) {
-          var e = this.users_of_dep[i];
+        var time_array_helper = [];
+        for (var x = 0; x<this.users_of_dep.length; x++)  {
 
-          //init if needed
-          if (this.timeArray[e.id] == null) {
-            this.timeArray[e.id] = [];
-          }
+          console.log("------------------------------------");
+          console.log(this.users_of_dep[x]);
+          console.log("------------------------------------");
 
-
-          this.$http.get("http://localhost:3000/api/time_by_user_date/"+e.id+"/"+todayISO, {
-            headers: {Authorization: ('bearer ' + window.sessionStorage.chronosAuthToken)}
-          }).then((response5) => {
-            this.timeArray[e.id].push(response5.body.sum);
-            console.log(response5.body.sum);
+          this.$http.get('http://localhost:3000/api/time_by_user_date/' + this.users_of_dep[x].id + '/' + todayISO, {
+            headers: {
+              Authorization: ('bearer ' + window.sessionStorage.chronosAuthToken)
+            }
+          }).then(responseA => {
+            if(time_array_helper[this.users_of_dep[x].id]==null){
+              time_array_helper[this.users_of_dep[x].id]=[];
+            }
+            time_array_helper[this.users_of_dep[x].id].push(responseA.body[0]);
           });
-
-        //   this.$http.get('' + e.id + '/' + todayISO, {
-        //     headers: {
-        //       Authorization: ('bearer ' + window.sessionStorage.chronosAuthToken)
-        //     }
-        //   }).then(response => {
-        //     if (this.timeArray[e.id] == null) {
-        //       console.log("ist null");
-        //       console.log(this.timeArray.toString());
-        //       this.timeArray[e.id.toString()] = [];
-        //     }
-        //     this.timeArray[e.id.toString()].push(response.body.sum);
-        //     console.log(this.timeArray[e.id]);
-        //     console.log(this.timeArray.toString());
-        };
+        }
       }
+      console.log("timeArray:");
+      console.log(this.time_array);
     }
   },
   created() {
@@ -122,35 +120,27 @@ export default {
         Authorization: ('bearer ' + window.sessionStorage.chronosAuthToken)
       }
     }).then(response => {
+      //response.body.id enthält id des angemeldeten Benutzers
       this.$http.get('http://localhost:3000/api/user/' +  response.body.id, {
         headers: {
           Authorization: ('bearer ' + window.sessionStorage.chronosAuthToken)
         }
       }).then(response2 => {
         this.logged_in_user = response2.body;
+        console.log(this.logged_in_user);
 
-        this.$http.get('http://localhost:3000/api/department/' + this.logged_in_user.departmentid, {
+        this.$http.get('http://localhost:3000/api/department_users/' + this.logged_in_user.departmentid, {
           headers: {
             Authorization: ('bearer ' + window.sessionStorage.chronosAuthToken)
           }
         }).then(response3 => {
-
-          this.department_name = response3.body.name;
-
-          this.$http.get('http://localhost:3000/api/department_users/' + this.logged_in_user.departmentid, {
-            headers: {
-              Authorization: ('bearer ' + window.sessionStorage.chronosAuthToken)
-            }
-          }).then(response4 => {
-            this.users_of_dep = response4.body;
-            console.log(this.users_of_dep);
-             for (var x = 0; x < this.users_of_dep.length; x++) {
-                this.timeArray[this.users_of_dep[x].id.toString()] = [];
-            }
-            this.filltablewithdata();
-          });
-        })
+          this.users_of_dep = response3.body;
+          console.log("users_of_dep")
+          console.log(this.users_of_dep);
+          this.filltablewithdata();
+        });
       });
+
     });
   }
 }
