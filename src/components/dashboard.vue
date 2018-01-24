@@ -44,21 +44,21 @@
               <div class="container-flex">
                 <div class="row">
                   <div class="col-xs-7"><span class="time-label">Stunden Soll:</span></div>
-                  <div class="col-xs-5"><span class="time-value">{{yearTime[0]}} h</span></div>
+                  <div class="col-xs-5"><span class="time-value">{{yearTime}} h</span></div>
                 </div>
                 <div class="row">
                   <div class="col-xs-7"><span class="time-label">Stunden Ist:</span></div>
-                  <div class="col-xs-5"><span class="time-value">{{yearTime[1]}} h</span></div>
+                  <div class="col-xs-5"><span class="time-value">{{yearWorkedTime}} h</span></div>
                 </div>
                 <div class="row">
                   <div class="col-xs-7"><span class="time-label">Differenz:</span></div>
-                  <div class="col-xs-5"><span class="time-value">{{Math.round ((yearTime[0] - yearTime[1])*10)/10}} h</span></div>
+                  <div class="col-xs-5"><span class="time-value">{{Math.round ((yearTime - yearWorkedTime)*10)/10}} h</span></div>
                 </div>
                 <div class="row">
                   <div class="col-xs-12">
                     <div class="progress">
-                      <div class="progress-bar progress-bar-success" role="progressbar" v-bind:aria-valuenow="yearTime[1]"
-                           aria-valuemin="0" v-bind:aria-valuemax="yearTime[0]" v-bind:style="{ width: yearTime[1]/yearTime[0]*100 + '%' }"></div>
+                      <div class="progress-bar progress-bar-success" role="progressbar" v-bind:aria-valuenow="yearWorkedTime"
+                           aria-valuemin="0" v-bind:aria-valuemax="yearTime" v-bind:style="{ width: yearWorkedTime/yearTime*100 + '%' }"></div>
                     </div>
                   </div>
                 </div>
@@ -204,8 +204,9 @@ export default {
   data() {
     return {
       monthTime: 0,
-      yearTime: [1700,0],
       monthWorkedTime: 0,
+      yearTime: 1700,
+      yearWorkedTime: 0,
       userid: Number,
       token: 0
     };
@@ -244,10 +245,10 @@ export default {
       $("#calendar-btn-next")[0].disabled = ($("#calendar-select-month")[0].selectedIndex == $("#calendar-select-month")[0].length -1 && $("#calendar-select-year")[0].selectedIndex == $("#calendar-select-year")[0].length -1);
       $("#calendar-btn-today")[0].disabled = $('#calendar').find('td.fc-today').length !== 0;
 
-      this.setCurrentMonth(month, year);
-      this.setCurrentYear(year);
+      this.updateMonthTime(month, year);
+      this.updateYearTime(year);
     },
-    setCurrentMonth(month, year) {
+    updateMonthTime(month, year) {
 
       var date = moment().year(year).month(month).date(1);
 
@@ -265,11 +266,10 @@ export default {
 
       this.monthTime= workdays*8;
     },
-    setCurrentYear(year) {
+    updateYearTime(year) {
       var workedTime = 0.0;
       this.$http.get('http://localhost:3000/api/time_of_year/'+this.userid+"/"+year, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
-      workedTime = response.body.sum || 0;
-      this.yearTime= [1700, workedTime];
+        this.yearWorkedTime = response.body.sum || 0;
       });
 
     }
