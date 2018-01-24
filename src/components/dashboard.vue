@@ -194,8 +194,8 @@ export default {
   },
   data() {
     return {
-      monthTime: [160,128.7],
-      yearTime: [1700,700],
+      monthTime: [160,0],
+      yearTime: [1700,0],
       userid: Number,
       token: 0
     };
@@ -230,7 +230,6 @@ export default {
       $("#calendar-btn-next")[0].disabled = ($("#calendar-select-month")[0].selectedIndex == $("#calendar-select-month")[0].length -1 && $("#calendar-select-year")[0].selectedIndex == $("#calendar-select-year")[0].length -1);
       $("#calendar-btn-today")[0].disabled = $('#calendar').find('td.fc-today').length !== 0;
 
-      console.log("Test")
       this.setCurrentMonth(month, year);
       this.setCurrentYear(year);
     },
@@ -242,7 +241,6 @@ export default {
 
       for (var m = moment(firstDay); m.isBefore(lastDay); m.add(1, 'days')) {
         this.$http.get('http://localhost:3000/api/time_by_user_date/'+this.userid+"/"+m.format('YYYY-MM-DD'), {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
-          //console.log(response.body.sum);
           workedTime = workedTime + response.body.sum;
           this.token = this.token + 1;
           if(this.token==DaysOfCurrentMonth){

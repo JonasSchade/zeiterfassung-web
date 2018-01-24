@@ -222,7 +222,6 @@ export default {
                 })
               }
             }
-            console.log(this.projectTimes);
             this.showOld();
           }
         })
