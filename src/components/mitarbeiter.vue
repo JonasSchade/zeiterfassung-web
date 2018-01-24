@@ -32,7 +32,7 @@
               </tr>
               <tr v-for="user in departmentusers">
                 <td>{{user.firstname}} {{user.lastname}}</td>
-                <td v-for="time in getTimeforUser(user.id)">{{time}} Std.</td>
+                <td v-for="time in getTimeforUser(user.id)">{{time}}</td>
               </tr>
             </table>
           </div>
@@ -80,10 +80,10 @@ export default {
         for (var j = 0; j < this.dates.length; j++) {
           var date = this.dates[j].format("YYYY-MM-DD");
           this.times[userId][date] = 0;
-          this.$http.get('http://localhost:3000/api/time_by_user_date/' + userId + '/' + date, {headers: {Authorization: ('bearer ' + window.sessionStorage.chronosAuthToken)}}).then(res => {
-            var id = res.url.replace("http://localhost:3000/api/time_by_user_date/","").replace(/\/[0-9]{4}-[0-9]{2}-[0-9]{2}/i,"");
-            var date = res.url.replace("http://localhost:3000/api/time_by_user_date/","").replace(/[0-9]*\//i,"");
-            this.times[id][date] = res.body.sum;
+          this.$http.get('http://localhost:3000/api/time_worked_day/' + userId + '/' + date, {headers: {Authorization: ('bearer ' + window.sessionStorage.chronosAuthToken)}}).then(res => {
+            var id = res.url.replace("http://localhost:3000/api/time_worked_day/","").replace(/\/[0-9]{4}-[0-9]{2}-[0-9]{2}/i,"");
+            var date = res.url.replace("http://localhost:3000/api/time_worked_day/","").replace(/[0-9]*\//i,"");
+            this.times[id][date] = res.body.sumFormatted;
             this.$mount();
           });
         }

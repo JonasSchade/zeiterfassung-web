@@ -12,21 +12,21 @@
               <div class="container-flex">
                 <div class="row">
                   <div class="col-xs-7"><span class="time-label">Stunden Soll:</span></div>
-                  <div class="col-xs-5"><span class="time-value">{{monthTime[0]}} h</span></div>
+                  <div class="col-xs-5"><span class="time-value">{{monthTime}} h</span></div>
                 </div>
                 <div class="row">
                   <div class="col-xs-7"><span class="time-label">Stunden Ist:</span></div>
-                  <div class="col-xs-5"><span class="time-value">{{monthTime[1]}} h</span></div>
+                  <div class="col-xs-5"><span class="time-value">{{monthWorkedTime}} h</span></div>
                 </div>
                 <div class="row">
                   <div class="col-xs-7"><span class="time-label">Differenz:</span></div>
-                  <div class="col-xs-5"><span class="time-value">{{Math.round ((monthTime[0] - monthTime[1])*10)/10}} h</span></div>
+                  <div class="col-xs-5"><span class="time-value">{{Math.round ((monthTime - monthWorkedTime)*10)/10}} h</span></div>
                 </div>
                 <div class="row">
                   <div class="col-xs-12">
                     <div class="progress">
-                      <div class="progress-bar progress-bar-success" role="progressbar" v-bind:aria-valuenow="monthTime[1]"
-                           aria-valuemin="0" v-bind:aria-valuemax="monthTime[0]" v-bind:style="{ width: monthTime[1]/monthTime[0]*100 + '%' }"></div>
+                      <div class="progress-bar progress-bar-success" role="progressbar" v-bind:aria-valuenow="monthWorkedTime"
+                           aria-valuemin="0" v-bind:aria-valuemax="monthTime" v-bind:style="{ width: monthWorkedTime/monthTime*100 + '%' }"></div>
                     </div>
                   </div>
                 </div>
@@ -128,25 +128,32 @@ export default {
 
             var dateStr = date.format("YYYY-MM-DD");
 
-            this.$http.get('http://localhost:3000/api/time_by_user_date/'+this.userid+"/"+dateStr, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response2 => {
+            this.$http.get('http://localhost:3000/api/time_worked_day/'+this.userid+"/"+dateStr, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response2 => {
+
+              this.monthWorkedTime = this.monthWorkedTime + response2.body.hours;
 
               //show indicator if user has hours registert on that day
               if(response2.body.sum>0) {
                 $(cell).append("<div class='hidden-xs cellIndicatorConatiner'></div>");
                 $(cell).append("<div class='hidden-sm hidden-md hidden-lg hidden-xl cellTextConatiner'></div>");
 
-                $(cell).find(".cellTextConatiner").append("<h4>"+response2.body.sum+"h</h4>")
+                $(cell).find(".cellTextConatiner").append("<h4>"+response2.body.sumFormatted+"</h4>")
 
-                if (response2.body.sum > 8) {
+                if (response2.body.hours > 8) {
+                  var dif = response2.body.hours - 8;
+                  var max = (8/dif) * response2.body.hours;
+
                   $(cell).find(".cellIndicatorConatiner").radialIndicator({
                     barColor: '#5cb85c',
-                    radius: 30,
-                    barWidth: 5,
+                    radius: 36,
+                    barWidth: 3,
                     roundCorner : true,
-                    format: '#h',
-                    initValue: response2.body.sum,
+                    format: () => {
+                      return response2.body.sumFormatted;
+                    },
+                    initValue: response2.body.hours,
                     minValue: 0,
-                    maxValue: 24,
+                    maxValue: max,
                     barBgColor: '#0062a7',
                     roundCorner: true,
                   });
@@ -155,11 +162,13 @@ export default {
                 } else {
                   $(cell).find(".cellIndicatorConatiner").radialIndicator({
                     barColor: '#0062a7',
-                    radius: 30,
-                    barWidth: 5,
+                    radius: 36,
+                    barWidth: 3,
                     roundCorner : true,
-                    format: '#h',
-                    initValue: response2.body.sum,
+                    format: () => {
+                      return response2.body.sumFormatted;
+                    },
+                    initValue: response2.body.hours,
                     minValue: 0,
                     maxValue: 8,
                   });
@@ -194,8 +203,9 @@ export default {
   },
   data() {
     return {
-      monthTime: [160,0],
+      monthTime: 0,
       yearTime: [1700,0],
+      monthWorkedTime: 0,
       userid: Number,
       token: 0
     };
@@ -203,11 +213,15 @@ export default {
   methods: {
     //performs given action of calendar button
     calendarButtonPress(action) {
+      this.monthWorkedTime = 0;
+
       $('#calendar').fullCalendar(action);
       this.calendarUpdateControls();
     },
     //changes Date of calendar based on selected values
     calendarSelectChanged() {
+      this.monthWorkedTime = 0;
+
       var dateString = $("#calendar-select-year")[0].value;
       dateString = dateString.concat("-");
       dateString = dateString.concat(("0" + ($("#calendar-select-month")[0].selectedIndex+1)).slice(-2));
@@ -236,23 +250,13 @@ export default {
     setCurrentMonth(month, year) {
       var DaysOfCurrentMonth = moment(month).daysInMonth();
       var workedTime = 0.0;
-      var firstDay = moment(year+""+ month +"01");
-      var lastDay = moment(year+""+ month +""+ DaysOfCurrentMonth).add(1, 'days');
 
-      for (var m = moment(firstDay); m.isBefore(lastDay); m.add(1, 'days')) {
-        this.$http.get('http://localhost:3000/api/time_by_user_date/'+this.userid+"/"+m.format('YYYY-MM-DD'), {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
-          workedTime = workedTime + response.body.sum;
-          this.token = this.token + 1;
-          if(this.token==DaysOfCurrentMonth){
-            this.monthTime= [DaysOfCurrentMonth*8, workedTime];
-          }
-        });
-      }
+      this.monthTime= DaysOfCurrentMonth*8;
     },
     setCurrentYear(year) {
       var workedTime = 0.0;
       this.$http.get('http://localhost:3000/api/time_of_year/'+this.userid+"/"+year, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
-      workedTime = response.body.sum;
+      workedTime = response.body.sum || 0;
       this.yearTime= [1700, workedTime];
       });
 
