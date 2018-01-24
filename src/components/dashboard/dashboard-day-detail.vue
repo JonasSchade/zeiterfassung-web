@@ -211,16 +211,18 @@ export default {
             this.pause = res2.body[0].pause;
             this.travel = res2.body[0].travel;
 
+
             for(var i=0; i< this.projects.length; i++){
               if(this.projects[i] != null){
-                this.$http.get('http://localhost:3000/api/project_time/'+this.userid+'/'+this.date+'/'+i, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(res3 => {
-                  if(res3.body.length != 0){
-                    this.projectTimes[i]=res3.body.duration;
-                    console.log(this.projectTimes);
+                this.$http.get('http://localhost:3000/api/project_time/'+this.userid+'/'+this.date+'/'+this.projects[i].id, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(res3 => {
+                  var pid = res3.url.replace("http://localhost:3000/api/project_time","").replace(/\/[0-9]*\//i,"").replace(/[0-9]{4}-[0-9]{2}-[0-9]{2}\//i,"");
+                  if(res3.body != null){
+                    this.projectTimes[pid]=res3.body[0].duration;
                   }
                 })
               }
             }
+            console.log(this.projectTimes);
             this.showOld();
           }
         })
@@ -297,9 +299,11 @@ export default {
       this.pausecomputed.minutes = Math.round((this.pause-Math.floor(this.pause))*60);
       this.travelcomputed.hours = Math.floor(this.travel);
       this.travelcomputed.minutes = Math.round((this.travel-Math.floor(this.travel))*60);
-      for(var i=0; i<this.projectTimes.length; i++){
-        this.projectHours[i]=Math.floor(this.projectTimesBefore[i]);
-        this.projectMinutes[i]=Math.round((this.projectTimesBefore[i]-this.projectHours[i])*60);
+      for(var i=0; i<this.projects.length; i++){
+        if(this.projectTimes[this.projects[i].id] > 0){
+          this.projectHours[this.projects[i].id]=Math.floor(this.projectTimes[this.projects[i].id].duration);
+          this.projectMinutes[this.projects[i].id]=Math.round((this.projectTimes[this.projects[i].id].duration-Math.floor(this.projectTimes[this.projects[i].id].duration))*60);
+        }
       }
       this.projectTimesBefore=this.projectTimes;
       this.updateFirstComputedTime();
@@ -339,7 +343,7 @@ export default {
 
       this.projectTimes[id] = duration;
 
-      if(this.assignedTime+duration < this.completeTime){
+      if(this.assignedTime+duration <= this.completeTime){
         this.updateTimes();
       }else{
         this.projectTimes[id] = 0;
