@@ -11,16 +11,16 @@
             <div class="content">
               <div class="container-flex">
                 <div class="row">
-                  <div class="col-xs-6"><span class="time-label">Stunden Soll:</span></div>
-                  <div class="col-xs-6"><span class="time-value">{{monthTime[0]}} h</span></div>
+                  <div class="col-xs-7"><span class="time-label">Stunden Soll:</span></div>
+                  <div class="col-xs-5"><span class="time-value">{{monthTime[0]}} h</span></div>
                 </div>
                 <div class="row">
-                  <div class="col-xs-6"><span class="time-label">Stunden Ist:</span></div>
-                  <div class="col-xs-6"><span class="time-value">{{monthTime[1]}} h</span></div>
+                  <div class="col-xs-7"><span class="time-label">Stunden Ist:</span></div>
+                  <div class="col-xs-5"><span class="time-value">{{monthTime[1]}} h</span></div>
                 </div>
                 <div class="row">
-                  <div class="col-xs-6"><span class="time-label">Differenz:</span></div>
-                  <div class="col-xs-6"><span class="time-value">{{Math.round ((monthTime[0] - monthTime[1])*10)/10}} h</span></div>
+                  <div class="col-xs-7"><span class="time-label">Differenz:</span></div>
+                  <div class="col-xs-5"><span class="time-value">{{Math.round ((monthTime[0] - monthTime[1])*10)/10}} h</span></div>
                 </div>
                 <div class="row">
                   <div class="col-xs-12">
@@ -43,16 +43,16 @@
             <div class="content">
               <div class="container-flex">
                 <div class="row">
-                  <div class="col-xs-6"><span class="time-label">Stunden Soll:</span></div>
-                  <div class="col-xs-6"><span class="time-value">{{yearTime[0]}} h</span></div>
+                  <div class="col-xs-7"><span class="time-label">Stunden Soll:</span></div>
+                  <div class="col-xs-5"><span class="time-value">{{yearTime[0]}} h</span></div>
                 </div>
                 <div class="row">
-                  <div class="col-xs-6"><span class="time-label">Stunden Ist:</span></div>
-                  <div class="col-xs-6"><span class="time-value">{{yearTime[1]}} h</span></div>
+                  <div class="col-xs-7"><span class="time-label">Stunden Ist:</span></div>
+                  <div class="col-xs-5"><span class="time-value">{{yearTime[1]}} h</span></div>
                 </div>
                 <div class="row">
-                  <div class="col-xs-6"><span class="time-label">Differenz:</span></div>
-                  <div class="col-xs-6"><span class="time-value">{{Math.round ((yearTime[0] - yearTime[1])*10)/10}} h</span></div>
+                  <div class="col-xs-7"><span class="time-label">Differenz:</span></div>
+                  <div class="col-xs-5"><span class="time-value">{{Math.round ((yearTime[0] - yearTime[1])*10)/10}} h</span></div>
                 </div>
                 <div class="row">
                   <div class="col-xs-12">
@@ -278,11 +278,11 @@ export default {
     padding-bottom: 2px;
   }
 
-  .card>.content>.container-flex>.row>.col-xs-6:first-child {
+  .card>.content>.container-flex>.row>.col-xs-7 {
     text-align: left;
   }
 
-  .card>.content>.container-flex>.row>.col-xs-6:last-child {
+  .card>.content>.container-flex>.row>.col-xs-5 {
     text-align: right;
   }
 
@@ -307,6 +307,7 @@ export default {
     margin-left: 0px;
     margin-right: 0px;
   }
+
 
   /*********************************
       CALENDAR-CONTROLS
