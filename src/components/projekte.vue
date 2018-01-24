@@ -28,7 +28,7 @@
           <hr/>
           <div class="row">
             <div style="overflow-x: scroll">
-              <table id="arbeitszeiten">
+              <table class="arbeitszeiten">
                 <tr>
                   <th>Mitarbeiter</th>
                   <th v-for="day in labels">{{day}}</th>
@@ -209,7 +209,7 @@ export default {
   margin-bottom: 10px;
 }
 
-#arbeitszeiten {
+.arbeitszeiten {
   width: 100%;
 }
 
