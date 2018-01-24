@@ -53,6 +53,7 @@ export default {
       this.error = "";
 
       var pw = this.encrypt(this.pw_plaintext, this.username);
+      console.log(pw);
 
       this.$http.post("http://localhost:3000/api/token", {"username":this.username,"pw":pw}).then(response => {
         if (! response.body.success) {
