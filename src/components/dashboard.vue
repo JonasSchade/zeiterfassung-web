@@ -101,44 +101,101 @@
 export default {
   name: 'dashboard',
   created() {
-    var component = this;
-    $(document).ready(() => {
-      //init calendar
-      $('#calendar').fullCalendar({
-        locale: 'de',
-        showNonCurrentDates: false,
-        height: "auto",
-        header: false,
-        fixedWeekCount: false,
-        dayRender: (date,cell) => {
-          //background weekends:
-          if (($(cell).get(0).className.indexOf("fc-sun") !== -1 || $(cell).get(0).className.indexOf("fc-sat") !== -1) && $(cell).get(0).className.indexOf("fc-today") == -1) {
-            cell.css("background-color", "#e3f8fc");
-          }
-        },
-        dayClick: (date, jsEvent, view) => {
-          component.$router.push("/dashboard/day/"+date.format());
-        },
+    this.$http.get("http://localhost:3000/api/authenticate", {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
+      this.userid = response.body.id;
+
+      var component = this;
+      $(document).ready(() => {
+        //init calendar
+        $('#calendar').fullCalendar({
+          locale: 'de',
+          showNonCurrentDates: false,
+          height: "auto",
+          header: false,
+          fixedWeekCount: false,
+          dayRender: (date,cell) => {
+
+            //don't change any days out of current month
+            if ($(cell).get(0).className.indexOf("fc-disabled-day") !== -1) {
+              return;
+            }
+            //background weekends:
+            if (($(cell).get(0).className.indexOf("fc-sun") !== -1 || $(cell).get(0).className.indexOf("fc-sat") !== -1) && $(cell).get(0).className.indexOf("fc-today") == -1) {
+              cell.css("background-color", "#e3f8fc");
+            }
+
+            //TODO: background holidays
+
+            var dateStr = date.format("YYYY-MM-DD");
+
+            this.$http.get('http://localhost:3000/api/time_by_user_date/'+this.userid+"/"+dateStr, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response2 => {
+
+              //show indicator if user has hours registert on that day
+              if(response2.body.sum>0) {
+                $(cell).append("<div class='hidden-xs cellIndicatorConatiner'></div>");
+                $(cell).append("<div class='hidden-sm hidden-md hidden-lg hidden-xl cellTextConatiner'></div>");
+
+                $(cell).find(".cellTextConatiner").append("<h4>"+response2.body.sum+"h</h4>")
+
+                if (response2.body.sum > 8) {
+                  $(cell).find(".cellIndicatorConatiner").radialIndicator({
+                    barColor: '#5cb85c',
+                    radius: 30,
+                    barWidth: 5,
+                    roundCorner : true,
+                    format: '#h',
+                    initValue: response2.body.sum,
+                    minValue: 0,
+                    maxValue: 24,
+                    barBgColor: '#0062a7',
+                    roundCorner: true,
+                  });
+
+                  $(cell).find(".cellTextConatiner").find("h4").css("color","#5cb85c");
+                } else {
+                  $(cell).find(".cellIndicatorConatiner").radialIndicator({
+                    barColor: '#0062a7',
+                    radius: 30,
+                    barWidth: 5,
+                    roundCorner : true,
+                    format: '#h',
+                    initValue: response2.body.sum,
+                    minValue: 0,
+                    maxValue: 8,
+                  });
+
+                  $(cell).find(".cellTextConatiner").find("h4").css("color","#0062a7");
+                }
+
+              }
+            });
+
+          },
+          dayClick: (date, jsEvent, view) => {
+            component.$router.push("/dashboard/day/"+date.format());
+          },
+        });
+
+        //add options to year select
+        var curYear = new Date().getFullYear();
+        for (var i = curYear - 1; i < curYear + 2; i++) {
+          var option = document.createElement("option");
+          option.text = i.toString();
+          option.data = i;
+          document.getElementById('calendar-select-year').add(option,i);
+        }
+
+        //init calendar controls
+        component.calendarUpdateControls();
+
       });
-
-      //add options to year select
-      var curYear = new Date().getFullYear();
-      for (var i = curYear - 1; i < curYear + 2; i++) {
-        var option = document.createElement("option");
-        option.text = i.toString();
-        option.data = i;
-        document.getElementById('calendar-select-year').add(option,i);
-      }
-
-      //init calendar controls
-      component.calendarUpdateControls();
-
     });
   },
   data() {
     return {
       monthTime: [160,128.7],
       yearTime: [1000,700],
+      userid: Number,
     };
   },
   methods: {
@@ -259,4 +316,18 @@ export default {
      margin-bottom: 5px;
      margin-left: 5px;
    }
+</style>
+<style>
+
+  .cellTextConatiner, .cellIndicatorConatiner {
+    height: 100%;
+    padding: 2%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .cellTextConatiner *, .cellIndicatorConatiner * {
+    margin: 0px;
+  }
 </style>
