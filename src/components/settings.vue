@@ -46,11 +46,8 @@
         </div>
       </div>
     </form>
-<!--    <router-link to="/dashboard"> -->
       <button :disabled='!isComplete' class="btn_confirm" v-on:click="changePassword()"><i class="fa fa-check"></i> Passwort ändern</button>
-      <button class="btn_confirm"><i class="fa fa-times"></i> Abbrechen</button>
-<!--    </router-link> -->
-    {{password_alt}} {{password_neu}} {{password_repeat}}
+      <button class="btn_confirm" v-on:click="$router.push('/dashboard')"><i class="fa fa-times"></i> Abbrechen</button>
   </div>
 </div>
 </template>
