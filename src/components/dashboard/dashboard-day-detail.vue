@@ -118,7 +118,7 @@
         </b-alert>
       </div>
       <div class="row">
-        <div v-for="project in projects" :key="project.id" class="inputcontainer col-sm-12" id="inputs">
+        <div v-for="project in projects" :key="project.id" class="inputcontainer col-sm-12 inputs">
           <div class="containerheader">
             <h2>{{project.name}}</h2>
           </div>
@@ -138,7 +138,7 @@
               <input type="text" v-bind:id="project.id+'minutes'" @input="checkProjectInput" v-model="projectMinutes[project.id]"placeholder="mm" maxlength="2" size="2">
               <div>
                 <br>
-                <button id="btn_add" v-on:click="addTime(project.id)">
+                <button v-on:click="addTime(project.id)">
                   <i class="fa fa-plus" aria-hidden="true"></i>
                   Hinzufügen
                 </button>
@@ -583,7 +583,7 @@ export default {
   display: none;
 }
 
-#inputs{
+.inputs{
   display: none;
 }
 

@@ -1,7 +1,7 @@
 <template>
 <div class="login">
   <div class="box center">
-    <img src="/static/assets/Chronos_Icon_dark.png" />
+    <img src="/static/assets/Chronos_Icon_dark.png" alt="chronos-icon" />
     <form class="login_wrapper">
         <p>{{error}}</p>
         <input type="text" v-model="username" placeholder="Username">

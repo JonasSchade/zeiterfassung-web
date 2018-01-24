@@ -6,7 +6,7 @@
           <i class="fa fa-bars" aria-hidden="true"></i>
         </button>
         <span class="navbar-brand">
-          <img class="icon" src="/static/assets/Chronos_Icon.png" />
+          <img class="icon" src="/static/assets/Chronos_Icon.png" alt="chronos-icon"/>
         </span>
       </div>
 
