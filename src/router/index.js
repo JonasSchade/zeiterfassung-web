@@ -3,7 +3,7 @@ import Router from 'vue-router'
 import dashboard from '@/components/dashboard'
 import dashboardDayDetail from '@/components/dashboard/dashboard-day-detail'
 import administration from '@/components/administration'
-import mitarbeiter from '@/components/mitarbeiter_versuch2'
+import mitarbeiter from '@/components/mitarbeiter'
 import projekte from '@/components/projekte'
 
 import adprojekte from '@/components/administration/projekte/projekte'

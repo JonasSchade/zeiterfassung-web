@@ -1,177 +1,131 @@
 <template>
 <div class="mitarbeiter">
   <div class="container">
-    <div class="row topper">
-      <h3>Mitarbeiter</h3>
-    </div>
     <div class="tablist" role="tablist">
-      <tablistitem :key="logged_in_user.department" :contentid="1" :contentname="department_name" :show-edit-btn="false">
-        <div class="container-flex">
+      <div class="row">
+        <div class="col-sm-12 text-center">
+          <div class="header">{{department.name}}</div>
+        </div>
+      </div>
+      <div class="row contentRow">
+        <div class="col-sm-12 text-center content">
           <div class="row">
             <div class="col-sm-6">
-              <h4>Abteilungsleiter:</h4>
-              <p class="card-text">{{logged_in_user.firstname}} {{logged_in_user.lastname}}</p>
+              <h4>Manager:</h4>
+              <p class="card-text">{{department.firstname}} {{department.lastname}}</p>
             </div>
             <div class="col-sm-6">
               <h4>Zugewiesene Mitarbeiter:</h4>
               <ul class="userlist">
-                <li class="row" v-for="user in users_of_dep">
+                <li class="row" v-for="user in departmentusers">
                   <div>{{user.firstname}} {{user.lastname}}</div>
                 </li>
               </ul>
             </div>
           </div>
-          <hr/>
+          <hr />
           <div class="row">
-            <div style="overflow-x: scroll">
-              <table id="arbeitszeiten">
-                <tr>
-                  <th>Mitarbeiter</th>
-                  <th v-for="day in labels">{{day}}</th>
-                </tr>
-                <tr v-for="user in users_of_dep">
-                  <td>{{user.firstname}} {{user.lastname}}</td>
-                  {{getTimeforUser(user.id)}}
-                  <td v-for="time in getTimeforUser(user.id)">{{time}} Std.</td>
-                </tr>
-              </table>
-            </div>
+            <table id="arbeitszeiten">
+              <tr>
+                <th>Mitarbeiter</th>
+                <th v-for="date in dates">{{date.format("DD.MM.YYYY")}}</th>
+              </tr>
+              <tr v-for="user in departmentusers">
+                <td>{{user.firstname}} {{user.lastname}}</td>
+                <td v-for="time in getTimeforUser(user.id)">{{time}} Std.</td>
+              </tr>
+            </table>
           </div>
         </div>
-      </tablistitem>
-      <p>
-        {{this.timeArray}}
-      </p>
+      </div>
     </div>
-
   </div>
 </div>
 </template>
 
 <script>
 import tablistitem from '@/components/administration/tablistitem'
-import LineExample from '@/components/LineChart.js'
 export default {
   name: 'mitarbeiter',
   components: {
-    tablistitem,
-    LineExample
+    tablistitem
   },
   data() {
     return {
-      department_name: "",
-      logged_in_user: [],
-      users_of_dep: [],
-      projects: [],
-      timeArray: [],
-      labels: ['Januar', 'February', 'March', 'April', 'May', 'June', 'July'],
-      datasets: [{
-        label: 'Data One',
-        borderColor: '#FC2525',
-        data: [40, 39, 10, 40, 39, 80, 40]
-      }]
+      userid: Number,
+      department: Object,
+      departmentusers: [],
+      dates: [],
+      times: []
     }
   },
   methods: {
-    getTimeforUser: function(userid) {
-      return this.timeArray[userid.toString()];
+    getTimeforUser(id) {
+      var idStr = id;
+      if (typeof idStr == "string") {
+        idStr = id.toString();
+      }
+
+      return this.times[id] || []
     },
-    filltablewithdata: function() {
-      for (var j = 6; j >= 0; j--) {
-        var date = moment().subtract(j, 'day')
-        this.labels[6-j] = date.format("DD.MM.YYYY");
+    requestUserTimes() {
 
-        var todayISO = date.format("YYYY-MM-DD");
+      this.times = {};
+      for (var i = 0; i < this.departmentusers.length; i++) {
+        //init sub object for user
+        var userId = this.departmentusers[i].id;
+        this.times[userId] = {};
 
-        for (var i = 0; i < this.users_of_dep.length; i++) {
-          var e = this.users_of_dep[i];
-
-          //init if needed
-          if (this.timeArray[e.id] == null) {
-            this.timeArray[e.id] = [];
-          }
-
-
-          this.$http.get("http://localhost:3000/api/time_by_user_date/"+e.id+"/"+todayISO, {
-            headers: {Authorization: ('bearer ' + window.sessionStorage.chronosAuthToken)}
-          }).then((response5) => {
-            this.timeArray[e.id].push(response5.body.sum);
-            console.log(response5.body.sum);
+        //go through all dates
+        for (var j = 0; j < this.dates.length; j++) {
+          var date = this.dates[j].format("YYYY-MM-DD");
+          this.times[userId][date] = 0;
+          this.$http.get('http://localhost:3000/api/time_by_user_date/' + userId + '/' + date, {headers: {Authorization: ('bearer ' + window.sessionStorage.chronosAuthToken)}}).then(res => {
+            var id = res.url.replace("http://localhost:3000/api/time_by_user_date/","").replace(/\/[0-9]{4}-[0-9]{2}-[0-9]{2}/i,"");
+            var date = res.url.replace("http://localhost:3000/api/time_by_user_date/","").replace(/[0-9]*\//i,"");
+            this.times[id][date] = res.body.sum;
+            this.$mount();
           });
-
-        //   this.$http.get('' + e.id + '/' + todayISO, {
-        //     headers: {
-        //       Authorization: ('bearer ' + window.sessionStorage.chronosAuthToken)
-        //     }
-        //   }).then(response => {
-        //     if (this.timeArray[e.id] == null) {
-        //       console.log("ist null");
-        //       console.log(this.timeArray.toString());
-        //       this.timeArray[e.id.toString()] = [];
-        //     }
-        //     this.timeArray[e.id.toString()].push(response.body.sum);
-        //     console.log(this.timeArray[e.id]);
-        //     console.log(this.timeArray.toString());
-        };
+        }
       }
     }
   },
   created() {
-    this.$http.get('http://localhost:3000/api/authenticate', {
-      headers: {
-        Authorization: ('bearer ' + window.sessionStorage.chronosAuthToken)
-      }
-    }).then(response => {
-      this.$http.get('http://localhost:3000/api/user/' +  response.body.id, {
-        headers: {
-          Authorization: ('bearer ' + window.sessionStorage.chronosAuthToken)
-        }
-      }).then(response2 => {
-        this.logged_in_user = response2.body;
 
-        this.$http.get('http://localhost:3000/api/department/' + this.logged_in_user.departmentid, {
-          headers: {
-            Authorization: ('bearer ' + window.sessionStorage.chronosAuthToken)
-          }
-        }).then(response3 => {
+    //dates
+    for (var i = 6; i >= 0; i--) {
+      this.dates.push(moment().subtract(i,"day"));
+    }
 
-          this.department_name = response3.body.name;
+    this.$http.get('http://localhost:3000/api/authenticate', {headers: {Authorization: ('bearer ' + window.sessionStorage.chronosAuthToken)}}).then(response => {
+      this.userid = response.body.id;
+      this.$http.get('http://localhost:3000/api/user/'+this.userid, {headers: {Authorization: ('bearer ' + window.sessionStorage.chronosAuthToken)}}).then(response2 => {
+        //get department info
+        this.$http.get('http://localhost:3000/api/department/'+response2.body.departmentid, {headers: {Authorization: ('bearer ' + window.sessionStorage.chronosAuthToken)}}).then(response3 => {
+          this.department = response3.body;
+        });
 
-          this.$http.get('http://localhost:3000/api/department_users/' + this.logged_in_user.departmentid, {
-            headers: {
-              Authorization: ('bearer ' + window.sessionStorage.chronosAuthToken)
-            }
-          }).then(response4 => {
-            this.users_of_dep = response4.body;
-            console.log(this.users_of_dep);
-             for (var x = 0; x < this.users_of_dep.length; x++) {
-                this.timeArray[this.users_of_dep[x].id.toString()] = [];
-            }
-            this.filltablewithdata();
-          });
-        })
+        //get department users
+        this.$http.get('http://localhost:3000/api/department_users/'+response2.body.departmentid, {headers: {Authorization: ('bearer ' + window.sessionStorage.chronosAuthToken)}}).then(response3 => {
+          this.departmentusers = response3.body;
+          this.requestUserTimes();
+        });
       });
     });
+
   }
 }
 </script>
 
 <style scoped>
-.projekte {
+.mitarbeiter {
   min-height: 100vh;
-  text-align: center;
   width: 100%;
 }
 
-.topper {
-  margin-bottom: 20px;
+.col-sm-12 {
+  padding: 0px;
 }
-
-.topper h3 {
-  margin-bottom: 5px;
-  margin-top: 5px;
-}
-
 .container {
   position: relative;
   max-width: 800px;
@@ -180,6 +134,23 @@ export default {
   margin-bottom: 30px;
   padding-left: 5px;
   padding-right: 5px;
+}
+.header {
+  text-align: left;
+  background-color: #003452;
+  padding: 20px;
+  border: none;
+  font-size: 18px;
+  color: white;
+  -webkit-box-shadow: 0px 0px 7px #ccc;
+  box-shadow: 0px 0px 7px #ccc;
+}
+
+.content {
+  border-radius: 0px 0px 3px 3px;
+  box-shadow: 0px 5px 7px #ccc;
+  padding: 20px;
+  text-align: left;
 }
 
 .userlist {
@@ -191,16 +162,6 @@ export default {
 
 .userlist li {
   width: 100%;
-}
-
-.topper div[class^="col-sm"] {
-  padding: 0px;
-}
-
-.userlist .row {
-  padding: 0px;
-  margin: 0px;
-  margin-bottom: 10px;
 }
 
 #arbeitszeiten {
