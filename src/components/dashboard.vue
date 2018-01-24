@@ -190,12 +190,14 @@ export default {
 
       });
     });
+
   },
   data() {
     return {
       monthTime: [160,128.7],
-      yearTime: [1000,700],
+      yearTime: [1700,700],
       userid: Number,
+      token: 0
     };
   },
   methods: {
@@ -212,7 +214,6 @@ export default {
       dateString = dateString.concat("-01");
 
       $('#calendar').fullCalendar('gotoDate', dateString);
-
       this.calendarUpdateControls();
     },
     //updates buttons (disable/enable) and selects based on current date of calendar
@@ -228,6 +229,34 @@ export default {
       $("#calendar-btn-prev")[0].disabled = ($("#calendar-select-month")[0].selectedIndex == 0 && $("#calendar-select-year")[0].selectedIndex == 0);
       $("#calendar-btn-next")[0].disabled = ($("#calendar-select-month")[0].selectedIndex == $("#calendar-select-month")[0].length -1 && $("#calendar-select-year")[0].selectedIndex == $("#calendar-select-year")[0].length -1);
       $("#calendar-btn-today")[0].disabled = $('#calendar').find('td.fc-today').length !== 0;
+
+      console.log("Test")
+      this.setCurrentMonth(month, year);
+      this.setCurrentYear(year);
+    },
+    setCurrentMonth(month, year) {
+      var DaysOfCurrentMonth = moment(month).daysInMonth();
+      var workedTime = 0.0;
+      var firstDay = moment(year+""+ month +"01");
+      var lastDay = moment(year+""+ month +""+ DaysOfCurrentMonth).add(1, 'days');
+
+      for (var m = moment(firstDay); m.isBefore(lastDay); m.add(1, 'days')) {
+        this.$http.get('http://localhost:3000/api/time_by_user_date/'+this.userid+"/"+m.format('YYYY-MM-DD'), {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
+          //console.log(response.body.sum);
+          workedTime = workedTime + response.body.sum;
+          this.token = this.token + 1;
+          if(this.token==DaysOfCurrentMonth){
+            this.monthTime= [DaysOfCurrentMonth*8, workedTime];
+          }
+        });
+      }
+    },
+    setCurrentYear(year) {
+      var workedTime = 0.0;
+      this.$http.get('http://localhost:3000/api/time_of_year/'+this.userid+"/"+year, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
+      workedTime = response.body.sum;
+      this.yearTime= [1700, workedTime];
+      });
 
     }
   },
