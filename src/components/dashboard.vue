@@ -12,15 +12,15 @@
               <div class="container-flex">
                 <div class="row">
                   <div class="col-xs-7"><span class="time-label">Stunden Soll:</span></div>
-                  <div class="col-xs-5"><span class="time-value">{{monthTime}} h</span></div>
+                  <div class="col-xs-5"><span class="time-value">{{precisionRound(monthTime,2)}} h</span></div>
                 </div>
                 <div class="row">
                   <div class="col-xs-7"><span class="time-label">Stunden Ist:</span></div>
-                  <div class="col-xs-5"><span class="time-value">{{monthWorkedTime}} h</span></div>
+                  <div class="col-xs-5"><span class="time-value">{{precisionRound(monthWorkedTime,2)}} h</span></div>
                 </div>
                 <div class="row">
                   <div class="col-xs-7"><span class="time-label">Differenz:</span></div>
-                  <div class="col-xs-5"><span class="time-value">{{Math.round ((monthTime - monthWorkedTime)*10)/10}} h</span></div>
+                  <div class="col-xs-5"><span class="time-value">{{Math.round ((monthTime - monthWorkedTime),2)}} h</span></div>
                 </div>
                 <div class="row">
                   <div class="col-xs-12">
@@ -44,15 +44,15 @@
               <div class="container-flex">
                 <div class="row">
                   <div class="col-xs-7"><span class="time-label">Stunden Soll:</span></div>
-                  <div class="col-xs-5"><span class="time-value">{{yearTime}} h</span></div>
+                  <div class="col-xs-5"><span class="time-value">{{precisionRound(yearTime,2)}} h</span></div>
                 </div>
                 <div class="row">
                   <div class="col-xs-7"><span class="time-label">Stunden Ist:</span></div>
-                  <div class="col-xs-5"><span class="time-value">{{yearWorkedTime}} h</span></div>
+                  <div class="col-xs-5"><span class="time-value">{{precisionRound(yearWorkedTime,2)}} h</span></div>
                 </div>
                 <div class="row">
                   <div class="col-xs-7"><span class="time-label">Differenz:</span></div>
-                  <div class="col-xs-5"><span class="time-value">{{Math.round ((yearTime - yearWorkedTime)*10)/10}} h</span></div>
+                  <div class="col-xs-5"><span class="time-value">{{precisionRound((yearTime - yearWorkedTime), 2)}} h</span></div>
                 </div>
                 <div class="row">
                   <div class="col-xs-12">
@@ -124,8 +124,6 @@ export default {
               cell.css("background-color", "#e3f8fc");
             }
 
-            //TODO: background holidays
-
             var dateStr = date.format("YYYY-MM-DD");
 
             this.$http.get('http://localhost:3000/api/time_worked_day/'+this.userid+"/"+dateStr, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response2 => {
@@ -154,14 +152,14 @@ export default {
                     initValue: response2.body.hours,
                     minValue: 0,
                     maxValue: max,
-                    barBgColor: '#0062a7',
+                    barBgColor: '#003452',
                     roundCorner: true,
                   });
 
                   $(cell).find(".cellTextConatiner").find("h4").css("color","#5cb85c");
                 } else {
                   $(cell).find(".cellIndicatorConatiner").radialIndicator({
-                    barColor: '#0062a7',
+                    barColor: '#003452',
                     radius: 36,
                     barWidth: 3,
                     roundCorner : true,
@@ -173,7 +171,7 @@ export default {
                     maxValue: 8,
                   });
 
-                  $(cell).find(".cellTextConatiner").find("h4").css("color","#0062a7");
+                  $(cell).find(".cellTextConatiner").find("h4").css("color","#003452");
                 }
 
               }
@@ -212,6 +210,10 @@ export default {
     };
   },
   methods: {
+    precisionRound(number, precision) {
+      var factor = Math.pow(10, precision);
+      return Math.round(number * factor) / factor;
+    },
     //performs given action of calendar button
     calendarButtonPress(action) {
       this.monthWorkedTime = 0;
