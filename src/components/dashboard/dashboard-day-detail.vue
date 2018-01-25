@@ -116,6 +116,7 @@
               </form>
             </div>
           </div>
+          <span class="alphaContainer" v-if="!canEditProjects"></span>
         </div>
       </div>
     </div>
@@ -131,6 +132,7 @@ export default {
       date: this.$route.params.day,
       projects: [],
       update: false,
+      canEditProjects: false,
 
       computedTime: {
         minutes: "",
@@ -213,6 +215,7 @@ export default {
       this.travelMoment = moment.duration({minutes: this.travelInput.minutes, hours: this.travelInput.hours});
 
       var diff = moment.duration(this.stopMoment.diff(this.startMoment));
+      this.canEditProjects = true;
 
       diff = diff.subtract(this.pauseMoment);
       diff = diff.add(this.travelMoment / 2);
@@ -508,5 +511,17 @@ input {
 
 label {
   padding-left: 15px !important;
+}
+
+.alphaContainer {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  right: 0px;
+  font-size: 50px;
+  background-color: rgba(255,255,255,0.7);
+  line-height: 112px;
+  vertical-align: middle;
 }
 </style>
