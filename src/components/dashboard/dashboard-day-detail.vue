@@ -2,7 +2,7 @@
   <div class="dashboard-day-detail">
     <div class="container">
       <div class="row">
-        <div class="col-sm-4  text-left">
+        <div class="col-sm-4 text-left">
           <button v-on:click="$router.push('/dashboard/')">
             <i class="fa fa-chevron-left" aria-hidden="true"></i>
             Dashboard
@@ -13,7 +13,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-sm-6 text-left day-input">
+        <div class="col-sm-6 text-center day-input">
           <div class="card">
             <h4 class="header">
               <i class="fa fa-clock-o" aria-hidden="true"></i>Arbeitszeiten:
@@ -24,18 +24,18 @@
                 <div class="row">
                   <label class="col-xs-2 text-left">Von:</label>
                   <div class="col-xs-10 text-left">
-                    <input type="text" id="time-start-hours" @input="checkDayInput" v-model="startcomputed.hours" placeholder="hh" maxlength="2" size="2">
+                    <input type="text" id="time-start-hours" @input="checkTimesInput" v-model="startInput.hours" placeholder="hh" maxlength="2" size="2">
                     <span>:</span>
-                    <input type="text" id="time-start-minutes" @input="checkDayInput" v-model="startcomputed.minutes" placeholder="mm" maxlength="2" size="2">
+                    <input type="text" id="time-start-minutes" @input="checkTimesInput" v-model="startInput.minutes" placeholder="mm" maxlength="2" size="2">
                     <span>Uhr</span>
                   </div>
                 </div>
                 <div class="row">
                   <label class="col-xs-2 text-left">Bis:</label>
                   <div class="col-xs-10 text-left">
-                    <input type="text" id="time-stop-hours" @input="checkDayInput" v-model="endcomputed.hours" placeholder="hh" maxlength="2" size="2">
+                    <input type="text" id="time-stop-hours" @input="checkTimesInput" v-model="stopInput.hours" placeholder="hh" maxlength="2" size="2">
                     <span>:</span>
-                    <input type="text" id="time-stop-minutes" @input="checkDayInput" v-model="endcomputed.minutes" placeholder="mm" maxlength="2" size="2">
+                    <input type="text" id="time-stop-minutes" @input="checkTimesInput" v-model="stopInput.minutes" placeholder="mm" maxlength="2" size="2">
                     <span>Uhr</span>
                   </div>
                 </div>
@@ -45,18 +45,18 @@
                 <div class="row">
                   <label class="col-xs-2 text-left">Pause:</label>
                   <div class="col-xs-10 text-left">
-                    <input type="text" id="time-break-hours" @input="checkDayInput" v-model="pausecomputed.hours" placeholder="hh" maxlength="2" size="2">
+                    <input type="text" id="time-break-hours" @input="checkTimesInput" v-model="pauseInput.hours" placeholder="hh" maxlength="2" size="2">
                     <span>:</span>
-                    <input type="text" id="time-break-minutes" @input="checkDayInput" v-model="pausecomputed.minutes" placeholder="mm" maxlength="2" size="2">
+                    <input type="text" id="time-break-minutes" @input="checkTimesInput" v-model="pauseInput.minutes" placeholder="mm" maxlength="2" size="2">
                     <span>h</span>
                   </div>
                 </div>
                 <div class="row">
                   <label class="col-xs-2 text-left">Reise:</label>
                   <div class="col-xs-10 text-left">
-                    <input type="text" id="time-travel-hours" @input="checkDayInput" v-model="travelcomputed.hours" placeholder="hh" maxlength="2" size="2">
+                    <input type="text" id="time-travel-hours" @input="checkTimesInput" v-model="travelInput.hours" placeholder="hh" maxlength="2" size="2">
                     <span>:</span>
-                    <input type="text" id="time-travel-minutes" @input="checkDayInput" v-model="travelcomputed.minutes" placeholder="mm" maxlength="2" size="2">
+                    <input type="text" id="time-travel-minutes" @input="checkTimesInput" v-model="travelInput.minutes" placeholder="mm" maxlength="2" size="2">
                     <span>h</span>
                   </div>
                 </div>
@@ -64,85 +64,56 @@
                   <hr style="margin: 3px 10px;">
                 </div>
                 <div class="row">
-                  <label class="col-xs-4 col-xs-offset-1 text-left">Insgesamt:</label>
-                  <div class="col-xs-4 text-left">
-                    <span>{{computedTime.hours}}:{{computedTime.minutes}} h</span>
-                  </div>
+                  <label class="col-xs-offset-1 col-xs-4">Insgesamt:</label>
+                    <span class="col-xs-4" style="line-height:28px;">{{computedTime.hours}}:{{computedTime.minutes}} h</span>
                 </div>
-                <button class="center" id="btn_time" type="button" v-on:click="updateTimesFirst()" disabled>
-                  <i class="fa fa-clock-o" aria-hidden="true"></i>
-                  Zuteilen
+                <button class="center" type="button" v-on:click="confirmTimes()">
+                  <i class="fa fa-check" aria-hidden="true"></i>
+                  Bestätigen
                 </button>
               </form>
             </div>
           </div>
         </div>
-        <div class="card col-sm-6 overview" id="save">
-          <div>
-            <div class="row">
-              <span class="text-left">So viel können sie noch verteilen</span>
-              <span class="text-right">{{unassignedTime}} h</span>
-            </div>
-            <div class="progress">
-              <div class="progress-bar progress-bar-success" role="progressbar" v-bind:aria-valuenow="unassignedTime"
-              aria-valuemin="0" v-bind:aria-valuemax="{unassignedTime}" v-bind:style="{ width: (unassignedTime/completeTime)*100 + '%' }">
-              {{unassignedTime}} h
-              </div>
-            </div>
-          </div>
-          <div>
-            <div class="row">
-              <span class="text-left">So viel haben sie schon verteilt</span>
-              <span class="text-right">{{assignedTime}} h</span>
-            </div>
-            <div class="progress">
-              <div class="progress-bar progress-bar-success" role="progressbar" v-bind:aria-valuenow="assignedTime"
-              aria-valuemin="0" v-bind:aria-valuemax="{completeTime}" v-bind:style="{ width: (assignedTime/completeTime)*100 + '%' }">{{assignedTime}} h
-              </div>
-            </div>
-            <div>
-              <button id="btn_save" v-on:click="save()">
-                <i class="fa fa-floppy-o" aria-hidden="true" ></i>
-                Zeiten Speichern
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <h3 id="info">
-          Tragen sie die Zeiten für die jeweiligen Projekte ein:
-        </h3>
-        <b-alert variant="danger" class="col-sm-11" dismissible :show="this.showDismissibleAlert" @dismissed="enable()">
-          Zu viel Zeit zugeteilt!
-        </b-alert>
-      </div>
-      <div class="row">
-        <div v-for="project in projects" :key="project.id" class="inputcontainer col-sm-12 inputs">
-          <div class="containerheader">
-            <h2>{{project.name}}</h2>
-          </div>
-          <div class="containerbody">
-            <div>
-              <p>
-                Beschreibung:
-              </p>
-              <span>
-                {{project.description}}
-              </span>
-            </div>
-            <div>
-              Gib die Zeit ein:
-              <input type="text" v-bind:id="project.id+'hours'" @input="checkProjectInput" v-model="projectHours[project.id]" placeholder="hh" maxlength="2" size="2">
-              <span>:</span>
-              <input type="text" v-bind:id="project.id+'minutes'" @input="checkProjectInput" v-model="projectMinutes[project.id]"placeholder="mm" maxlength="2" size="2">
-              <div>
-                <br>
-                <button v-on:click="addTime(project.id)">
-                  <i class="fa fa-plus" aria-hidden="true"></i>
-                  Hinzufügen
+        <div class="col-sm-6 text-center day-input">
+          <div class="card">
+            <h4 class="header">
+              <i class="fa fa-clock-o" aria-hidden="true"></i>Projekte:
+            </h4>
+            <hr>
+            <div class="content">
+              <form class="container-flex">
+                <div class="row">
+                  <div class="col-xs-12">
+                    {{minutesToFormatString(usedMinutes)}} / {{minutesToFormatString(totalMinutes)}}
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xs-12">
+                    <div class="progress">
+                      <div v-bind:class="[usedMinutes > totalMinutes ? 'progress-bar-danger' : 'progress-bar-success', 'progress-bar']" role="progressbar" v-bind:aria-valuenow="usedMinutes"
+                           aria-valuemin="0" v-bind:aria-valuemax="totalMinutes" v-bind:style="{ width: usedMinutes/totalMinutes*100 + '%' }"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <hr style="margin: 3px 10px;">
+                </div>
+                <div class="row" v-for="p in projects">
+                  <label class="col-xs-8 text-left">{{p.name}}</label>
+                  <span class="col-xs-4 text-right">{{minutesToFormatString(projectMinutes[p.id])}}</span>
+                  <div class="col-xs-12">
+                    <input type="range" min="0" step="5" :max="totalMinutes" v-on:change="rangeChange($event, p.id)" :value="projectMinutes[p.id] || 0" class="slider">
+                  </div>
+                </div>
+                <div class="row">
+                  <hr style="margin: 3px 10px;">
+                </div>
+                <button class="center" type="button" v-on:click="confirmProjects()" :disabled='usedMinutes > totalMinutes'>
+                  <i class="fa fa-check" aria-hidden="true"></i>
+                  Bestätigen
                 </button>
-              </div>
+              </form>
             </div>
           </div>
         </div>
@@ -159,40 +130,36 @@ export default {
       userid: "",
       date: this.$route.params.day,
       projects: [],
+      update: false,
+
       computedTime: {
         minutes: "",
         hours: "",
       },
-      completeTime: 0.0,
-      unassignedTime: 0.0,
-      assignedTime: 0.0,
-      projectTimes: [],
-      startingtime: "",
-      endtime: "",
-      pause: "",
-      travel: "",
-      //times from oldinput
-      projectTimesBefore: [],
-      projectMinutes: [],
-      projectHours: [],
-      startcomputed:{
+
+      totalMinutes: 0,
+      usedMinutes: 0,
+      projectMinutes: {},
+      startInput:{
         minutes: "",
         hours: "",
       },
-      endcomputed:{
+      stopInput:{
         minutes: "",
         hours: "",
       },
-      pausecomputed:{
+      pauseInput:{
         minutes: "",
         hours: "",
       },
-      travelcomputed:{
+      travelInput:{
         minutes: "",
         hours: "",
       },
-      showDismissibleAlert: false,
-      update: false
+      startMoment: {},
+      stopMoment: {},
+      pauseMoment: {},
+      travelMoment: {},
     };
   },
   created() {
@@ -204,29 +171,18 @@ export default {
         this.projects = res1.body;
 
         this.$http.get('http://localhost:3000/api/times/'+this.userid+'/'+this.date, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(res2 => {
-          if(res2.body.length != 0){
-            this.update=true;
-            this.startingtime = res2.body[0].comming_time;
-            this.endtime = res2.body[0].leaving_time;
-            this.pause = res2.body[0].pause;
-            this.travel = res2.body[0].travel;
+          if(res2.body.length != 0) {
 
-
-            for(var i=0; i< this.projects.length; i++){
-              if(this.projects[i] != null){
-                this.$http.get('http://localhost:3000/api/project_time/'+this.userid+'/'+this.date+'/'+this.projects[i].id, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(res3 => {
-                  var pid = res3.url.replace("http://localhost:3000/api/project_time","").replace(/\/[0-9]*\//i,"").replace(/[0-9]{4}-[0-9]{2}-[0-9]{2}\//i,"");
-                  if(res3.body != null){
-                    this.projectTimes[pid]=res3.body[0].duration;
-                  }
-                })
-              }
-            }
-            this.showOld();
+            this.writeOldValues(res2);
           }
-        })
+        });
+
       });
     });
+
+  },
+  mounted() {
+    this.updateComputedTime();
   },
   computed: {
     "formattedDate": function() {
@@ -234,180 +190,41 @@ export default {
     },
   },
   methods: {
-    save: function(event){
-      if(this.completeTime == 0.0){
-        return;
-      }
-      var datebody={
-        date: this.date,
-        userid: this.userid,
-        comming_time: this.startingtime,
-        leaving_time: this.endtime,
-        pause: this.pause,
-        travel: this.travel,
+    confirmProjects() {
+      this.sendHTTP();
+    },
+    confirmTimes(event) {
+      if (this.pauseInput.minutes == "") {
+        this.pauseInput.minutes = 0;
+      };
+      if (this.pauseInput.hours == "") {
+        this.pauseInput.hours = 0;
+      };
+      if (this.travelInput.minutes == "") {
+        this.travelInput.minutes = 0;
+      };
+      if (this.travelInput.hours == "") {
+        this.travelInput.hours = 0;
       };
 
-      if(this.update == false){
-        this.$http.post("http://localhost:3000/api/time/", datebody, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}})
+      this.startMoment = moment(this.$route.params.day).hours(this.startInput.hours).minutes(this.startInput.minutes);
+      this.stopMoment = moment(this.$route.params.day).hours(this.stopInput.hours).minutes(this.stopInput.minutes);
+      this.pauseMoment = moment.duration({minutes: this.pauseInput.minutes, hours: this.pauseInput.hours});
+      this.travelMoment = moment.duration({minutes: this.travelInput.minutes, hours: this.travelInput.hours});
 
-        .then(response => {
-          for(var i=0; i< this.projects.length; i++){
-            if(this.projectTimes[i] != null){
-              var projectbody={
-                date: this.date,
-                userid: this.userid,
-                projectid: i,
-                duration: this.projectTimes[i],
-              };
+      var diff = moment.duration(this.stopMoment.diff(this.startMoment));
 
-              this.$http.post("http://localhost:3000/api/project_time/", projectbody, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}});
-            }
-          }
-        });
-      }else{
-        this.$http.put("http://localhost:3000/api/time/"+datebody.userid+"/"+datebody.date, datebody, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}})
+      diff = diff.subtract(this.pauseMoment);
+      diff = diff.add(this.travelMoment / 2);
+      this.totalMinutes = diff.asMinutes();
 
-        .then(response => {
-          for(var i=0; i< this.projects.length; i++){
-            if(this.projectTimes[i] > 0){
-              var projectbody={
-                date: this.date,
-                userid: this.userid,
-                projectid: i,
-                duration: this.projectTimes[i],
-              };
-              if(this.projectTimes[i] != this.projectTimesBefore[i]){
-                //put if you update hte time
-                this.$http.put("http://localhost:3000/api/project_time/"+projectbody.userid+"/"+projectbody.date+"/"+projectbody.prjectid, projectbody, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}});
-              }else{
-                //post if you add time
-                this.$http.post("http://localhost:3000/api/project_time/", projectbody, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}});
-              }
-            }
-          }
-        });
-      }
-      this.$router.push('/dashboard');
     },
-    showOld: function(){
-      this.startcomputed.hours = moment(this.startingtime).get('hour');
-      this.startcomputed.minutes = moment(this.startingtime).get('minute');
-      this.endcomputed.hours = moment(this.endtime).get('hour');
-      this.endcomputed.minutes = moment(this.endtime).get('minute');
-      this.pausecomputed.hours = Math.floor(this.pause);
-      this.pausecomputed.minutes = Math.round((this.pause-Math.floor(this.pause))*60);
-      this.travelcomputed.hours = Math.floor(this.travel);
-      this.travelcomputed.minutes = Math.round((this.travel-Math.floor(this.travel))*60);
-      for(var i=0; i<this.projects.length; i++){
-        if(this.projectTimes[this.projects[i].id] > 0){
-          this.projectHours[this.projects[i].id]=Math.floor(this.projectTimes[this.projects[i].id].duration);
-          this.projectMinutes[this.projects[i].id]=Math.round((this.projectTimes[this.projects[i].id].duration-Math.floor(this.projectTimes[this.projects[i].id].duration))*60);
-        }
-      }
-      this.projectTimesBefore=this.projectTimes;
-      this.updateFirstComputedTime();
-      this.updateTimesFirst();
-
-      $("#save").show();
-      $(".inputcontainer").show();
-      $("#info").show();
-
-      if ($('#btn_time').prop('disabled')) {
-        $('#btn_time').prop('disabled', false);
-      }
-      this.enable();
-    },
-    updateTimes: function(event){
-      this.assignedTime=0.0;
-      this.unassignedTime=0.0;
-      for(var i=0; i < this.projectTimes.length; i++){
-        if(this.projectTimes[i] != null || !isNaN(this.projectTimes[i])){
-          this.assignedTime= this.assignedTime+this.projectTimes[i];
-        }
-      }
-      this.unassignedTime = this.completeTime-this.assignedTime;
-    },
-    enable: function(){
-      this.showDismissibleAlert=false;
-      $('#btn_save').prop('disabled', false);
-    },
-    addTime: function(id) {
-      var h = parseInt(this.projectHours[id]);
-      var min = this.projectMinutes[id];
-      if(min==null){
-        min = 0;
-      }
-      min = parseFloat(min/60.0);
-      var duration = Math.round(parseFloat(min+h)*100)/100;
-
-      this.projectTimes[id] = duration;
-
-      if(this.assignedTime+duration <= this.completeTime){
-        this.updateTimes();
-      }else{
-        this.projectTimes[id] = 0;
-        if(this.showDismissibleAlert == false){
-          this.showDismissibleAlert = true;
-        }
-        $('#btn_save').prop('disabled', true);
-      }
-    },
-    updateTimesFirst: function(event){
-      this.completeTime = parseFloat(this.computedTime.hours)+parseFloat(this.computedTime.minutes/60.0);
-      this.unassignedTime = parseFloat(this.completeTime);
-      if(this.update==false){
-        this.startingtime = this.date + " " + $("#time-start-hours").val() + ":" + $("#time-start-minutes").val()+":00";
-        this.endtime = this.date + " " + $("#time-stop-hours").val() + ":" + $("#time-stop-minutes").val()+":00";
-      }else{
-        this.startingtime=this.date + " " + this.startcomputed.hours+ ":" +this.startcomputed.minutes+":00";
-        this.endtime=this.date + " " + this.endcomputed.hours+ ":" +this.endcomputed.minutes+":00";
-      }
-      this.pause = parseFloat($("#time-break-hours").val()+($("#time-break-minutes").val()/60.0));
-      this.travel = parseFloat($("#time-travel-hours").val()+($("#time-travel-minutes").val()/60.0));
-
-      $("#save").show();
-      $(".inputcontainer").show();
-      $("#info").show();
-    },
-    checkProjectInput: function (event) {
+    checkTimesInput(event) {
       var elem = event.target;
       var text = elem.value;
 
       if (elem.id.search("hours") == -1) {
-        var ceeling = 60;
-      } else {
-        var ceeling = 23;
-      };
-
-      if (text.match("[^0-9]") !== null) {
-        elem.style.color = "red";
-        return;
-      }
-
-      var num = parseInt(text);
-      if (num > ceeling || num < 0) {
-        elem.style.color = "red";
-        return;
-      }
-
-      if (this.assignedTime > this.completeTime) {
-        elem.style.color = "red";
-        return;
-      }
-
-      if (this.assignedTime > this.completeTime) {
-        elem.style.color = "red";
-        return;
-      }
-      //input validated
-      elem.style.color = "";
-    },
-    checkDayInput: function (event) {
-      var elem = event.target;
-      var text = elem.value;
-
-      if (elem.id.search("hours") == -1) {
-        var ceeling = 60;
+        var ceeling = 59;
       } else {
         var ceeling = 23;
       };
@@ -428,63 +245,159 @@ export default {
 
       this.updateComputedTime();
     },
-    updateFirstComputedTime: function(){
-      var moment1 = moment("2000-01-01");
-
-      //set stop time
-      moment1.hours(this.endcomputed.hours);
-      moment1.minutes(this.endcomputed.minutes);
+    updateComputedTime() {
 
       //subtract start time
-      moment1.subtract(this.startcomputed.hours,'h')
-      moment1.subtract(this.startcomputed.minutes,'m')
+      var start = moment(this.$route.params.day).hours(this.startInput.hours).minutes(this.startInput.minutes);
+      var stop = moment(this.$route.params.day).hours(this.stopInput.hours).minutes(this.stopInput.minutes);
 
-      //substract break
-      moment1.subtract(this.pausecomputed.hours,'h')
-      moment1.subtract(this.pausecomputed.minutes,'m')
+      var pause = moment.duration({minutes: this.pauseInput.minutes, hours: this.pauseInput.hours});
+      var travel = moment.duration({minutes: this.travelInput.minutes, hours: this.travelInput.hours});
 
-      //add travel time (half of it)
-      moment1.add(this.travelcomputed.hours/2,'h')
-      moment1.add(this.travelcomputed.minutes/2,'m')
+      var diff = moment.duration(stop.diff(start));
 
-      this.computedTime.minutes = moment1.format("mm");
-      this.computedTime.hours = moment1.format("HH");
+      diff = diff.subtract(pause);
+      diff = diff.add(travel / 2);
+
+      this.computedTime.minutes = diff.minutes()
+      this.computedTime.hours = diff.hours();
     },
-    updateComputedTime: function () {
-
-      var readValue = function (id) {
-        if (document.getElementById(id).value == "") {
-          return 0;
-        } else {
-          return parseInt(document.getElementById(id).value);
+    sum(obj) {
+      var sum = 0;
+      for( var el in obj ) {
+        if( obj.hasOwnProperty( el ) ) {
+          sum += parseFloat( obj[el] );
         }
+      }
+      return sum;
+    },
+    rangeChange(event, pid) {
+
+
+
+      this.projectMinutes[pid] = event.target.value;
+      this.$mount();
+
+      this.usedMinutes = this.sum(this.projectMinutes);
+
+    },
+    minutesToFormatString(minutes) {
+      var dur = moment.duration(parseInt(minutes) || 0, 'minutes');
+      var h = dur.hours();
+      var m = dur.minutes();
+
+      return ((h < 10?'0':'') + h + ":" + (m < 10?'0':'') + m+"h");
+    },
+    sendHTTP() {
+
+      if (this.update) {
+        this.sendHTTP_PUT();
+        return;
+      }
+
+      var body = {
+        date: this.$route.params.day,
+        userid: this.userid,
+        comming_time: this.startMoment.format("YYYY-MM-DD HH:mm:ss"),
+        leaving_time: this.stopMoment.format("YYYY-MM-DD HH:mm:ss"),
+        pause: this.pauseMoment.asHours(),
+        travel: this.travelMoment.asHours(),
       };
 
-      var moment1 = moment("2000-01-01");
+      var len = Object.keys(this.projectMinutes).length;
+      var i = 0;
 
-      //set stop time
-      moment1.hours(readValue("time-stop-hours"));
-      moment1.minutes(readValue("time-stop-minutes"));
+      this.$http.post("http://localhost:3000/api/time/", body, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
+        i = i + 1;
+        if (i == len){ //make sure all requests are through
+          this.$router.push('/dashboard');
+        }
+      });
 
-      //subtract start time
-      moment1.subtract(readValue("time-start-hours"),'h')
-      moment1.subtract(readValue("time-start-minutes"),'m')
+      for (var pid in this.projectMinutes) {
+        if (this.projectMinutes.hasOwnProperty(pid)) {
 
-      //substract break
-      moment1.subtract(readValue("time-break-hours"),'h')
-      moment1.subtract(readValue("time-break-minutes"),'m')
+          var d = moment.duration(parseInt(this.projectMinutes[pid]), 'minutes').asHours();
 
-      //add travel time (half of it)
-      moment1.add(readValue("time-travel-hours")/2,'h')
-      moment1.add(readValue("time-travel-minutes")/2,'m')
+          var body = {
+            date: this.$route.params.day,
+            userid: this.userid,
+            projectid: pid,
+            duration: d
+          }
 
+          this.$http.post("http://localhost:3000/api/project_time/", body, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
+            i = i+1;
+            if (i == len){ //make sure all requests are through
+              this.$router.push('/dashboard');
+            }
+          });
 
-      this.computedTime.minutes = moment1.format("mm");
-      this.computedTime.hours = moment1.format("HH");
+        }
+      }
+    },
+    sendHTTP_PUT() {
 
+      var body = {
+        comming_time: this.startMoment.format("YYYY-MM-DD HH:mm:ss"),
+        leaving_time: this.stopMoment.format("YYYY-MM-DD HH:mm:ss"),
+        pause: this.pauseMoment.asHours(),
+        travel: this.travelMoment.asHours(),
+      };
 
-      if ($('#btn_time').prop('disabled')) {
-        $('#btn_time').prop('disabled', false);
+      var len = Object.keys(this.projectMinutes).length;
+      var i = 0;
+
+      this.$http.put("http://localhost:3000/api/time/"+this.userid+"/"+this.$route.params.day, body, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
+        i = i+1;
+        if (i == len){ //make sure all requests are through
+          this.$router.push('/dashboard');
+        }
+      });
+
+      for (var pid in this.projectMinutes) {
+        if (this.projectMinutes.hasOwnProperty(pid)) {
+
+          var d = moment.duration(parseInt(this.projectMinutes[pid]), 'minutes').asHours();
+
+          var body = {
+            date: this.$route.params.day,
+            userid: this.userid,
+            duration: d
+          }
+
+          this.$http.put("http://localhost:3000/api/project_time/"+this.userid+"/"+this.$route.params.day+"/"+pid, body, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(response => {
+            i = i+1;
+            if (i == len){ //make sure all requests are through
+              this.$router.push('/dashboard');
+            }
+          });
+
+        }
+      }
+    },
+    writeOldValues(res) {
+      this.update = true;
+
+      this.startInput.hours = moment(res.body[0].comming_time).hours();
+      this.startInput.minutes = moment(res.body[0].comming_time).minutes();
+      this.stopInput.hours = moment(res.body[0].leaving_time).hours();
+      this.stopInput.minutes = moment(res.body[0].leaving_time).minutes();
+      this.pauseInput.hours =  moment.duration(res.body[0].pause, 'hours').hours();
+      this.pauseInput.minutes =  moment.duration(res.body[0].pause, 'hours').minutes();
+      this.travelInput.hours = moment.duration(res.body[0].travel, 'hours').hours();
+      this.travelInput.minutes = moment.duration(res.body[0].travel, 'hours').minutes();
+
+      this.updateComputedTime();
+      this.confirmTimes();
+
+      for (var i = 0; i < this.projects.length; i++) {
+        this.$http.get('http://localhost:3000/api/project_time/'+this.userid+'/'+this.date+'/'+this.projects[i].id, {headers: {Authorization: ('bearer '+ window.sessionStorage.chronosAuthToken)}}).then(res3 => {
+          var pid = res3.url.replace("http://localhost:3000/api/project_time","").replace(/\/[0-9]*\//i,"").replace(/[0-9]{4}-[0-9]{2}-[0-9]{2}\//i,"");
+          this.projectMinutes[pid] = moment.duration(res3.body[0].duration, 'hours').asMinutes();
+          this.$mount();
+          this.usedMinutes = this.sum(this.projectMinutes);
+        });
       }
     }
   }
@@ -506,7 +419,6 @@ export default {
   border-radius: 2px;
   box-shadow: 0px 0px 7px #ccc;
   border: 1px solid #ccc;
-  max-width: 400px;
 }
 
 .card>.header {
