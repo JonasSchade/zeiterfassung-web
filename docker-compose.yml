@@ -1,0 +1,15 @@
+version: "3"
+services:
+  web:
+    container_name: chronos_web
+    restart: always
+    # image: chronos-web
+    build: .
+    ports:
+      - "8080:8080"
+  db:
+    container_name: chronos_db
+    # image: chronos-db
+    build: ../zeiterfassung-db/
+    ports:
+      - "3000:3000"
