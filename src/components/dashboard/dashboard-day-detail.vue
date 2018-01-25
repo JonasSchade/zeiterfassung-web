@@ -457,50 +457,6 @@ export default {
   margin-right: 0px;
 }
 
-.inputcontainer{
-  /* position: relative; */
-  max-width: 800px;
-  /* top: 20px; */
-  /* bottom: 20px; */
-  display: block;
-  margin-bottom: 30px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-.containerheader{
-  text-align: left;
-  background-color: #003452;
-  padding: 20px;
-  border: none;
-  font-size: 18px;
-  color: white;
-  -webkit-box-shadow: 0px 0px 7px #ccc;
-  box-shadow: 0px 0px 7px #ccc;
-}
-
-.containerbody{
-  border-radius: 0px 0px 3px 3px;
-  box-shadow: 0px 5px 7px #ccc;
-  padding: 20px;
-}
-
-.overview{
-  padding: 20px;
-}
-
-#info{
-  display: none;
-}
-
-#save{
-  display: none;
-}
-
-.inputs{
-  display: none;
-}
-
 h3 {
   margin: 0px;
 }
